@@ -10,21 +10,24 @@ O núcleo não tem dependências de execução, imports de Flutter, IO ou acesso
 
 ## Estado e instalação
 
-A versão **0.1.0 está publicada no [pub.dev](https://pub.dev/packages/decision_engine)**,
-vinculada ao publisher verificado [kleberandrade.dev](https://pub.dev/publishers/kleberandrade.dev),
-com **160 pontos** na análise da 0.1.0. Este código prepara a **0.2.0** com AHP.
-Requer Dart >=3.3.0 <4.0.0 e pode ser usado no Flutter.
+Este código corresponde à **0.2.0**, que acrescenta pesos de critérios por AHP.
+O núcleo continua em Dart puro e requer Dart >=3.3.0 <4.0.0. Confira a
+[lista de versões no pub.dev](https://pub.dev/packages/decision_engine/versions)
+para verificar a disponibilidade hospedada; alterar a versão do código não publica
+o pacote. O publisher verificado é [kleberandrade.dev](https://pub.dev/publishers/kleberandrade.dev).
+
+Para a release 0.2.0:
 
 ```yaml
 dependencies:
-  decision_engine: ^0.1.0
+  decision_engine: ^0.2.0
 ```
 
-Execute `dart pub add decision_engine` ou `flutter pub add decision_engine`.
-A [release v0.1.0](https://github.com/kleberandrade/decision-engine/releases/tag/v0.1.0)
-aponta para o commit `fcc0a86`, aprovado na CI. O AHP requer **0.2.0 ou superior**.
-Até a publicação da 0.2.0 ser verificada, use a dependência Git na branch `feat/ahp`
-para experimentar o AHP. A 0.1.0 hospedada não oferece esse recurso.
+Execute `dart pub add decision_engine` ou `flutter pub add decision_engine` para
+selecionar a versão hospedada compatível mais recente. O AHP requer **0.2.0 ou
+superior** e não existe na API da 0.1.0. Antes da publicação, use uma dependência
+Git fixada em um commit revisado da `main`. A [release anterior v0.1.0](https://github.com/kleberandrade/decision-engine/releases/tag/v0.1.0)
+continua disponível e sua análise no pub.dev atingiu 160 pontos.
 
 ## Como funciona
 
@@ -91,8 +94,5 @@ Consulte os comandos completos em [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Usar o AHP da 0.2.0
 
-Este código contém a API da **0.2.0**. O AHP não está na versão hospedada 0.1.0.
-Para experimentar, use uma dependência Git com
-`url: https://github.com/kleberandrade/decision-engine.git` e `ref: feat/ahp`.
-Fixe um commit revisado para reproduzir os resultados. O guia de AHP e o exemplo
-`example/ahp.dart` descrevem somente esta versão em desenvolvimento.
+O guia de AHP e `example/ahp.dart` descrevem a API da **0.2.0**.
+O recurso não faz parte da versão 0.1.0 hospedada.

@@ -35,7 +35,8 @@ record in `doc/engineering_log.md` and add user-facing changes under `Unreleased
 
 ## Releases
 
-The first baseline targets 0.1.0 but is not published automatically. Before a
+Version 0.1.0 is published under verified publisher kleberandrade.dev.
+Subsequent releases are not published automatically. Before a
 release, update the version and changelog together, run CI and review package
 contents. During 0.x, incompatible API changes increment the minor version.
 Do not claim hosted publication, publisher ownership or pub points without

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Update installation and release verification documentation for published 0.1.0.
+
 ## 0.1.0
 
 - Initial 0.1.0 development baseline: pure Dart multicriteria decision engine.

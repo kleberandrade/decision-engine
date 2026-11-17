@@ -42,3 +42,15 @@
 - Added a release-candidate checklist that explicitly retains the outstanding
   minimum-SDK, Flutter runtime, remote-CI and publication checks.
 - Retried GitHub access; DNS remains unavailable. No tag or publication was made.
+
+## Verified 0.1.0 release
+
+- Observed main fcc0a86 and feat/ahp cc1479b synchronized with remote tracking refs.
+- Verified GitHub Actions run 44003996882 passed Dart 3.3.0, stable and Flutter.
+- Verified hosted 0.1.0 with 160 pub points. Completed and verified the authorized
+  transfer from legacy uploader ownership to publisher kleberandrade.dev.
+- Created GitHub release/tag v0.1.0 specifically on validated commit fcc0a86.
+  The tag was created through GitHub's interface; it is not a local annotated tag.
+- Updated bilingual README installation and validation evidence without changing
+  published source or republishing the same version. Documentation push remains
+  subject to this session's outbound-network restriction.

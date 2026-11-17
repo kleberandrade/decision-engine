@@ -132,4 +132,31 @@ void main() {
     expect(find.byTooltip('English (United Kingdom)'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('English review previews keep the applied scenario unchanged',
+      (tester) async {
+    await start(tester);
+    await language(tester, 'English');
+    await tap(tester, 'apply-ahp');
+    for (final edit in [
+      ('ahp-0-1', '9'),
+      ('ahp-0-2', '1/9'),
+      ('ahp-1-2', '9')
+    ]) {
+      await tester.ensureVisible(find.byKey(Key(edit.$1)));
+      await tester.enterText(find.byKey(Key(edit.$1)), edit.$2);
+      await tester.pumpAndSettle();
+    }
+    await tap(tester, 'ahp-diagnose');
+    expect(find.text('Priority comparisons for review'), findsOneWidget);
+    await tap(tester, 'ahp-preview-0-1');
+    expect(find.text('Adjustment preview — scenario still unchanged'),
+        findsOneWidget);
+    expect(find.textContaining('CR before: 6.1302682'), findsOneWidget);
+    expect(find.textContaining('CR after: 0.48347731'), findsOneWidget);
+    await tap(tester, 'ahp-preview-cancel');
+    await tap(tester, 'ahp-cancel');
+    expect(find.text('Availability • 40%'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
 }

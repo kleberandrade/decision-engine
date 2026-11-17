@@ -115,6 +115,22 @@ stale evidence from export; visual edits retain evidence only if criterion IDs
 and normalized weights are unchanged. **Restaurar** returns to the scenario's
 pre-AHP reset weights; a complete restart restores the original providers.
 
+## Review and preview AHP adjustments
+
+Choose **Review inconsistencies**. The list shows the top five pairs by mean
+absolute log deviation, the worst triad witness, and a suggestion when a tested
+candidate reduces CR. Markers #1–#3 highlight matrix priorities; ties are possible.
+Priority does not prove which preference is wrong. **Preview impact before adjusting**
+shows the ratio, actual CR before/after, absolute reduction and candidate weights.
+**Discard preview** preserves the matrix. **Stage adjustment** changes only
+the pair and its inverse. The scenario changes only with **Apply weights**, which
+requires raw CR <=0.10. Edits invalidate earlier diagnoses and previews.
+
+For cyclic 9,1/9,9, the first preview lowers CR from 6.1302682 to 0.48347731,
+still above the limit. Review again or cancel. Orders 1/2 have no triads.
+Suggestions bounded to 1/9–9 are heuristics and may require further review;
+there is no global-solution guarantee. See the AHP guide for the complete policy.
+
 ## Execution and accessibility
 
 Calculations finish immediately on change; there is no long-running task or
@@ -148,4 +164,6 @@ retain their respective licenses in the generated license notices.
 5. **Edit and verify AHP.** In the original criterion order enter 3, 1/2 and
    1/6, verify CR≈0 and apply 30/10/60 weights. Export/reimport the JSON, then
    try 9, 1/9 and 9. Complete when consistent evidence round-trips and the cyclic
-   matrix blocks application without changing the scenario.
+   matrix blocks application without changing the scenario. Review the disagreements,
+   inspect CR before/after and discard the preview. Also verify that the preview
+   preserves the original values and CR≈0.483 still prevents application.

@@ -65,3 +65,37 @@ Execute `dart run example/ahp.dart`. A matriz consistente [[1,2,6],[1/2,1,3],
 [1/6,1/3,1]] gera pesos [0.6,0.3,0.1], verificados independentemente nos testes.
 O custo é O(iterações × n²), com memória O(n²). A aplicação controla execução
 e revisão dos julgamentos.
+
+
+## Revisão de inconsistências (API fonte Unreleased)
+
+`AhpConsistencyAdvisor` está neste checkout, ainda não no pacote hospedado 0.3.0.
+Execute `dart run example/ahp_review.dart`. A API recebe um `AhpResult` e retorna
+`baseline` e `comparisons`. Cada par contém `row`, `column`, `meanLogDeviation`,
+`triadCount`, `witness` e `adjustment` opcional; a prévia oferece `value`,
+`evaluation` (CR e pesos completos) e `targetWasClamped`.
+
+Para cada par i<j, a prioridade é
+`média_k |ln(Aij) - ln(Aik) - ln(Akj)|`, com k diferente de i,j.
+O relatório informa a tríade de maior desacordo; empates seguem linha/coluna.
+Isso prioriza revisão, sem provar qual julgamento está errado. Ordens 1/2 não
+possuem tríades; desvios <=1e-10 são tratados como ruído numérico.
+
+O alvo é a média geométrica das razões indiretas Aik×Akj, limitada a [1/9,9].
+São testados quatro passos logarítmicos (100%, 75%, 50%, 25%) até o alvo.
+Cada candidato altera somente Aij e seu inverso, recalculando autovetor e CR
+completos. Só é oferecido o melhor candidato convergente que reduza o CR em mais
+de 1e-12. Pode não existir melhora entre os candidatos. A heurística não garante
+ótimo global nem correção completa da matriz.
+
+A referência é reavaliada com convergência e reciprocidade padrão, preservando
+o limiar de consistência. Matrizes aceitas apenas com tolerância de reciprocidade
+mais frouxa são rejeitadas nessa fronteira. Relatórios e matrizes são imutáveis;
+criar a prévia não aplica pesos. No laboratório, usar o ajuste altera o rascunho;
+aplicar pesos ao cenário ainda exige CR bruto <=0,10.
+
+Com razões editáveis cíclicas 9,1/9,9, um ajuste limitado reduz CR de 6,1302682
+para 0,48347731: a aplicação continua bloqueada. Com quatro critérios e matriz
+de uns, exceto A01=9 e seu recíproco, esse par é a prioridade única; sugerir 1
+restaura CR≈0 e pesos iguais. Nenhum exemplo prova que a sugestão representa
+uma preferência adequada à decisão real.

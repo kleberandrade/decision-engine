@@ -22,6 +22,9 @@ class _AhpMatrixEditorState extends State<AhpMatrixEditor> {
   final inputs = <(int, int), TextEditingController>{};
   AhpResult? result;
   String? error;
+  AhpConsistencyReview? diagnosis;
+  AhpComparisonReview? selectedReview;
+  final previewAnchor = GlobalKey();
   List<String> get ids => widget.criteria.map((c) => c.id).toList();
   String label(int i) => widget.labels[ids[i]] ?? ids[i];
 
@@ -75,6 +78,8 @@ class _AhpMatrixEditorState extends State<AhpMatrixEditor> {
   void calculate() {
     result = null;
     error = null;
+    diagnosis = null;
+    selectedReview = null;
     try {
       final matrix =
           List.generate(ids.length, (_) => List.filled(ids.length, 1.0));
@@ -112,6 +117,141 @@ class _AhpMatrixEditorState extends State<AhpMatrixEditor> {
         }
         calculate();
       });
+
+  void diagnose() => setState(() {
+        selectedReview = null;
+        try {
+          diagnosis = const AhpConsistencyAdvisor().review(result!);
+        } on ArgumentError {
+          error = 'Não foi possível revisar esta matriz. Confira os valores.';
+        } on StateError {
+          error = 'Não foi possível revisar esta matriz. Confira os valores.';
+        }
+      });
+
+  int? priority(int i, int j) {
+    final index = diagnosis?.comparisons
+            .take(3)
+            .toList()
+            .indexWhere((p) => p.row == i && p.column == j) ??
+        -1;
+    return index < 0 ? null : index + 1;
+  }
+
+  void showPreview(AhpComparisonReview pair) {
+    setState(() => selectedReview = pair);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final target = previewAnchor.currentContext;
+      if (target != null) {
+        Scrollable.ensureVisible(target,
+            alignment: .1,
+            duration: MediaQuery.of(context).disableAnimations
+                ? Duration.zero
+                : const Duration(milliseconds: 180));
+      }
+    });
+  }
+
+  Widget reviewBody() => Column(
+          key: const Key('ahp-review'),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Text('Comparações prioritárias para revisão',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const Text(
+                'Prioridade = desvio log absoluto médio das relações indiretas Aik × Akj. Tríades em desacordo não provam qual julgamento está errado. Marcadores #1–#3 destacam prioridades; empates são possíveis.'),
+            if (diagnosis!.comparisons.isEmpty)
+              const Text('Nenhum desacordo de tríade acima da tolerância.'),
+            for (final entry in diagnosis!.comparisons.take(5).indexed)
+              Card(
+                  child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                '#${entry.$1 + 1} • ${label(entry.$2.row)} / ${label(entry.$2.column)}',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold)),
+                            Text(
+                                'Desvio log absoluto médio: ${entry.$2.meanLogDeviation.toStringAsPrecision(6)} • Tríades: ${entry.$2.triadCount}'),
+                            Text(
+                                'Maior desacordo via: ${label(entry.$2.witness)}'),
+                            if (entry.$2.adjustment != null) ...[
+                              Text(
+                                  'Comparação atual: ${result!.comparisons[entry.$2.row][entry.$2.column].toStringAsPrecision(6)} • Sugestão: ${entry.$2.adjustment!.value.toStringAsPrecision(6)}'),
+                              Text(
+                                  'CR da prévia: ${entry.$2.adjustment!.evaluation.consistencyRatio.toStringAsPrecision(8)}'),
+                              OutlinedButton(
+                                  key: Key(
+                                      'ahp-preview-${entry.$2.row}-${entry.$2.column}'),
+                                  onPressed: () => showPreview(entry.$2),
+                                  child: const Text(
+                                      'Ver impacto antes de ajustar')),
+                            ] else
+                              const Text(
+                                  'Nenhum ajuste testado reduziu o CR para este par.'),
+                          ]))),
+            if (diagnosis!.comparisons.length > 5)
+              Text(
+                  'Exibindo as 5 maiores prioridades de ${diagnosis!.comparisons.length} pares.'),
+            if (selectedReview != null)
+              Container(key: previewAnchor, child: previewBody()),
+            const Text(
+                'Sugestões são heurísticas: média geométrica dos caminhos indiretos e três passos intermediários, limitados a 1/9–9. Cada prévia muda só um par e recalcula o CR no núcleo. Não há garantia de solução global ou de que a preferência sugerida seja correta.'),
+          ]);
+
+  Widget previewBody() {
+    final pair = selectedReview!;
+    final adjustment = pair.adjustment!;
+    final after = adjustment.evaluation;
+    final before = diagnosis!.baseline.consistencyRatio;
+    return Card(
+        child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+                key: const Key('ahp-preview-impact'),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Prévia de ajuste — cenário ainda inalterado',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  Text(
+                      '${label(pair.row)} / ${label(pair.column)}: ${result!.comparisons[pair.row][pair.column].toStringAsPrecision(6)} → ${adjustment.value.toStringAsPrecision(6)}'),
+                  Text('CR antes: ${before.toStringAsPrecision(8)}'),
+                  Text(
+                      'CR depois: ${after.consistencyRatio.toStringAsPrecision(8)}'),
+                  Text(
+                      'Redução absoluta do CR: ${(before - after.consistencyRatio).toStringAsPrecision(6)}'),
+                  Text(after.isConsistent
+                      ? 'A prévia atende CR ≤ 0,10.'
+                      : 'A prévia ainda supera CR 0,10; serão necessárias outras revisões.'),
+                  if (adjustment.targetWasClamped)
+                    const Text(
+                        'O alvo indireto excede a escala; a sugestão foi limitada a 1/9–9.'),
+                  const Text('Pesos da prévia'),
+                  for (final c in widget.criteria)
+                    Text(
+                        '${widget.labels[c.id] ?? c.id}: ${(after.weights[c.id]! * 100).toStringAsFixed(2)}%'),
+                  const Text(
+                      'Usar no rascunho altera apenas esta comparação e seu inverso. O cenário só recebe pesos ao clicar Aplicar pesos.'),
+                  Wrap(spacing: 12, runSpacing: 8, children: [
+                    OutlinedButton(
+                        key: const Key('ahp-preview-cancel'),
+                        onPressed: () => setState(() => selectedReview = null),
+                        child: const Text('Descartar prévia')),
+                    FilledButton(
+                        key: const Key('ahp-stage-adjustment'),
+                        onPressed: () {
+                          inputs[(pair.row, pair.column)]!.text =
+                              '${adjustment.value}';
+                          setState(calculate);
+                        },
+                        child: const Text('Usar ajuste no rascunho')),
+                  ]),
+                ])));
+  }
 
   @override
   Widget build(BuildContext context) => Dialog(
@@ -202,7 +342,22 @@ class _AhpMatrixEditorState extends State<AhpMatrixEditor> {
                                                           TextInputType.text,
                                                       decoration: InputDecoration(
                                                           border:
-                                                              OutlineInputBorder()),
+                                                              const OutlineInputBorder(),
+                                                          labelText: priority(
+                                                                      i, j) ==
+                                                                  null
+                                                              ? null
+                                                              : '#${priority(i, j)}',
+                                                          enabledBorder: priority(
+                                                                      i, j) ==
+                                                                  null
+                                                              ? null
+                                                              : const OutlineInputBorder(
+                                                                  borderSide: BorderSide(
+                                                                      color: Color(
+                                                                          0xFFFFC770),
+                                                                      width:
+                                                                          2))),
                                                       onChanged: (_) =>
                                                           setState(calculate),
                                                     )))
@@ -237,6 +392,18 @@ class _AhpMatrixEditorState extends State<AhpMatrixEditor> {
                                   key: Key('ahp-weight-${c.id}')),
                           ],
                           const SizedBox(height: 12),
+                          OutlinedButton.icon(
+                              key: const Key('ahp-diagnose'),
+                              onPressed: result != null && ids.length >= 3
+                                  ? diagnose
+                                  : null,
+                              icon: const Icon(Icons.troubleshoot),
+                              label: const Text('Revisar inconsistências')),
+                          if (ids.length < 3)
+                            const Text(
+                                'São necessários pelo menos 3 critérios para revisar tríades.'),
+                          if (diagnosis != null) reviewBody(),
+                          const SizedBox(height: 12),
                           const Text(
                               'Pesos calculados pelo autovetor principal. CI = (λ − n)/(n − 1); CR = CI/RI. O limite inclusivo é 0,10. Consistência não prova que as preferências são corretas. AHP aqui pondera critérios; não compara alternativas diretamente. Arraste a tabela para os lados em telas menores.'),
                         ]))),
@@ -251,9 +418,11 @@ class _AhpMatrixEditorState extends State<AhpMatrixEditor> {
                         liveRegion: true,
                         child: Text(
                             error ??
-                                (result?.isConsistent == true
-                                    ? 'Pronto para aplicar os pesos ao cenário.'
-                                    : 'Revise a matriz: aplicação bloqueada.'),
+                                (selectedReview != null
+                                    ? 'Prévia ativa: use ou descarte o ajuste antes de aplicar pesos.'
+                                    : result?.isConsistent == true
+                                        ? 'Pronto para aplicar os pesos ao cenário.'
+                                        : 'Revise a matriz: aplicação bloqueada.'),
                             key: const Key('ahp-status'))),
                     Wrap(alignment: WrapAlignment.end, spacing: 12, children: [
                       TextButton(
@@ -262,7 +431,8 @@ class _AhpMatrixEditorState extends State<AhpMatrixEditor> {
                           child: const Text('Cancelar')),
                       FilledButton(
                           key: const Key('ahp-apply'),
-                          onPressed: result?.isConsistent == true
+                          onPressed: result?.isConsistent == true &&
+                                  selectedReview == null
                               ? () => Navigator.pop(context, result)
                               : null,
                           child: const Text('Aplicar pesos')),

@@ -1,5 +1,39 @@
 # Decision lab validation — 2026-11-17
 
+## AHP inconsistency review and adjustment previews
+
+The Unreleased source adds an immutable pure Dart triad-review API and bilingual
+lab review cards, priority markers and adjustment previews. The top five pairs
+are ordered by mean absolute log deviation; the top three are marked in the
+matrix. Each candidate changes one reciprocal pair and fully recalculates CR.
+The heuristic does not identify a uniquely wrong human judgment or guarantee
+a global/complete repair. The core package version remains 0.3.0; no hosted
+package release is claimed for this source addition.
+
+Validated locally on isolated Flutter 3.41.9 / Dart 3.11.5:
+
+- Strict core, lab and consumer analysis; repository Dart formatting.
+- **58 core + 32 lab + 3 consumer = 93 passing tests**. New tests use independent
+  cyclic eigenvalue and four-criterion exact-repair expectations; retain immutable
+  source, default reciprocity boundary, n1/2/10 and consistency-threshold checks.
+- Dart examples plus JavaScript compilation/execution of the new advisor example
+  and existing engine example. Production Web build at `/decision-engine/`.
+- Native smoke: bilingual lab, matrix and CR previews, desktop/mobile layouts,
+  existing scenario editing, reset and ranking behavior; no framework errors.
+- Chrome at desktop and 390×844: cyclic 9,1/9,9, priority markers, English review,
+  CR 6.1302682 → 0.48347731, scrolling to preview actions, staging only one pair,
+  blocked scenario apply, then cancel retaining original 35/25/40 weights and
+  Vega 0.6500. The temporary viewport override was reset.
+
+The preview preserves matrix/scenario state until staging; applying scenario
+weights remains separate and requires raw CR <=0.10. Stale reports/previews clear
+on edits. Consistent/no-triad and invalid input states are covered in widget
+checks. JSON import/export and visual scenario editing retain their prior checks.
+
+Real native captures: [priority review](evidence/ahp-review.png),
+[CR impact preview](evidence/ahp-review-preview.png),
+[mobile preview](evidence/ahp-review-mobile.png).
+
 ## Navigation and bilingual education update
 
 Added a responsive navbar, original code-native three-input mark/compact variant

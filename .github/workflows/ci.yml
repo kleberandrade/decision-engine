@@ -25,6 +25,9 @@ jobs:
       - run: dart run example/weighted_sum.dart
       - run: dart run example/custom_method.dart
       - run: dart run example/ahp.dart
+      - run: dart run example/ahp_review.dart
+      - run: dart compile js example/ahp_review.dart -o /tmp/decision-ahp-review.js
+      - run: node /tmp/decision-ahp-review.js
       - run: dart run example/sensitivity.dart
       - run: dart compile js example/sensitivity.dart -o /tmp/decision-sensitivity.js
       - run: node /tmp/decision-sensitivity.js

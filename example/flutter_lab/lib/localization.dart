@@ -90,6 +90,35 @@ class Text extends m.StatelessWidget {
 }
 
 const translations = <String, String>{
+  'Comparações prioritárias para revisão': 'Priority comparisons for review',
+  'Prioridade = desvio log absoluto médio das relações indiretas Aik × Akj. Tríades em desacordo não provam qual julgamento está errado. Marcadores #1–#3 destacam prioridades; empates são possíveis.':
+      'Priority = mean absolute log deviation from indirect relations Aik × Akj. Conflicting triads do not prove which judgment is wrong. Markers #1–#3 highlight priorities; ties are possible.',
+  'Nenhum desacordo de tríade acima da tolerância.':
+      'No triad disagreement above tolerance.',
+  'Ver impacto antes de ajustar': 'Preview impact before adjusting',
+  'Nenhum ajuste testado reduziu o CR para este par.':
+      'No tested adjustment reduced CR for this pair.',
+  'Sugestões são heurísticas: média geométrica dos caminhos indiretos e três passos intermediários, limitados a 1/9–9. Cada prévia muda só um par e recalcula o CR no núcleo. Não há garantia de solução global ou de que a preferência sugerida seja correta.':
+      'Suggestions are heuristic: the geometric mean of indirect paths and three intermediate steps, bounded to 1/9–9. Each preview changes one pair and recalculates CR in the core. There is no guarantee of a global solution or that a suggested preference is correct.',
+  'Prévia de ajuste — cenário ainda inalterado':
+      'Adjustment preview — scenario still unchanged',
+  'A prévia atende CR ≤ 0,10.': 'The preview meets CR ≤ 0.10.',
+  'A prévia ainda supera CR 0,10; serão necessárias outras revisões.':
+      'The preview still exceeds CR 0.10; further review is needed.',
+  'O alvo indireto excede a escala; a sugestão foi limitada a 1/9–9.':
+      'The indirect target exceeds the scale; the suggestion was bounded to 1/9–9.',
+  'Pesos da prévia': 'Preview weights',
+  'Usar no rascunho altera apenas esta comparação e seu inverso. O cenário só recebe pesos ao clicar Aplicar pesos.':
+      'Staging changes only this comparison and its reciprocal. Scenario weights change only when you click Apply weights.',
+  'Descartar prévia': 'Discard preview',
+  'Usar ajuste no rascunho': 'Stage adjustment',
+  'Revisar inconsistências': 'Review inconsistencies',
+  'São necessários pelo menos 3 critérios para revisar tríades.':
+      'At least 3 criteria are needed to review triads.',
+  'Prévia ativa: use ou descarte o ajuste antes de aplicar pesos.':
+      'Preview active: stage or discard the adjustment before applying weights.',
+  'Não foi possível revisar esta matriz. Confira os valores.':
+      'Unable to review this matrix. Check the values.',
   'Laboratório': 'Laboratory',
   'Aprender': 'Learn',
   'Exemplos': 'Examples',
@@ -247,6 +276,18 @@ const translations = <String, String>{
       'AHP must be consistent and match normalized scenario weights.',
 };
 const dynamicTranslations = <String, String>{
+  'Desvio log absoluto médio: ': 'Mean absolute log deviation: ',
+  ' • Tríades: ': ' • Triads: ',
+  'Maior desacordo via: ': 'Largest disagreement via: ',
+  'Comparação atual: ': 'Current comparison: ',
+  ' • Sugestão: ': ' • Suggestion: ',
+  'CR da prévia: ': 'Preview CR: ',
+  'CR antes: ': 'CR before: ',
+  'CR depois: ': 'CR after: ',
+  'Redução absoluta do CR: ': 'Absolute CR reduction: ',
+  'Exibindo as 5 maiores prioridades de ':
+      'Showing the top 5 priorities among ',
+  ' pares.': ' pairs.',
   'Caractere inesperado': 'Unexpected character',
   'Fim inesperado da entrada': 'Unexpected end of input',
   '(no caractere ': '(at character ',

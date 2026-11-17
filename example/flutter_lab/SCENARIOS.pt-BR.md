@@ -83,6 +83,22 @@ proporções; sliders têm passos relativos de 0,01. Nomes têm até 80 caracter
 Tabelas largas têm rolagem horizontal; painéis se empilham em telas estreitas.
 Use Tab/Shift+Tab e setas. Consulte as [validações reais](../../doc/lab_validation.md).
 
+## Revisar e simular ajustes AHP
+
+Clique **Revisar inconsistências**. A lista mostra os cinco pares com maior
+desvio log absoluto médio, a tríade de maior desacordo e uma sugestão quando
+algum candidato testado reduz o CR. Marcadores #1–#3 destacam prioridades na
+matriz; empates são possíveis. A prioridade não prova qual preferência está errada.
+**Ver impacto antes de ajustar** mostra razão, CR antes/depois, redução absoluta
+e pesos candidatos. **Descartar prévia** mantém a matriz. **Usar ajuste no rascunho**
+altera só o par e seu inverso; o cenário só muda com **Aplicar pesos**, habilitado
+apenas com CR bruto <=0,10. Edições invalidam diagnósticos/prévias anteriores.
+
+Na matriz cíclica 9,1/9,9, a primeira prévia reduz CR de 6,1302682 para 0,48347731,
+ainda acima do limite. Revise novamente ou cancele. Para 1/2 critérios não há
+tríades. Sugestões limitadas a 1/9–9 são heurísticas e podem exigir outras revisões;
+não garantem uma solução global. Consulte a política completa no guia AHP.
+
 ## Referências e créditos
 
 [Equações](../../doc/methods.pt-BR.md) · [AHP](../../doc/ahp.pt-BR.md) ·
@@ -104,4 +120,6 @@ Flutter e fontes conservam suas licenças nos avisos do aplicativo compilado.
 5. **Editar e conferir AHP.** Na ordem original, informe 3, 1/2 e 1/6, confira
    CR≈0 e aplique os pesos 30/10/60. Exporte/reimporte o JSON e depois tente
    9, 1/9 e 9. Conclua quando a evidência consistente for reproduzida e a matriz
-   cíclica bloquear a aplicação sem alterar o cenário.
+   cíclica bloquear a aplicação sem alterar o cenário. Revise as inconsistências,
+   confira CR antes/depois e descarte a prévia. Conclua também comprovando que
+   a prévia mantém os valores originais e que CR≈0,483 ainda impede aplicar.

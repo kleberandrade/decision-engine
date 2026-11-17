@@ -248,3 +248,19 @@
   circular flags, localized mobile navigation/Learn, AHP matrix and applied
   30/10/60 weights with CR=0 and Vega=0.7000. Reset browser viewport and refreshed
   all native captures. Added exact source/run/public links to lab_validation.md.
+
+
+- Added pure Dart triad disagreement review and bounded, full-CR one-pair previews.
+  Observed missing-public-API and missing-review-action test failures before
+  implementation. Independent n4 repair and cyclic eigenvalue checks cover the
+  heuristic; n1/2/10, reciprocity boundaries and immutable input checks included.
+- Added bilingual priority markers, discard/stage workflow and CR impact/weight
+  previews; edits invalidate stale reports, preview never adopts scenario weights,
+  and raw CR <=0.10 remains mandatory. Documented the heuristic and source-only
+  API in EN/PT; retained exactly five scenario/Learn exercises.
+- Local strict analysis, 58 core tests, 32 lab tests and Dart/JS examples passed.
+  The cyclic preview reduces CR 6.1302682 to 0.48347731 and still blocks apply.
+- Completed consumer analysis/3 tests, Web production build and native smoke;
+  inspected real desktop/mobile captures. Chrome confirmed English priority
+  markers, full CR previews, mobile scroll/stage and unchanged scenario after
+  cancel. Restored viewport; checked remote main at the expected baseline.

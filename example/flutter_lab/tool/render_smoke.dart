@@ -86,6 +86,57 @@ Future<void> main() async {
     await Future<void>.delayed(const Duration(milliseconds: 400));
     await frame();
     await capture('ahp-desktop');
+    for (final edit in [
+      ('ahp-0-1', '9'),
+      ('ahp-0-2', '1/9'),
+      ('ahp-1-2', '9')
+    ]) {
+      final field = widgets()
+          .whereType<TextField>()
+          .firstWhere((w) => w.key == Key(edit.$1));
+      field.controller!.text = edit.$2;
+      field.onChanged!(edit.$2);
+      await frame();
+    }
+    widgets()
+        .whereType<OutlinedButton>()
+        .firstWhere((w) => w.key == const Key('ahp-diagnose'))
+        .onPressed!();
+    await frame();
+    await Scrollable.ensureVisible(
+        elements(binding.rootElement!)
+            .firstWhere((e) => e.widget.key == const Key('ahp-review')),
+        alignment: 0);
+    await capture('ahp-review');
+    widgets()
+        .whereType<OutlinedButton>()
+        .firstWhere((w) => w.key == const Key('ahp-preview-0-1'))
+        .onPressed!();
+    await frame();
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    await frame();
+    check(hasText('CR antes: 6.1302682'), 'Review baseline CR missing');
+    check(hasText('CR depois: 0.48347731'), 'Actual candidate CR missing');
+    check(
+        widgets()
+                .whereType<FilledButton>()
+                .firstWhere((w) => w.key == const Key('ahp-apply'))
+                .onPressed ==
+            null,
+        'Premature scenario application');
+    await capture('ahp-review-preview');
+    await viewport(390, 844);
+    await Scrollable.ensureVisible(
+        elements(binding.rootElement!)
+            .firstWhere((e) => e.widget.key == const Key('ahp-preview-impact')),
+        alignment: 0);
+    await capture('ahp-review-mobile');
+    widgets()
+        .whereType<OutlinedButton>()
+        .firstWhere((w) => w.key == const Key('ahp-preview-cancel'))
+        .onPressed!();
+    await frame();
+
     await viewport(390, 844);
     await capture('ahp-narrow');
     await viewport(1280, 1600);
@@ -194,7 +245,7 @@ Future<void> main() async {
     await frame();
     check(errors.isEmpty, 'Framework/layout errors: ${errors.length}');
     stdout.writeln(
-        'Native smoke passed: ranking, method, AHP, sweep, reset, zero weights, narrow layout, visual editor sections, AHP matrix, bilingual navbar and Learn; ${output.path}');
+        'Native smoke passed: ranking, method, AHP, sweep, reset, zero weights, narrow layout, visual editor sections, AHP matrix, bilingual navbar, Learn and CR adjustment previews; ${output.path}');
     exit(0);
   } catch (error, stack) {
     stderr.writeln('$error\n$stack');

@@ -21,6 +21,9 @@ dart run example/decision_engine_example.dart
 dart run example/weighted_sum.dart
 dart run example/custom_method.dart
 dart run example/ahp.dart
+dart run example/ahp_review.dart
+dart compile js example/ahp_review.dart -o /tmp/decision-ahp-review.js
+node /tmp/decision-ahp-review.js
 dart run example/sensitivity.dart
 dart compile js example/decision_engine_example.dart -o /tmp/decision-engine.js
 node /tmp/decision-engine.js

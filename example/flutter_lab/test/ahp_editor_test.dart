@@ -219,4 +219,84 @@ void main() {
     expect(find.byKey(const Key('ahp-cr')).hitTestable(), findsOneWidget);
     await tap(tester, 'ahp-cancel');
   });
+
+  testWidgets(
+      'review previews CR without mutation and stages only the selected pair',
+      (tester) async {
+    AhpResult? applied;
+    await launch(tester, (value) => applied = value, narrow: true);
+    await edit(tester, 'ahp-0-1', '9');
+    await edit(tester, 'ahp-0-2', '1/9');
+    await edit(tester, 'ahp-1-2', '9');
+    await tap(tester, 'ahp-diagnose');
+    expect(
+        tester
+            .widget<TextField>(find.byKey(const Key('ahp-0-1')))
+            .decoration!
+            .labelText,
+        '#1');
+    await tap(tester, 'ahp-preview-0-1');
+    expect(
+        tester
+            .widget<TextField>(find.byKey(const Key('ahp-0-1')))
+            .controller!
+            .text,
+        '9');
+    expect(find.textContaining('6.1302682'), findsWidgets);
+    expect(find.textContaining('0.48347731'), findsWidgets);
+    expect(
+        tester
+            .widget<FilledButton>(find.byKey(const Key('ahp-apply')))
+            .onPressed,
+        isNull);
+    await tap(tester, 'ahp-preview-cancel');
+    expect(
+        tester
+            .widget<TextField>(find.byKey(const Key('ahp-0-1')))
+            .controller!
+            .text,
+        '9');
+    await tap(tester, 'ahp-preview-0-1');
+    await tap(tester, 'ahp-stage-adjustment');
+    expect(
+        double.parse(tester
+            .widget<TextField>(find.byKey(const Key('ahp-0-1')))
+            .controller!
+            .text),
+        closeTo(1 / 9, 1e-12));
+    expect(
+        tester
+            .widget<TextField>(find.byKey(const Key('ahp-0-2')))
+            .controller!
+            .text,
+        '1/9');
+    expect(
+        tester
+            .widget<TextField>(find.byKey(const Key('ahp-1-2')))
+            .controller!
+            .text,
+        '9');
+    expect(find.byKey(const Key('ahp-preview-impact')), findsNothing);
+    expect(find.text('CR 0.4835'), findsOneWidget);
+    await tap(tester, 'ahp-cancel');
+    expect(applied, isNull);
+    expect(tester.takeException(), isNull);
+  });
+  testWidgets(
+      'invalid edits clear diagnostics and mobile consistent results have no invented suspect',
+      (tester) async {
+    await launch(tester, (_) {}, narrow: true);
+    await tap(tester, 'ahp-diagnose');
+    expect(find.text('Nenhum desacordo de tríade acima da tolerância.'),
+        findsOneWidget);
+    await edit(tester, 'ahp-0-1', 'NaN');
+    expect(find.byKey(const Key('ahp-review')), findsNothing);
+    expect(
+        tester
+            .widget<OutlinedButton>(find.byKey(const Key('ahp-diagnose')))
+            .onPressed,
+        isNull);
+    await tap(tester, 'ahp-cancel');
+    expect(tester.takeException(), isNull);
+  });
 }

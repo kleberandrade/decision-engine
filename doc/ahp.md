@@ -89,3 +89,44 @@ for composition with both ranking methods. Tests independently pin this ratio
 matrix and an inconsistent cyclic matrix with equal row sums and known eigenvalue.
 Power iteration costs O(iterations * n²) time and O(n²) matrix memory. Execution
 policy and consistency review remain application responsibilities.
+
+
+## Inconsistency review (Unreleased source API)
+
+`AhpConsistencyAdvisor` is available in this checkout, not in hosted 0.3.0.
+Run `dart run example/ahp_review.dart` for a complete reproducible preview:
+
+```dart
+final review = const AhpConsistencyAdvisor().review(ahp);
+for (final pair in review.comparisons) {
+  final candidate = pair.adjustment;
+  if (candidate == null) continue;
+  print('${pair.row}/${pair.column}: ${review.baseline.consistencyRatio}'
+      ' -> ${candidate.evaluation.consistencyRatio}');
+}
+```
+
+For each pair i<j, priority is the mean absolute log deviation
+`mean_k |ln(Aij) - ln(Aik) - ln(Akj)|`, over k distinct from i,j.
+The report supplies the worst triad witness, triad count, and deterministic
+row/column tie order. It prioritizes disagreements; it cannot establish which
+judgment is wrong. Orders 1/2 have no triads. Deviations <=1e-10 are ignored.
+
+The target is the geometric mean of indirect ratios Aik×Akj, clamped to [1/9,9].
+Four log-space steps (100%, 75%, 50%, 25%) toward that target are tested.
+Each changes only Aij and its reciprocal, and the full eigenvector/CR is
+recomputed. The best converged candidate is offered only if CR decreases by
+more than 1e-12. A pair may have no improving tested candidate. This is a bounded
+heuristic, not a global optimizer or guaranteed complete repair.
+
+The advisor reevaluates the baseline with default convergence and reciprocity
+settings while preserving its consistency threshold. A matrix accepted only
+with looser custom reciprocity tolerance is rejected here. Reports and candidate
+matrices are immutable and do not adopt weights. The lab separately previews,
+stages one adjustment, and applies weights only when raw CR <=0.10.
+
+For cyclic editable ratios 9,1/9,9, CR drops from 6.1302682 to 0.48347731 after
+one bounded adjustment; it still fails acceptance. A four-criterion all-ones
+matrix with only A01=9 (and reciprocal A10) identifies that pair uniquely;
+suggesting 1 restores CR≈0 and equal weights. Neither example proves the
+suggested preference is appropriate for a real decision.

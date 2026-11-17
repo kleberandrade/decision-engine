@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Add pure Dart AHP triad review with bounded one-pair adjustment candidates,
+  immutable previews and actual recomputed CR; no global repair guarantee.
+- Add bilingual priority markers, review cards, CR-before/after previews, discard
+  and stage controls. Keep scenario weight application gated by raw CR <=0.10.
+- PT: revisão das comparações AHP, sugestões e impacto no CR antes de ajustar;
+  cenário preservado na prévia e aplicação separada após verificar consistência.
+
 - Use locally drawn circular Brazil/UK language flags with tooltips, selected
   semantics/ring/check, keyboard focus and at least 48px touch targets.
 

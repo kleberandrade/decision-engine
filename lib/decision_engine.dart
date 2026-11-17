@@ -14,3 +14,4 @@ export 'src/methods/topsis.dart';
 export 'src/methods/weighted_sum.dart';
 export 'src/weighting/ahp_weighting.dart';
 export 'src/sensitivity/sensitivity_analyzer.dart';
+export 'src/weighting/ahp_consistency_advisor.dart';

@@ -228,6 +228,9 @@ class LearningView extends StatelessWidget {
                       paragraph(
                           'CI=(λ−n)/(n−1), CR=CI/RI. O laboratório permite aplicar somente CR bruto ≤0,10. Para n≤2, CI e CR são zero por convenção. Consistência não prova que preferências são válidas. Isto é ponderação de critérios, não uma hierarquia AHP completa.',
                           'CI=(λ−n)/(n−1), CR=CI/RI. The lab only applies raw CR ≤0.10. For n≤2, CI and CR are zero by convention. Consistency does not prove preferences are valid. This is criterion weighting, not a full AHP hierarchy.'),
+                      paragraph(
+                          'Revisar inconsistências prioriza o desacordo logarítmico entre tríades. A prévia mostra o CR completo antes/depois sem mudar o cenário. Use o ajuste no rascunho e revise novamente antes de aplicar pesos. A sugestão não prova qual preferência está errada nem garante correção completa.',
+                          'Review inconsistencies prioritizes log disagreement among triads. The preview shows full CR before/after without changing the scenario. Stage the adjustment and review again before applying weights. Suggestions do not prove which preference is wrong or guarantee a complete repair.'),
                       heading('5. Sensibilidade amostrada e limites',
                           '5. Sampled sensitivity and limits'),
                       paragraph(
@@ -275,8 +278,8 @@ class LearningView extends StatelessWidget {
                           'Budget: open the cost-bound example. Finish when Vega is excluded by cost and Nova by availability, with reasons visible.'
                         ),
                         (
-                          'AHP: abra os pesos consistentes e depois edite as células para 9, 1/9 e 9. Conclua quando CR alto bloquear a aplicação e cancelar preservar o cenário.',
-                          'AHP: open consistent weights, then edit cells to 9, 1/9 and 9. Finish when high CR blocks application and cancel preserves the scenario.'
+                          'AHP: abra os pesos consistentes e depois edite as células para 9, 1/9 e 9. Revise e confira o CR da prévia. Conclua quando CR ainda alto bloquear a aplicação e descartar a prévia preservar os valores.',
+                          'AHP: open consistent weights, then edit cells to 9, 1/9 and 9. Review and inspect preview CR. Finish when a still-high CR blocks application and discarding the preview preserves values.'
                         ),
                         (
                           'Sensibilidade: varra custo no cenário básico. Conclua identificando os intervalos 35–40% e 60–65% e explicando por que não são cruzamentos exatos.',

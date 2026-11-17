@@ -48,7 +48,8 @@ formulas, interpreted calculations, limits and five practical exercises.
 Use labeled visual forms to edit alternatives, criteria, weights and inclusive constraints; compare weighted
 sum with TOPSIS and inspect calculation traces. Import/export JSON to reproduce a
 scenario. The [bilingual scenario guide](example/flutter_lab/SCENARIOS.md) explains
-calculations, sensitivity, editable AHP comparisons, consistency checks and limits.
+calculations, sensitivity, editable AHP comparisons, prioritized triad review,
+adjustment previews with CR before/after, consistency checks and limits.
 
 ![Running Flutter lab: weights, ranking, raw data and method comparison](doc/evidence/desktop.png)
 

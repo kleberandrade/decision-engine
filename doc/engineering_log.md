@@ -242,3 +242,9 @@
 
 - Added the circular-flag selection test; final local suite now has 29 lab tests
   (84 total including core/consumer), retaining all AHP and scenario checks.
+
+- Source 294d9ee passed every job in CI run 44178601266, including Flutter 3.50
+  analysis/tests/Web build and Pages. Verified the actual public app in Chrome:
+  circular flags, localized mobile navigation/Learn, AHP matrix and applied
+  30/10/60 weights with CR=0 and Vega=0.7000. Reset browser viewport and refreshed
+  all native captures. Added exact source/run/public links to lab_validation.md.

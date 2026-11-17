@@ -33,7 +33,23 @@ applying weights, preserving them in a 390×844 viewport, opening Learn through
 the mobile menu, and Tab/Enter navigation on desktop. English remained selected
 after reload, and the rendered HTML language attribute was `en`. Viewport override
 was reset after inspection. Documentation targets for English methods and PT-BR
-getting-started returned HTTP 200. Public deployment is verified below.
+getting-started returned HTTP 200. The initial combined run 44177633354 passed core/consumer checks and stopped at
+Flutter 3.50's relocated localization symbol. The narrow minimum-SDK bridge was
+corrected in source
+[294d9ee](https://github.com/kleberandrade/decision-engine/commit/294d9eeca4af2308310176afcea4486c9a19abfc).
+All five jobs passed in
+[run 44178601266](https://github.com/kleberandrade/decision-engine/actions/runs/44178601266),
+including stable Flutter 3.50 lab tests/build and Pages deployment.
+
+The updated [public app](https://kleberandrade.github.io/decision-engine/) was
+opened in Chrome and verified as a rendered application: original mark, circular
+Brazil/UK flags and selected check, EN/PT-BR controls, mobile navbar and English
+Learn at 390×844. On the public app, the AHP matrix opened, the consistent example
+was applied, and the dashboard showed 30/10/60 weights, CR 0.0000 and Vega=0.7000.
+The viewport override was reset and the live public app was kept open. New native
+captures were refreshed after the flag change. README/About keep the verified
+Pages link; the GitHub description and ten actual topics reflect the implemented
+features. No package upload or version tag was performed.
 
 ## AHP matrix update
 

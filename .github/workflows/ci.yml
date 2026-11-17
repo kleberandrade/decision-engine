@@ -64,8 +64,35 @@ jobs:
       - run: flutter pub get
       - run: flutter analyze --fatal-infos
       - run: flutter test
-      - run: flutter build web --no-web-resources-cdn
+      - run: flutter build web --no-web-resources-cdn --base-href /decision-engine/
       - uses: actions/upload-artifact@v4
         with:
           name: decision-engine-lab-web
           path: example/flutter_lab/build/web
+
+  pages:
+    name: Publish decision laboratory
+    needs: [verify, flutter, flutter_lab]
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: decision-engine-lab-web
+          path: public
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - uses: actions/deploy-pages@v4
+        id: deployment

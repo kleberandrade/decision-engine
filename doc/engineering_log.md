@@ -132,3 +132,22 @@
 - The Ahem smoke passed after the fix. Promoted source version to 0.3.0,
   grouped unreleased notes, preserved published changelog notes and prepared
   bilingual installation/release documentation. Final remote CI is still a gate.
+
+## Reproducible online decision laboratory — 2026-11-17
+
+- Read shared modernization, project architecture/contribution instructions and
+  ub-mode; confirmed clean checkout, remote/main agreement and isolated tooling.
+- Added scenario tests before the JSON boundary, observed missing-API failure,
+  then implemented immutable validated lab configuration through the public core.
+- Replaced fixed UI inputs with editable/copyable complete scenarios; added
+  atomic apply/cancel, complete restart, method comparison, normalized/weighted
+  values, TOPSIS distances and textual sensitivity samples. Disclosed fixed AHP.
+- Added widget interactions and accessibility checks; verified 52 core, 3 consumer
+  and 10 lab tests, strict analysis, CLI/JS examples and production Web compilation.
+  Captured and inspected desktop/narrow output; manually exercised Chrome Web UI.
+- Added bilingual scenario/limits guides. Verified hosted 0.3.0, MIT, publisher
+  and 160/160 points from pub.dev rather than inferring publication from source.
+- Configured test-gated Pages workflow and correct project base path. Remote
+  validation/publication outcomes are recorded in doc/lab_validation.md.
+- The specialized crapper/dryer/mutator tools are unavailable in this session;
+  scenario boundary and public behavior tests were used for concrete validation.

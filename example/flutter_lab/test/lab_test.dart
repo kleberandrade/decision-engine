@@ -76,4 +76,65 @@ void main() {
     expect(find.text('Memória de cálculo'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('scenario editing validates, cancels, applies and restarts',
+      (tester) async {
+    tester.view.physicalSize = const Size(1280, 1400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.pumpWidget(const DecisionLabApp());
+    Future<void> edit() async {
+      await tester.ensureVisible(find.byKey(const Key('scenario-edit')));
+      await tester.tap(find.byKey(const Key('scenario-edit')));
+      await tester.pumpAndSettle();
+    }
+
+    await edit();
+    await tester.enterText(find.byKey(const Key('scenario-json')), '{}');
+    await tester.tap(find.byKey(const Key('scenario-apply')));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Invalid scenario'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('scenario-cancel')));
+    await tester.pumpAndSettle();
+    expect(find.text('3 elegíveis • 1 excluída'), findsOneWidget);
+    await edit();
+    await tester.enterText(find.byKey(const Key('scenario-json')), '''{
+      "criteria":[{"id":"price","label":"Preço","direction":"minimize","weight":1}],
+      "alternatives":[{"name":"Custom","values":{"price":10}}],
+      "constraints":[{"criterion":"price","maximum":5}]
+    }''');
+    await tester.tap(find.byKey(const Key('scenario-apply')));
+    await tester.pumpAndSettle();
+    expect(find.text('Sem vencedor'), findsOneWidget);
+    expect(find.textContaining('Nenhuma alternativa elegível'), findsOneWidget);
+    await tester.ensureVisible(find.byKey(const Key('scenario-reset')));
+    await tester.tap(find.byKey(const Key('scenario-reset')));
+    await tester.pumpAndSettle();
+    expect(find.text('3 elegíveis • 1 excluída'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('large text and accessibility labels remain usable',
+      (tester) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final semantics = tester.ensureSemantics();
+    try {
+      tester.platformDispatcher.textScaleFactorTestValue = 1.6;
+      addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+      await tester.pumpWidget(const DecisionLabApp());
+      await tester.pumpAndSettle();
+      await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
+      await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
+      await expectLater(tester, meetsGuideline(textContrastGuideline));
+      await tester.ensureVisible(find.byKey(const Key('scenario-edit')));
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+    } finally {
+      semantics.dispose();
+    }
+  });
 }

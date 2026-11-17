@@ -2,24 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:decision_engine/decision_engine.dart';
 import 'score_chart.dart';
+import 'configuration.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(const DecisionLabApp());
-
-const labels = {
-  'cost': 'Custo',
-  'latency': 'Latência',
-  'availability': 'Disponibilidade'
-};
-final providers = [
-  Alternative('Atlas',
-      values: {'cost': 1200, 'latency': 25, 'availability': 99.95}),
-  Alternative('Vega',
-      values: {'cost': 1600, 'latency': 15, 'availability': 99.99}),
-  Alternative('Orion',
-      values: {'cost': 1000, 'latency': 40, 'availability': 99.90}),
-  Alternative('Nova',
-      values: {'cost': 800, 'latency': 50, 'availability': 99.50}),
-];
 
 class DecisionLabApp extends StatelessWidget {
   const DecisionLabApp({super.key});
@@ -43,11 +29,11 @@ class DecisionDashboard extends StatefulWidget {
 }
 
 class _DecisionDashboardState extends State<DecisionDashboard> {
-  Map<String, double> weights = {
-    'cost': 0.35,
-    'latency': 0.25,
-    'availability': 0.4
-  };
+  LabConfiguration configuration = LabConfiguration.sample();
+  Map<String, String> get labels => configuration.labels;
+  List<Alternative> get providers => configuration.alternatives;
+  late Map<String, double> weights = configuration.sliderWeights;
+  int revision = 0;
   String methodName = 'weighted_sum';
   String sweepId = 'cost';
   String? ahpStatus;
@@ -68,19 +54,83 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
     });
   }
 
-  DecisionEngine makeEngine() => DecisionEngine(
-          criteria: [
-            Criterion.minimize('cost', weight: weights['cost']!),
-            Criterion.minimize('latency', weight: weights['latency']!),
-            Criterion.maximize('availability',
-                weight: weights['availability']!),
-          ],
-          constraints: [
-            MinimumValue('availability', 99.9)
-          ],
-          method: methodName == 'weighted_sum'
-              ? const WeightedSum()
-              : const Topsis());
+  DecisionEngine makeEngine() => configuration.engine(
+      methodName == 'weighted_sum' ? const WeightedSum() : const Topsis(),
+      weights);
+
+  Future<void> editScenario() async {
+    final controller = TextEditingController(
+        text: configuration.encode(weights, methodName, sweepId));
+    String? error;
+    final route = DialogRoute<LabConfiguration>(
+        context: context,
+        builder: (context) => StatefulBuilder(
+            builder: (context, update) => AlertDialog(
+                  title: const Text('Configurar cenário'),
+                  content: SizedBox(
+                      width: 720,
+                      child: SingleChildScrollView(
+                          child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                            const Text(
+                                'Edite critérios (minimize/maximize), pesos, alternativas e limites inclusivos. Use ponto decimal. Copie o JSON para reproduzir o cenário. Até 12 critérios e 30 alternativas.'),
+                            const SizedBox(height: 12),
+                            TextField(
+                                key: const Key('scenario-json'),
+                                controller: controller,
+                                maxLines: 16,
+                                decoration: const InputDecoration(
+                                    labelText: 'Cenário JSON',
+                                    border: OutlineInputBorder())),
+                            if (error != null)
+                              Semantics(
+                                  liveRegion: true,
+                                  child: Text(error!,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .error))),
+                          ]))),
+                  actions: [
+                    TextButton(
+                        onPressed: () async {
+                          await Clipboard.setData(
+                              ClipboardData(text: controller.text));
+                        },
+                        child: const Text('Copiar JSON')),
+                    TextButton(
+                        key: const Key('scenario-cancel'),
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Cancelar')),
+                    FilledButton(
+                        key: const Key('scenario-apply'),
+                        onPressed: () {
+                          try {
+                            Navigator.pop(context,
+                                LabConfiguration.parse(controller.text));
+                          } on FormatException catch (e) {
+                            update(() => error = e.message);
+                          }
+                        },
+                        child: const Text('Validar e aplicar')),
+                  ],
+                )));
+    final next = await Navigator.of(context).push(route);
+    await route.completed;
+    controller.dispose();
+    if (next != null && mounted) {
+      setState(() {
+        configuration = next;
+        weights = next.sliderWeights;
+        sweepId = next.sweepId;
+        methodName = next.methodName;
+        ahpStatus = null;
+        revision++;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -150,12 +200,14 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
             ]);
           }),
           const SizedBox(height: 16),
-          panel('03', 'Sensibilidade dos pesos', sensitivityBody(report)),
+          panel('03', 'Dados e comparação', comparisonBody(total)),
           const SizedBox(height: 16),
-          panel('04', 'Memória de cálculo', traceBody(baseline)),
+          panel('04', 'Sensibilidade dos pesos', sensitivityBody(report)),
+          const SizedBox(height: 16),
+          panel('05', 'Memória de cálculo', traceBody(baseline)),
           const SizedBox(height: 16),
           const Text(
-              'Dados sintéticos • Custo em R\$, latência em ms e disponibilidade em %. Nova é excluída por disponibilidade abaixo de 99,9%.',
+              'Cenário local • Resultados são relativos às alternativas elegíveis. Edite e copie o cenário para reproduzir os cálculos.',
               style: TextStyle(color: Color(0xFF94A5BA), height: 1.5)),
           const SizedBox(height: 16),
         ]),
@@ -189,7 +241,9 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
   Widget controlsBody(double total) =>
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         DropdownButtonFormField<String>(
-            key: const Key('method-selector'),
+            key: revision == 0
+                ? const Key('method-selector')
+                : ValueKey('method-selector-$revision'),
             isExpanded: true,
             initialValue: methodName,
             decoration: const InputDecoration(
@@ -209,7 +263,13 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
                 child: Text(
                     '${labels[id]} • ${total == 0 ? 0 : (weights[id]! / total * 100).round()}%',
                     style: const TextStyle(fontWeight: FontWeight.w600))),
-            Text(id == 'availability' ? 'maximizar' : 'minimizar',
+            Text(
+                configuration.criteria
+                            .firstWhere((c) => c.id == id)
+                            .direction ==
+                        CriterionDirection.maximize
+                    ? 'maximizar'
+                    : 'minimizar',
                 style: const TextStyle(color: Color(0xFF94A5BA), fontSize: 12))
           ]),
           Slider(
@@ -218,6 +278,8 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
               min: 0,
               max: 1,
               divisions: 100,
+              semanticFormatterCallback: (v) =>
+                  '${labels[id]}: ${(v * 100).round()} de 100',
               label: 'Peso relativo ${weights[id]!.toStringAsFixed(2)}',
               onChanged: (value) => setState(() {
                     weights[id] = value;
@@ -230,21 +292,25 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
         Wrap(spacing: 10, runSpacing: 8, children: [
           OutlinedButton.icon(
               key: const Key('apply-ahp'),
-              onPressed: applyAhp,
+              onPressed: labels.keys
+                          .toSet()
+                          .containsAll(['cost', 'latency', 'availability']) &&
+                      labels.length == 3
+                  ? applyAhp
+                  : null,
               icon: const Icon(Icons.account_tree_outlined, size: 18),
               label: const Text('Usar pesos AHP')),
           TextButton(
               key: const Key('weights-reset'),
               onPressed: () => setState(() {
-                    weights = {
-                      'cost': 0.35,
-                      'latency': 0.25,
-                      'availability': 0.4
-                    };
+                    weights = configuration.sliderWeights;
                     ahpStatus = null;
                   }),
               child: const Text('Restaurar')),
         ]),
+        const Text(
+            'AHP demonstrativo: disponibilidade/custo/latência; matriz [1,2,6; ½,1,3; ⅙,⅓,1]. Apenas estes três IDs. CR indica consistência, não validade das preferências.',
+            style: TextStyle(color: Color(0xFF94A5BA), height: 1.4)),
         if (ahpStatus != null)
           Padding(
               padding: const EdgeInsets.only(top: 10),
@@ -268,7 +334,7 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
               style: TextStyle(
                   color: Color(0xFF94A5BA), fontSize: 11, letterSpacing: 2)),
           const SizedBox(height: 8),
-          Text(winners,
+          Text(winners.isEmpty ? 'Sem vencedor' : winners,
               style: const TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.w700,
@@ -293,8 +359,12 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
                   LinearProgressIndicator(
                       value: entry.score.clamp(0.0, 1.0), minHeight: 5),
                 ])),
-          const Text('Nova excluída: disponibilidade 99,50% < 99,90%.',
-              style: TextStyle(color: Color(0xFFFFC770), fontSize: 12)),
+          if (result.ranking.isEmpty)
+            const Text(
+                'Nenhuma alternativa elegível. Revise os limites no cenário.'),
+          for (final excluded in result.excluded)
+            Text('${excluded.alternative.name}: ${excluded.reasons.join('; ')}',
+                style: const TextStyle(color: Color(0xFFFFC770), fontSize: 12)),
           const SizedBox(height: 12),
           Text(
               methodName == 'weighted_sum'
@@ -306,7 +376,9 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
 
   Widget sensitivityBody(SensitivityReport? report) {
     final selector = DropdownButtonFormField<String>(
-        key: const Key('criterion-selector'),
+        key: revision == 0
+            ? const Key('criterion-selector')
+            : ValueKey('criterion-selector-$revision'),
         isExpanded: true,
         initialValue: sweepId,
         decoration: const InputDecoration(
@@ -364,6 +436,16 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
               Text(report.baseline.eligible[i].name),
             ])
         ]),
+        ExpansionTile(title: const Text('Amostras em texto'), children: [
+          for (final scenario in report.scenarios)
+            ListTile(
+                title: Text(
+                    '${percent(scenario.result)}: ${scenario.winners.join(' + ')}'),
+                subtitle: Text(scenario.result.ranking
+                    .map((r) =>
+                        '${r.alternative.name}: ${r.score.toStringAsFixed(4)}')
+                    .join(' • '))),
+        ]),
         const SizedBox(height: 18),
         if (report.transitions.isEmpty)
           const Text(
@@ -382,6 +464,61 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
       ],
     ]);
   }
+
+  Widget comparisonBody(double total) =>
+      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Wrap(spacing: 12, runSpacing: 8, children: [
+          FilledButton.icon(
+              key: const Key('scenario-edit'),
+              onPressed: editScenario,
+              icon: const Icon(Icons.edit_note),
+              label: const Text('Editar / copiar cenário')),
+          TextButton(
+              key: const Key('scenario-reset'),
+              onPressed: () => setState(() {
+                    configuration = LabConfiguration.sample();
+                    weights = configuration.sliderWeights;
+                    sweepId = 'cost';
+                    methodName = 'weighted_sum';
+                    ahpStatus = null;
+                    revision++;
+                  }),
+              child: const Text('Reiniciar laboratório')),
+        ]),
+        const SizedBox(height: 12),
+        const Text(
+            'Valores originais • as restrições são aplicadas antes da normalização.'),
+        SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: DataTable(
+              columns: [
+                const DataColumn(label: Text('Alternativa')),
+                for (final id in labels.keys)
+                  DataColumn(label: Text(labels[id]!))
+              ],
+              rows: [
+                for (final a in providers)
+                  DataRow(cells: [
+                    DataCell(Text(a.name)),
+                    for (final id in labels.keys)
+                      DataCell(Text('${a.values[id]}'))
+                  ])
+              ],
+            )),
+        Text(configuration.bounds.isEmpty
+            ? 'Sem restrições.'
+            : 'Limites inclusivos: ${configuration.bounds}'),
+        const SizedBox(height: 12),
+        if (total > 0)
+          for (final method in [const WeightedSum(), const Topsis()])
+            Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(
+                    '${method.name}: ${configuration.engine(method, weights).evaluate(providers).ranking.map((r) => '${r.rank}. ${r.alternative.name} (${r.score.toStringAsFixed(4)})').join(' • ')}')),
+        const Text(
+            'Compare a ordem, não as notas entre métodos. Soma ponderada: utilidade min–max × peso, somada por linha. TOPSIS: normalização vetorial × peso; nota = distância ao anti-ideal / soma das duas distâncias.',
+            style: TextStyle(color: Color(0xFF94A5BA), height: 1.4)),
+      ]);
 
   String percent(DecisionResult result) {
     final index = result.criteria.indexWhere((c) => c.id == sweepId);
@@ -404,17 +541,22 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
             columns: [
               const DataColumn(label: Text('Alternativa')),
               for (final c in value.criteria)
-                DataColumn(label: Text(labels[c.id]!))
+                DataColumn(
+                    label: Text('${labels[c.id]}: normalizado → ponderado'))
             ],
             rows: [
               for (var i = 0; i < value.eligible.length; i++)
                 DataRow(cells: [
                   DataCell(Text(value.eligible[i].name)),
-                  for (final number in value.trace!.weighted[i])
-                    DataCell(Text(number.toStringAsFixed(4))),
+                  for (var j = 0; j < value.criteria.length; j++)
+                    DataCell(Text(
+                        '${value.trace!.normalized[i][j].toStringAsFixed(4)} → ${value.trace!.weighted[i][j].toStringAsFixed(4)}')),
                 ])
             ],
           )),
+      for (final diagnostic in value.trace!.diagnostics.entries)
+        Text(
+            '${diagnostic.key}: ${diagnostic.value.map((v) => v.toStringAsFixed(6)).join(', ')} (ordem das linhas)'),
       const SizedBox(height: 10),
       Text(
           methodName == 'weighted_sum'

@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Add validated, reproducible Flutter lab scenarios with editable alternatives,
+  criteria, directions and inclusive constraints; cancel/restart controls.
+- Show simultaneous weighted-sum/TOPSIS rankings, normalized/weighted matrices,
+  distance diagnostics and accessible textual sensitivity samples.
+- Add bilingual scenario guides and a test-gated GitHub Pages deployment.
+- PT: cenários reproduzíveis e editáveis, comparação dos métodos, amostras
+  acessíveis e publicação do laboratório após validações.
+
 ## 0.3.0
 
 - Add pure Dart weight sensitivity with complete scenarios, proportion-preserving

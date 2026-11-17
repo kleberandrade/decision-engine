@@ -11,25 +11,27 @@ O núcleo não tem dependências de execução, imports de Flutter, IO ou acesso
 
 ## Estado e instalação
 
-A versão estável **0.2.0 está publicada**, vinculada ao publisher verificado
-[kleberandrade.dev](https://pub.dev/publishers/kleberandrade.dev), com **160/160 pontos**.
-Este código prepara a **0.3.0**, com sensibilidade amostrada e laboratório
-Flutter separado. O núcleo permanece em Dart puro, compatível com Dart >=3.3.0.
-
-Para a release 0.3.0 (confira a disponibilidade hospedada antes de instalar):
+A versão estável **0.3.0** está publicada sob o publisher verificado
+[kleberandrade.dev](https://pub.dev/publishers/kleberandrade.dev), com **160/160 pontos**
+(verificado em 17/11/2026). Inclui AHP e sensibilidade amostrada. O laboratório
+Flutter separado consome o código deste checkout. O núcleo permanece em Dart
+puro, compatível com Dart >=3.3.0 <4.0.0.
 
 ```yaml
 dependencies:
   decision_engine: ^0.3.0
 ```
 
-Execute `dart pub add decision_engine` ou `flutter pub add decision_engine` para
-selecionar a versão hospedada compatível mais recente. O AHP requer **0.2.0 ou
-superior** e não existe na API da 0.1.0. Antes da publicação, use uma dependência
-Git fixada em um commit revisado da `main`. A [release v0.2.0](https://github.com/kleberandrade/decision-engine/releases/tag/v0.2.0)
-está validada. A sensibilidade exige **0.3.0 ou superior** e não está na 0.2.0 hospedada.
-Confira a [lista de versões](https://pub.dev/packages/decision_engine/versions)
-para verificar a publicação; alterar a versão do código não publica o pacote.
+Execute `dart pub add decision_engine` ou `flutter pub add decision_engine`.
+AHP requer **0.2.0 ou superior**; sensibilidade exige **0.3.0 ou superior**.
+Confira a [lista de versões](https://pub.dev/packages/decision_engine/versions).
+Alterações em Unreleased não são publicadas automaticamente no pub.dev.
+
+[Laboratório online](https://kleberandrade.github.io/decision-engine/) ·
+[Guia de cenários e limites](example/flutter_lab/SCENARIOS.pt-BR.md)
+
+Edite alternativas, critérios, pesos e restrições inclusivas, compare métodos e
+inspecione cálculos. Copie o JSON para reproduzir o cenário.
 
 ## Como funciona
 

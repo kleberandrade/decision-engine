@@ -13,18 +13,18 @@ No runtime dependencies, Flutter imports, IO or network access in the core.
 
 [Português](README.pt-BR.md) · [Getting started](doc/getting_started.md) ·
 [Methods and equations](doc/methods.md) · [Architecture](doc/architecture.md) ·
-[Sensitivity](doc/sensitivity.md) · [Flutter lab](example/flutter_lab/README.md) ·
+[Online lab](https://kleberandrade.github.io/decision-engine/) ·
+[Scenario guide](example/flutter_lab/SCENARIOS.md) · [Sensitivity](doc/sensitivity.md) · [Flutter lab](example/flutter_lab/README.md) ·
 [AHP weighting](doc/ahp.md) · [Custom strategies](doc/extending.md) · [Roadmap](doc/roadmap.md) ·
 [Contributing](CONTRIBUTING.md)
 
 ## Status and installation
 
-The stable **0.2.0** is published under verified publisher
+The stable **0.3.0** is published under verified publisher
 [kleberandrade.dev](https://pub.dev/publishers/kleberandrade.dev) with **160/160 pub
-points**. This source prepares **0.3.0**, adding sampled weight sensitivity
-and an optional Flutter laboratory. Core Dart support remains >=3.3.0 <4.0.0.
-
-For the 0.3.0 release (check hosted availability before installation):
+points** (verified 2026-11-17). It includes AHP and sampled weight sensitivity.
+The optional Flutter laboratory consumes this checkout's source. Core Dart
+support remains >=3.3.0 <4.0.0.
 
 ```yaml
 dependencies:
@@ -33,12 +33,18 @@ dependencies:
 
 Run `dart pub add decision_engine` or `flutter pub add decision_engine` to select
 the latest available compatible hosted version. AHP requires **0.2.0 or newer**;
-the published 0.1.0 API does not include it. To use this source before hosted
-publication, use a Git dependency pinned to a reviewed commit on `main`.
-The [v0.2.0 source release](https://github.com/kleberandrade/decision-engine/releases/tag/v0.2.0)
-is CI-validated. Sensitivity requires **0.3.0 or newer** and is not included in hosted 0.2.0.
-Check the [hosted version list](https://pub.dev/packages/decision_engine/versions)
-for publication status; the source version alone does not publish the package.
+sensitivity requires **0.3.0 or newer**. Check the
+[hosted version list](https://pub.dev/packages/decision_engine/versions).
+Source changes under Unreleased are not automatically published to pub.dev.
+
+## Explore the laboratory
+
+Edit alternatives, criteria, weights and inclusive constraints; compare weighted
+sum with TOPSIS and inspect calculation traces. Save/copy JSON to reproduce a
+scenario. The [bilingual scenario guide](example/flutter_lab/SCENARIOS.md) explains
+calculations, sensitivity, the fixed AHP demonstration and limits.
+
+![Running Flutter lab: weights, ranking, raw data and method comparison](doc/evidence/desktop.png)
 
 ## Choose a provider
 

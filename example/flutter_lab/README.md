@@ -18,14 +18,20 @@ To validate/build:
 ```sh
 flutter analyze --fatal-infos
 flutter test
-flutter build web --no-web-resources-cdn
+flutter build web --no-web-resources-cdn --base-href /decision-engine/
 ```
 
 The core remains compatible with Dart >=3.3.0; the UI example has its own Flutter
 SDK requirement. It consumes the root source package through a local path.
 
+[Scenario guide and limitations](SCENARIOS.md) · [Guia em português](SCENARIOS.pt-BR.md)
+
 ## Explore
 
+- Edit/copy complete JSON scenarios: alternatives, criteria, directions, weights,
+  bounds and selected method; validate atomically, cancel or restart.
+- Compare both method rankings simultaneously; inspect normalized/weighted values
+  and TOPSIS distance diagnostics.
 - Change relative criterion weights and compare weighted sum with TOPSIS.
 - Apply an independently consistent AHP matrix to seed weights (CI/CR shown).
 - Sweep a selected normalized weight through 21 points from 0 to 1.

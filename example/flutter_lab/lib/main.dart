@@ -215,27 +215,33 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
     )));
   }
 
-  Widget panel(String number, String title, Widget body) => Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(22),
-        decoration: BoxDecoration(
-            color: const Color(0xFF111E2D),
+  Widget panel(String number, String title, Widget body) => Material(
+        color: const Color(0xFF111E2D),
+        shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: const Color(0xFF26374A))),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(children: [
-            Text(number,
-                style: const TextStyle(
-                    color: Color(0xFF5DE4C7), fontWeight: FontWeight.bold)),
-            const SizedBox(width: 10),
-            Expanded(
-                child: Text(title,
+            side: const BorderSide(color: Color(0xFF26374A))),
+        clipBehavior: Clip.antiAlias,
+        child: Padding(
+          padding: const EdgeInsets.all(22),
+          child: SizedBox(
+            width: double.infinity,
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(children: [
+                Text(number,
                     style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.w600)))
-          ]),
-          const SizedBox(height: 20),
-          body,
-        ]),
+                        color: Color(0xFF5DE4C7), fontWeight: FontWeight.bold)),
+                const SizedBox(width: 10),
+                Expanded(
+                    child: Text(title,
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600)))
+              ]),
+              const SizedBox(height: 20),
+              body,
+            ]),
+          ),
+        ),
       );
 
   Widget controlsBody(double total) =>

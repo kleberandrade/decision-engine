@@ -151,3 +151,9 @@
   validation/publication outcomes are recorded in doc/lab_validation.md.
 - The specialized crapper/dryer/mutator tools are unavailable in this session;
   scenario boundary and public behavior tests were used for concrete validation.
+
+- CI run 44168753596 passed Dart minimum/stable and consumer checks but exposed
+  Flutter 3.50's assertion that the new ExpansionTile ink was obscured by the
+  panel's DecoratedBox. Existing widget tests failed before the fix. Replaced
+  the panel decoration with a shaped Material surface, preserving appearance
+  while giving controls a visible ink ancestor; revalidated locally before push.

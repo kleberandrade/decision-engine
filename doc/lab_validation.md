@@ -51,6 +51,12 @@ GitHub metadata initially had eight relevant topics and no homepage or Pages
 site. Pages was configured to build via Actions; the workflow deploys only on
 `main`, after both Dart SDK jobs, Flutter consumer and Flutter lab pass. It uses
 the explicit `/decision-engine/` base path and GitHub's deployment environment.
+The first remote run,
+[44168753596](https://github.com/kleberandrade/decision-engine/actions/runs/44168753596),
+passed both Dart jobs and the consumer. Flutter **3.50.0** exposed the lab's
+obscured ListTile ink via a framework assertion. The already-failing widget suite
+was retained; panels now paint on shaped Material surfaces and the textual
+sample expansion is also exercised. Local tests/build passed again after the fix.
 Final run and deployment evidence is appended after remote verification.
 
 The pub.dev API independently reported hosted **0.3.0**, publisher

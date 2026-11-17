@@ -7,6 +7,8 @@
 - Show simultaneous weighted-sum/TOPSIS rankings, normalized/weighted matrices,
   distance diagnostics and accessible textual sensitivity samples.
 - Add bilingual scenario guides and a test-gated GitHub Pages deployment.
+- Paint lab panels with Material so interaction ink remains visible on Flutter
+  3.50, as required by the framework assertion.
 - PT: cenários reproduzíveis e editáveis, comparação dos métodos, amostras
   acessíveis e publicação do laboratório após validações.
 

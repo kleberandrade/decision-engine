@@ -15,6 +15,11 @@ void main() {
     expect(find.byKey(const Key('score-chart')), findsOneWidget);
     expect(find.text('3 elegíveis • 1 excluída'), findsOneWidget);
     expect(find.textContaining('21 cenários'), findsOneWidget);
+    await tester.ensureVisible(find.text('Amostras em texto'));
+    await tester.tap(find.text('Amostras em texto'));
+    await tester.pumpAndSettle();
+    expect(find.text('0%: Vega'), findsOneWidget);
+    expect(find.text('100%: Orion'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 

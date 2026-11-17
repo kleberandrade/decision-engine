@@ -61,7 +61,7 @@ Future<void> main() async {
 
   DropdownButtonFormField<String> dropdown(String id) => widgets()
       .whereType<DropdownButtonFormField<String>>()
-      .firstWhere((w) => w.key == Key(id));
+      .firstWhere((w) => w.key.toString().contains(id));
   try {
     runApp(RepaintBoundary(key: key, child: const DecisionLabApp()));
     await binding.endOfFrame;
@@ -82,6 +82,24 @@ Future<void> main() async {
         .whereType<OutlinedButton>()
         .firstWhere((w) => w.key == const Key('apply-ahp'))
         .onPressed!();
+    await frame();
+    await Future<void>.delayed(const Duration(milliseconds: 400));
+    await frame();
+    await capture('ahp-desktop');
+    await viewport(390, 844);
+    await capture('ahp-narrow');
+    await viewport(1280, 1600);
+    widgets()
+        .whereType<OutlinedButton>()
+        .firstWhere((w) => w.key == const Key('ahp-demo'))
+        .onPressed!();
+    await frame();
+    await capture('ahp-consistent');
+    widgets()
+        .whereType<FilledButton>()
+        .firstWhere((w) => w.key == const Key('ahp-apply'))
+        .onPressed!();
+    await Future<void>.delayed(const Duration(milliseconds: 400));
     await frame();
     check(hasText('Disponibilidade • 60%'), 'AHP weights missing');
     check(
@@ -147,9 +165,30 @@ Future<void> main() async {
         .onPressed!();
     await Future<void>.delayed(const Duration(milliseconds: 400));
     await frame();
+    await viewport(1280, 1600);
+    dropdown('language-selector').onChanged!('en');
+    await frame();
+    check(hasText('Current ranking'), 'English controls missing');
+    await capture('lab-en-desktop');
+    widgets()
+        .whereType<TextButton>()
+        .firstWhere((w) => w.key == const Key('nav-1'))
+        .onPressed!();
+    await frame();
+    check(hasText('Learn explainable decisions'), 'English Learn missing');
+    await capture('learn-en-desktop');
+    widgets()
+        .whereType<TextButton>()
+        .firstWhere((w) => w.key == const Key('nav-0'))
+        .onPressed!();
+    await frame();
+    await viewport(390, 844);
+    await capture('lab-en-mobile');
+    dropdown('language-selector').onChanged!('pt');
+    await frame();
     check(errors.isEmpty, 'Framework/layout errors: ${errors.length}');
     stdout.writeln(
-        'Native smoke passed: ranking, method, AHP, sweep, reset, zero weights, narrow layout, visual editor sections; ${output.path}');
+        'Native smoke passed: ranking, method, AHP, sweep, reset, zero weights, narrow layout, visual editor sections, AHP matrix, bilingual navbar and Learn; ${output.path}');
     exit(0);
   } catch (error, stack) {
     stderr.writeln('$error\n$stack');

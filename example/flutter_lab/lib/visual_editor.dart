@@ -1,7 +1,8 @@
 import 'dart:convert';
 // Keep the lab's Flutter >=3.35 import path; 3.50 deprecates this re-export.
 // ignore: deprecated_member_use
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import 'localization.dart';
 import 'configuration.dart';
 
 /// Isolated form draft; the same JSON boundary validates both editors.
@@ -85,6 +86,13 @@ class _VisualScenarioEditorState extends State<VisualScenarioEditor> {
       final sweep = criteria.any((c) => c.id == widget.configuration.sweepId)
           ? widget.configuration.sweepId
           : criteria.first.id;
+      final draftWeights = {for (final c in criteria) c.id: number(c.weight)};
+      final ahp = widget.configuration.ahpResult;
+      final retainAhp = ahp != null &&
+          criteria.length == widget.configuration.criteria.length &&
+          criteria
+              .every((c) => widget.configuration.labels.containsKey(c.id)) &&
+          widget.configuration.matchesAhp(draftWeights);
       final result = LabConfiguration.parse(jsonEncode({
         'method': widget.configuration.methodName,
         'sweep': sweep,
@@ -93,7 +101,7 @@ class _VisualScenarioEditorState extends State<VisualScenarioEditor> {
             {
               'id': c.id,
               'label': c.label.trim(),
-              'weight': number(c.weight),
+              'weight': draftWeights[c.id],
               'direction': c.direction
             }
         ],
@@ -104,6 +112,11 @@ class _VisualScenarioEditorState extends State<VisualScenarioEditor> {
               'values': a.values.map((id, v) => MapEntry(id, number(v)))
             }
         ],
+        if (retainAhp)
+          'ahp': {
+            'criterionIds': ahp.criterionIds,
+            'comparisons': ahp.comparisons
+          },
         'constraints': [
           for (final b in bounds)
             {
@@ -124,7 +137,8 @@ class _VisualScenarioEditorState extends State<VisualScenarioEditor> {
         do {
           id = 'criterion${nextCriterion++}';
         } while (criteria.any((c) => c.id == id));
-        criteria.add(_CriterionDraft(id, 'Novo critério', '1', 'maximize'));
+        criteria.add(
+            _CriterionDraft(id, tr(context, 'Novo critério'), '1', 'maximize'));
         for (final a in alternatives) {
           a.values[id] = '0';
         }
@@ -155,13 +169,14 @@ class _VisualScenarioEditorState extends State<VisualScenarioEditor> {
                     decimal: true, signed: true)
                 : TextInputType.text,
             decoration: InputDecoration(
-                labelText: label, border: const OutlineInputBorder()),
+                labelText: tr(context, label),
+                border: const OutlineInputBorder()),
             validator: (text) {
               final v = text?.trim() ?? '';
               if (optional && v.isEmpty) return null;
               if (!numeric) {
                 return v.isEmpty || v.length > 80
-                    ? 'Use de 1 a 80 caracteres.'
+                    ? tr(context, 'Use de 1 a 80 caracteres.')
                     : null;
               }
               final n = double.tryParse(v.replaceAll(',', '.'));
@@ -170,15 +185,15 @@ class _VisualScenarioEditorState extends State<VisualScenarioEditor> {
                       n.abs() > 1e12 ||
                       (nonnegative && n < 0)
                   ? nonnegative
-                      ? 'Use um número finito entre 0 e 1e12.'
-                      : 'Use um número finito entre −1e12 e 1e12.'
+                      ? tr(context, 'Use um número finito entre 0 e 1e12.')
+                      : tr(context, 'Use um número finito entre −1e12 e 1e12.')
                   : null;
             },
           ));
 
   Widget remove(String key, String label, VoidCallback? action) => IconButton(
       key: ValueKey(key),
-      tooltip: label,
+      tooltip: tr(context, label),
       onPressed: action,
       icon: const Icon(Icons.delete_outline));
 
@@ -259,7 +274,8 @@ class _VisualScenarioEditorState extends State<VisualScenarioEditor> {
                                                     alternatives.add(
                                                         _AlternativeDraft(
                                                             index,
-                                                            'Alternativa ${index + 1}',
+                                                            tr(context,
+                                                                'Alternativa ${index + 1}'),
                                                             {
                                                           for (final c
                                                               in criteria)
@@ -324,8 +340,9 @@ class _VisualScenarioEditorState extends State<VisualScenarioEditor> {
                 key: ValueKey('direction-${c.id}'),
                 initialValue: c.direction,
                 isExpanded: true,
-                decoration: const InputDecoration(
-                    labelText: 'Preferência', border: OutlineInputBorder()),
+                decoration: InputDecoration(
+                    labelText: tr(context, 'Preferência'),
+                    border: OutlineInputBorder()),
                 items: const [
                   DropdownMenuItem(
                       value: 'minimize', child: Text('Menor é melhor')),
@@ -372,8 +389,9 @@ class _VisualScenarioEditorState extends State<VisualScenarioEditor> {
                 key: ValueKey('bound-criterion-${b.key}'),
                 initialValue: b.criterion,
                 isExpanded: true,
-                decoration: const InputDecoration(
-                    labelText: 'Critério', border: OutlineInputBorder()),
+                decoration: InputDecoration(
+                    labelText: tr(context, 'Critério'),
+                    border: OutlineInputBorder()),
                 items: [
                   for (final c in criteria)
                     DropdownMenuItem(

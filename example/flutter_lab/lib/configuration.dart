@@ -4,9 +4,17 @@ import 'package:decision_engine/decision_engine.dart';
 
 /// Lab-only, bounded JSON boundary. Ranking remains in the pure Dart package.
 class LabConfiguration {
-  LabConfiguration._(this.criteria, this.labels, this.alternatives,
-      this.constraints, this.bounds, this.methodName, this.sweepId);
+  LabConfiguration._(
+      this.criteria,
+      this.labels,
+      this.alternatives,
+      this.constraints,
+      this.bounds,
+      this.methodName,
+      this.sweepId,
+      this.ahpResult);
 
+  final AhpResult? ahpResult;
   final String methodName;
   final String sweepId;
   final List<Criterion> criteria;
@@ -32,7 +40,7 @@ class LabConfiguration {
 
   factory LabConfiguration.parse(String source) {
     if (source.length > 100000) {
-      throw const FormatException('JSON exceeds 100 KB / JSON excede 100 KB.');
+      throw const FormatException('JSON exceeds 100,000 characters.');
     }
     try {
       final data = jsonDecode(source) as Map<String, dynamic>;
@@ -103,6 +111,28 @@ class LabConfiguration {
         throw const FormatException(
             'Unknown ranking method or sweep criterion.');
       }
+      AhpResult? ahp;
+      if (data['ahp'] != null) {
+        final evidence = data['ahp'] as Map<String, dynamic>;
+        final ahpIds = (evidence['criterionIds'] as List).cast<String>();
+        if (ahpIds.length != criteria.length ||
+            !ahpIds.toSet().containsAll(labels.keys)) {
+          throw const FormatException(
+              'AHP IDs must match the scenario criteria.');
+        }
+        ahp = AhpWeighting().evaluate(
+            criterionIds: ahpIds,
+            comparisons: (evidence['comparisons'] as List)
+                .map((row) => (row as List).cast<num>())
+                .toList());
+        final total = criteria.fold(0.0, (sum, c) => sum + c.weight);
+        if (!ahp.isConsistent ||
+            criteria.any(
+                (c) => (c.weight / total - ahp!.weights[c.id]!).abs() > 1e-8)) {
+          throw const FormatException(
+              'AHP must be consistent and match normalized scenario weights.');
+        }
+      }
       final result = LabConfiguration._(
           List.unmodifiable(criteria),
           Map.unmodifiable(labels),
@@ -110,7 +140,8 @@ class LabConfiguration {
           List.unmodifiable(constraints),
           List.unmodifiable(bounds),
           methodName as String,
-          sweepId as String);
+          sweepId as String,
+          ahp);
       // Validate both available methods before any state is replaced.
       for (final method in [const WeightedSum(), const Topsis()]) {
         result.engine(method).evaluate(alternatives);
@@ -160,7 +191,32 @@ class LabConfiguration {
           for (final a in alternatives) {'name': a.name, 'values': a.values}
         ],
         'constraints': bounds,
+        if (matchesAhp(weights))
+          'ahp': {
+            'criterionIds': ahpResult!.criterionIds,
+            'comparisons': ahpResult!.comparisons
+          },
       });
+
+  bool matchesAhp(Map<String, double>? weights) {
+    if (ahpResult == null) return false;
+    final values = {for (final c in criteria) c.id: weights?[c.id] ?? c.weight};
+    final total = values.values.fold(0.0, (sum, w) => sum + w);
+    return total > 0 &&
+        criteria.every((c) =>
+            (values[c.id]! / total - ahpResult!.weights[c.id]!).abs() <= 1e-8);
+  }
+
+  LabConfiguration withAhp(AhpResult result) {
+    // toCriteria enforces the core's consistency gate and exact ID/direction match.
+    result.toCriteria({for (final c in criteria) c.id: c.direction});
+    final data = jsonDecode(encode(result.weights)) as Map<String, dynamic>;
+    data['ahp'] = {
+      'criterionIds': result.criterionIds,
+      'comparisons': result.comparisons
+    };
+    return LabConfiguration.parse(jsonEncode(data));
+  }
 
   static String _text(dynamic value) {
     if (value is! String || value.trim().isEmpty || value.length > 80) {

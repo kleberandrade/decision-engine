@@ -1,5 +1,6 @@
 // ignore: deprecated_member_use
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import 'localization.dart';
 import 'package:decision_engine/decision_engine.dart';
 
 const seriesColors = [Color(0xFF5DE4C7), Color(0xFF8CA9FF), Color(0xFFFFC770)];
@@ -12,8 +13,8 @@ class ScoreChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Semantics(
-        label:
-            'Gráfico de notas por peso amostrado. Consulte os intervalos de mudança abaixo.',
+        label: tr(context,
+            'Gráfico de notas por peso amostrado. Consulte os intervalos de mudança abaixo.'),
         child: SizedBox(
             height: 260,
             width: double.infinity,

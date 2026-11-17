@@ -43,9 +43,39 @@ Pesos representam compensações; limites representam elegibilidade obrigatória
 A varredura avalia 21 amostras, preservando a proporção dos demais pesos. Requer
 peso positivo em outro critério. Os intervalos não são fronteiras exatas e a
 estabilidade não é probabilidade. **Amostras em texto** oferece os resultados sem
-depender do gráfico. AHP demonstra uma matriz fixa e consistente somente para
-os três IDs originais, com pesos 0,6/0,3/0,1 e CR=0; não inclui editor arbitrário
-de comparações. Consistência não prova validade das preferências.
+depender do gráfico.
+
+## Editor da matriz AHP
+
+Abra **Editor AHP** para comparar a importância dos critérios atuais (1–10).
+Edite acima da diagonal com números ou frações entre 1/9 e 9, como `3`, `0,5`
+ou `1/3`. O inverso é automático e a diagonal vale 1. A comparação considera a
+importância da linha em relação à coluna; não muda a direção minimizar/maximizar.
+Uma nova matriz começa com comparações iguais. A tabela tem rolagem horizontal,
+e CR e ações permanecem fixos. Acima de dez critérios, use pesos manuais.
+
+Os pesos vêm do autovetor principal calculado pelo núcleo. A interface mostra
+pesos, λ, CI e RI. CI=(λ−n)/(n−1); CR=CI/RI. Para um ou dois critérios, CI e CR
+são zero por convenção. A aplicação exige **CR bruto ≤0,10**; o valor detalhado
+acompanha o indicador arredondado. Entradas inválidas apagam resultados calculados
+e bloqueiam a aplicação. Uma matriz inconsistente pode ser inspecionada, mas não
+aplicada. Consistência não prova validade das preferências; não se trata de uma
+hierarquia AHP completa nem de comparações entre alternativas.
+
+**Aplicar pesos** recalcula o cenário preservando alternativas, direções,
+restrições, método e varredura. **Cancelar** descarta o rascunho. **Comparações
+iguais** repõe todos os valores em 1. No cenário original, **Carregar exemplo**
+preenche os pesos 0,3/0,1/0,6 na ordem custo/latência/disponibilidade. As células
+editáveis são 3, 1/2 e 1/6. Experimente 9, 1/9 e 9 para observar inconsistência.
+
+O JSON mantém a matriz aplicada em `ahp.criterionIds` e `ahp.comparisons`.
+A importação recalcula tudo e exige pesos normalizados correspondentes, com
+tolerância de 1e-8. Cenários antigos continuam válidos. O editor reabre a matriz
+aplicada enquanto os pesos corresponderem a ela. Mudanças manuais nos pesos
+removem evidência desatualizada da exportação. Alterar nomes, valores ou limites
+pelo editor visual conserva a evidência quando IDs e pesos permanecem iguais.
+**Restaurar** volta aos pesos de referência anteriores ao AHP; reiniciar restaura
+o cenário completo original.
 
 Limites da UI: 1–12 critérios, 1–30 alternativas, 100.000 caracteres JSON e
 magnitude numérica até 1e12. Pesos maiores que um são reescalados sem alterar
@@ -71,6 +101,7 @@ Flutter e fontes conservam suas licenças nos avisos do aplicativo compilado.
 4. **Inspecionar transição amostrada.** Varra custo com os pesos originais. Conclua
    identificando o intervalo 35–40%, conferindo as amostras textuais e explicando
    por que ele não representa uma fronteira exata.
-5. **Explicar AHP e recuperar estado.** Aplique o exemplo, confira CR=0 e pesos
-   60/30/10 e reinicie. Conclua quando disponibilidade/custo/latência retornarem
-   a 40/35/25 e Vega vencer novamente na soma ponderada.
+5. **Editar e conferir AHP.** Na ordem original, informe 3, 1/2 e 1/6, confira
+   CR≈0 e aplique os pesos 30/10/60. Exporte/reimporte o JSON e depois tente
+   9, 1/9 e 9. Conclua quando a evidência consistente for reproduzida e a matriz
+   cíclica bloquear a aplicação sem alterar o cenário.

@@ -36,7 +36,9 @@ SDK requirement. It consumes the root source package through a local path.
 - Compare both method rankings simultaneously; inspect normalized/weighted values
   and TOPSIS distance diagnostics.
 - Change relative criterion weights and compare weighted sum with TOPSIS.
-- Apply an independently consistent AHP matrix to seed weights (CI/CR shown).
+- Edit a reciprocal AHP matrix for the current 1–10 criteria; inspect CR, CI, RI
+  and weights, then apply only consistent results. Applied judgments round-trip
+  through JSON alongside the scenario.
 - Sweep a selected normalized weight through 21 points from 0 to 1.
 - Inspect the full winning set, sampled stability, transition brackets and score
   curves. Connected lines interpolate samples for display, not exact boundaries.
@@ -77,3 +79,29 @@ layout checks with the Ahem font used by widget tests. Dropdowns expand within
 their available width so wide test/accessibility text does not overflow.
 
 ![Visual scenario editor with labeled criterion, weight and alternative fields](../../doc/evidence/visual-editor-desktop.png)
+
+![Real AHP editor with reciprocal comparisons and a fixed consistency indicator](../../doc/evidence/ahp-consistent.png)
+
+## Navigation, languages and learning
+
+The responsive navbar has Laboratory, Learn, Examples and Documentation/GitHub.
+Its original mark joins three criterion inputs into an ascending decision. The
+same code-native geometry is used by the compact mark and SVG favicon, under MIT.
+
+Choose English or PT-BR without resetting the current decision, method, weights,
+constraints or applied AHP evidence. Controls, feedback, help and learning content
+are translated; scenario data and IDs are not rewritten. Browser localStorage
+persists the language preference when allowed. Reloading does not persist an
+unsaved experiment: use JSON for that. Native previews retain language in-session;
+link actions copy URLs when browser navigation is unavailable.
+
+Learn embeds the implemented weighted-sum, TOPSIS, AHP and sampled-sensitivity
+fundamentals and equations from the repository documentation, with interpreted
+provider calculations, references, four executable examples and exactly five
+practical exercises. Example selection intentionally replaces the current
+scenario; export JSON first. Documentation links follow the selected language.
+The core remains dependency-free; the optional UI adds Flutter's own
+`flutter_localizations` SDK package and its SDK-pinned `intl` dependency.
+
+![Real running English laboratory and original navigation](../../doc/evidence/lab-en-desktop.png)
+![Integrated English learning material](../../doc/evidence/learn-en-desktop.png)

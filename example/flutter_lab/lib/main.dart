@@ -1,9 +1,15 @@
 // ignore: deprecated_member_use
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Text;
+import 'localization.dart';
 import 'package:decision_engine/decision_engine.dart';
 import 'score_chart.dart';
 import 'configuration.dart';
 import 'visual_editor.dart';
+import 'ahp_editor.dart';
+import 'lab_frame.dart';
+import 'brand.dart';
+import 'dart:convert';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/services.dart';
 
 void main() => runApp(const DecisionLabApp());
@@ -11,16 +17,23 @@ void main() => runApp(const DecisionLabApp());
 class DecisionLabApp extends StatelessWidget {
   const DecisionLabApp({super.key});
   @override
-  Widget build(BuildContext context) => MaterialApp(
-        title: 'Decision Engine Lab',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            brightness: Brightness.dark,
-            useMaterial3: true,
-            colorSchemeSeed: const Color(0xFF5DE4C7),
-            scaffoldBackgroundColor: const Color(0xFF09121E)),
-        home: const DecisionDashboard(),
-      );
+  Widget build(BuildContext context) => LabLanguage(
+      child: Builder(
+          builder: (context) => MaterialApp(
+                title: 'Decision Engine Lab',
+                locale: LabLanguage.current(context) == 'en'
+                    ? const Locale('en')
+                    : const Locale('pt', 'BR'),
+                supportedLocales: const [Locale('en'), Locale('pt', 'BR')],
+                localizationsDelegates: GlobalMaterialLocalizations.delegates,
+                debugShowCheckedModeBanner: false,
+                theme: ThemeData(
+                    brightness: Brightness.dark,
+                    useMaterial3: true,
+                    colorSchemeSeed: const Color(0xFF5DE4C7),
+                    scaffoldBackgroundColor: const Color(0xFF09121E)),
+                home: const DecisionDashboard(),
+              )));
 }
 
 class DecisionDashboard extends StatefulWidget {
@@ -34,37 +47,50 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
   Map<String, String> get labels => configuration.labels;
   List<Alternative> get providers => configuration.alternatives;
   late Map<String, double> weights = configuration.sliderWeights;
+  late Map<String, double> resetWeights;
+
+  @override
+  void initState() {
+    super.initState();
+    resetWeights = configuration.sliderWeights;
+  }
+
   int revision = 0;
   String methodName = 'weighted_sum';
   String sweepId = 'cost';
   String? ahpStatus;
 
-  void applyAhp() {
-    final ahp = AhpWeighting().evaluate(
-      criterionIds: ['availability', 'cost', 'latency'],
-      comparisons: [
-        [1, 2, 6],
-        [1 / 2, 1, 3],
-        [1 / 6, 1 / 3, 1]
-      ],
-    );
-    setState(() {
-      weights = Map.of(ahp.weights);
-      ahpStatus =
-          'Pesos AHP aplicados • CR ${ahp.consistencyRatio.toStringAsFixed(4)}';
-    });
+  Future<void> applyAhp() async {
+    final result = await showDialog<AhpResult>(
+        context: context,
+        builder: (_) => AhpMatrixEditor(
+            criteria: configuration.criteria,
+            labels: labels,
+            initialResult: configuration.matchesAhp(weights)
+                ? configuration.ahpResult
+                : null));
+    if (result != null && mounted) {
+      final current = LabConfiguration.parse(
+          configuration.encode(null, methodName, sweepId));
+      applyConfiguration(current.withAhp(result), keepResetWeights: true);
+    }
   }
 
   DecisionEngine makeEngine() => configuration.engine(
       methodName == 'weighted_sum' ? const WeightedSum() : const Topsis(),
       weights);
 
-  void applyConfiguration(LabConfiguration next) => setState(() {
+  void applyConfiguration(LabConfiguration next,
+          {bool keepResetWeights = false}) =>
+      setState(() {
+        if (!keepResetWeights) resetWeights = next.sliderWeights;
         configuration = next;
         weights = next.sliderWeights;
         sweepId = next.sweepId;
         methodName = next.methodName;
-        ahpStatus = null;
+        ahpStatus = next.ahpResult == null
+            ? null
+            : 'Pesos AHP aplicados • CR ${next.ahpResult!.consistencyRatio.toStringAsFixed(4)}';
         revision++;
       });
 
@@ -101,8 +127,8 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
                                 key: const Key('scenario-json'),
                                 controller: controller,
                                 maxLines: 16,
-                                decoration: const InputDecoration(
-                                    labelText: 'Cenário JSON',
+                                decoration: InputDecoration(
+                                    labelText: tr(context, 'Cenário JSON'),
                                     border: OutlineInputBorder())),
                             if (error != null)
                               Semantics(
@@ -143,6 +169,32 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
     if (next != null && mounted) applyConfiguration(next);
   }
 
+  void loadPreset(String id) {
+    final data =
+        jsonDecode(LabConfiguration.sample().encode()) as Map<String, dynamic>;
+    if (id == 'budget') {
+      (data['constraints'] as List).add({'criterion': 'cost', 'maximum': 1200});
+    }
+    if (id == 'availability') {
+      data['constraints'] = [
+        {'criterion': 'availability', 'minimum': 100}
+      ];
+    }
+    var next = LabConfiguration.parse(jsonEncode(data));
+    if (id == 'ahp') {
+      next = next.withAhp(AhpWeighting().evaluate(criterionIds: [
+        'cost',
+        'latency',
+        'availability'
+      ], comparisons: [
+        [1, 3, 1 / 2],
+        [1 / 3, 1, 1 / 6],
+        [2, 6, 1]
+      ]));
+    }
+    applyConfiguration(next);
+  }
+
   @override
   Widget build(BuildContext context) {
     final total = weights.values.fold(0.0, (a, b) => a + b);
@@ -155,75 +207,85 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
           criterionId: sweepId, weights: List.generate(21, (i) => i / 20));
     }
     return Scaffold(
-        body: SafeArea(
-            child: SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
-      child: Center(
-          child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 1180),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: 12,
-              runSpacing: 12,
-              children: [
-                Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                        color: const Color(0xFF163B3C),
-                        borderRadius: BorderRadius.circular(16)),
-                    child: const Icon(Icons.explore_outlined,
-                        color: Color(0xFF5DE4C7), size: 30)),
-                const Column(
+        body: LabFrame(
+            onPreset: loadPreset,
+            laboratory: SafeArea(
+                child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Center(
+                  child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1180),
+                child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('DECISION ENGINE',
+                      Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          spacing: 12,
+                          runSpacing: 12,
+                          children: [
+                            const DecisionMark(size: 54),
+                            const Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('DECISION ENGINE',
+                                      style: TextStyle(
+                                          color: Color(0xFF5DE4C7),
+                                          fontSize: 11,
+                                          letterSpacing: 3)),
+                                  Text('Laboratório de decisões',
+                                      style: TextStyle(
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.w700)),
+                                ]),
+                            const Chip(
+                                avatar:
+                                    Icon(Icons.offline_bolt_outlined, size: 16),
+                                label: Text('Local • Dart puro')),
+                          ]),
+                      const SizedBox(height: 12),
+                      const Text(
+                          'Explore como os pesos mudam uma escolha. Compare métodos, inspecione os cálculos e teste a estabilidade do ranking.',
                           style: TextStyle(
-                              color: Color(0xFF5DE4C7),
-                              fontSize: 11,
-                              letterSpacing: 3)),
-                      Text('Laboratório de decisões',
-                          style: TextStyle(
-                              fontSize: 28, fontWeight: FontWeight.w700)),
+                              color: Color(0xFFA9B8CB),
+                              fontSize: 15,
+                              height: 1.5)),
+                      const SizedBox(height: 24),
+                      LayoutBuilder(builder: (context, bounds) {
+                        final controls = panel(
+                            '01', 'Critérios e método', controlsBody(total));
+                        final ranking =
+                            panel('02', 'Ranking atual', rankingBody(baseline));
+                        if (bounds.maxWidth < 760) {
+                          return Column(children: [
+                            controls,
+                            const SizedBox(height: 16),
+                            ranking
+                          ]);
+                        }
+                        return Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(child: controls),
+                              const SizedBox(width: 16),
+                              Expanded(child: ranking),
+                            ]);
+                      }),
+                      const SizedBox(height: 16),
+                      panel('03', 'Dados e comparação', comparisonBody(total)),
+                      const SizedBox(height: 16),
+                      panel('04', 'Sensibilidade dos pesos',
+                          sensitivityBody(report)),
+                      const SizedBox(height: 16),
+                      panel('05', 'Memória de cálculo', traceBody(baseline)),
+                      const SizedBox(height: 16),
+                      const Text(
+                          'Cenário local • Resultados são relativos às alternativas elegíveis. Edite e copie o cenário para reproduzir os cálculos.',
+                          style:
+                              TextStyle(color: Color(0xFF94A5BA), height: 1.5)),
+                      const SizedBox(height: 16),
                     ]),
-                const Chip(
-                    avatar: Icon(Icons.offline_bolt_outlined, size: 16),
-                    label: Text('Local • Dart puro')),
-              ]),
-          const SizedBox(height: 12),
-          const Text(
-              'Explore como os pesos mudam uma escolha. Compare métodos, inspecione os cálculos e teste a estabilidade do ranking.',
-              style: TextStyle(
-                  color: Color(0xFFA9B8CB), fontSize: 15, height: 1.5)),
-          const SizedBox(height: 24),
-          LayoutBuilder(builder: (context, bounds) {
-            final controls =
-                panel('01', 'Critérios e método', controlsBody(total));
-            final ranking = panel('02', 'Ranking atual', rankingBody(baseline));
-            if (bounds.maxWidth < 760) {
-              return Column(
-                  children: [controls, const SizedBox(height: 16), ranking]);
-            }
-            return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Expanded(child: controls),
-              const SizedBox(width: 16),
-              Expanded(child: ranking),
-            ]);
-          }),
-          const SizedBox(height: 16),
-          panel('03', 'Dados e comparação', comparisonBody(total)),
-          const SizedBox(height: 16),
-          panel('04', 'Sensibilidade dos pesos', sensitivityBody(report)),
-          const SizedBox(height: 16),
-          panel('05', 'Memória de cálculo', traceBody(baseline)),
-          const SizedBox(height: 16),
-          const Text(
-              'Cenário local • Resultados são relativos às alternativas elegíveis. Edite e copie o cenário para reproduzir os cálculos.',
-              style: TextStyle(color: Color(0xFF94A5BA), height: 1.5)),
-          const SizedBox(height: 16),
-        ]),
-      )),
-    )));
+              )),
+            ))));
   }
 
   Widget panel(String number, String title, Widget body) => Material(
@@ -263,8 +325,9 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
                 : ValueKey('method-selector-$revision'),
             isExpanded: true,
             initialValue: methodName,
-            decoration: const InputDecoration(
-                labelText: 'Método de ranking', border: OutlineInputBorder()),
+            decoration: InputDecoration(
+                labelText: tr(context, 'Método de ranking'),
+                border: OutlineInputBorder()),
             items: const [
               DropdownMenuItem(
                   value: 'weighted_sum',
@@ -296,8 +359,9 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
               max: 1,
               divisions: 100,
               semanticFormatterCallback: (v) =>
-                  '${labels[id]}: ${(v * 100).round()} de 100',
-              label: 'Peso relativo ${weights[id]!.toStringAsFixed(2)}',
+                  tr(context, '${labels[id]}: ${(v * 100).round()} de 100'),
+              label: tr(
+                  context, 'Peso relativo ${weights[id]!.toStringAsFixed(2)}'),
               onChanged: (value) => setState(() {
                     weights[id] = value;
                     ahpStatus = null;
@@ -309,24 +373,19 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
         Wrap(spacing: 10, runSpacing: 8, children: [
           OutlinedButton.icon(
               key: const Key('apply-ahp'),
-              onPressed: labels.keys
-                          .toSet()
-                          .containsAll(['cost', 'latency', 'availability']) &&
-                      labels.length == 3
-                  ? applyAhp
-                  : null,
+              onPressed: configuration.criteria.length <= 10 ? applyAhp : null,
               icon: const Icon(Icons.account_tree_outlined, size: 18),
-              label: const Text('Usar pesos AHP')),
+              label: const Text('Editor AHP')),
           TextButton(
               key: const Key('weights-reset'),
               onPressed: () => setState(() {
-                    weights = configuration.sliderWeights;
+                    weights = Map.of(resetWeights);
                     ahpStatus = null;
                   }),
               child: const Text('Restaurar')),
         ]),
         const Text(
-            'AHP demonstrativo: disponibilidade/custo/latência; matriz [1,2,6; ½,1,3; ⅙,⅓,1]. Apenas estes três IDs. CR indica consistência, não validade das preferências.',
+            'AHP: edite comparações recíprocas para 1–10 critérios, confira a razão de consistência e aplique pesos com CR ≤ 0,10. Com mais de 10 critérios, use pesos manuais. Consistência não prova validade das preferências.',
             style: TextStyle(color: Color(0xFF94A5BA), height: 1.4)),
         if (ahpStatus != null)
           Padding(
@@ -358,7 +417,7 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
                   color: Color(0xFF5DE4C7))),
           const SizedBox(height: 8),
           Text(
-              '${result.eligible.length} elegíveis • ${result.excluded.length} excluída'),
+              '${result.eligible.length} ${result.eligible.length == 1 ? 'elegível' : 'elegíveis'} • ${result.excluded.length} ${result.excluded.length == 1 ? 'excluída' : 'excluídas'}'),
           const SizedBox(height: 18),
           for (final entry in result.ranking)
             Padding(
@@ -380,7 +439,14 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
             const Text(
                 'Nenhuma alternativa elegível. Revise os limites no cenário.'),
           for (final excluded in result.excluded)
-            Text('${excluded.alternative.name}: ${excluded.reasons.join('; ')}',
+            Text(
+                '${excluded.alternative.name}: ${excluded.reasons.map((reason) {
+                  for (final c in configuration.criteria) {
+                    reason =
+                        reason.replaceFirst('${c.id}:', '${labels[c.id]}:');
+                  }
+                  return reason;
+                }).join('; ')}',
                 style: const TextStyle(color: Color(0xFFFFC770), fontSize: 12)),
           const SizedBox(height: 12),
           Text(
@@ -398,8 +464,9 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
             : ValueKey('criterion-selector-$revision'),
         isExpanded: true,
         initialValue: sweepId,
-        decoration: const InputDecoration(
-            labelText: 'Critério da varredura', border: OutlineInputBorder()),
+        decoration: InputDecoration(
+            labelText: tr(context, 'Critério da varredura'),
+            border: OutlineInputBorder()),
         items: labels.entries
             .map((e) => DropdownMenuItem(
                 value: e.key,
@@ -499,6 +566,7 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
               key: const Key('scenario-reset'),
               onPressed: () => setState(() {
                     configuration = LabConfiguration.sample();
+                    resetWeights = configuration.sliderWeights;
                     weights = configuration.sliderWeights;
                     sweepId = 'cost';
                     methodName = 'weighted_sum';
@@ -529,7 +597,7 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
             )),
         Text(configuration.bounds.isEmpty
             ? 'Sem restrições.'
-            : 'Limites inclusivos: ${configuration.bounds}'),
+            : 'Limites inclusivos: ${configuration.bounds.map((b) => "${labels[b['criterion']]} ${b.containsKey('minimum') ? '≥ ${b['minimum']}' : ''} ${b.containsKey('maximum') ? '≤ ${b['maximum']}' : ''}").join('; ')}'),
         const SizedBox(height: 12),
         if (total > 0)
           for (final method in [const WeightedSum(), const Topsis()])

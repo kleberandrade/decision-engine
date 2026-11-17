@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+- Add responsive Laboratory/Learn/Examples navigation, original vector branding
+  and favicon, EN/PT-BR UI/help/feedback/education and browser language preference.
+  Preserve active decisions across language/navigation changes.
+- Embed implemented method formulas, interpreted examples, repository references,
+  four runnable presets and five practical exercises in the learning area.
+- PT: navbar, marca própria, idioma persistente, aprendizado integrado e exemplos
+  executáveis, preservando o experimento durante a troca de idioma.
+
+- Add a reciprocal AHP matrix editor for 1–10 scenario criteria, with fractions,
+  automatic inverse cells, live CR/CI/RI and weight previews, consistency-gated
+  apply and cancel. Keep the consistency indicator visible on narrow screens.
+- Preserve applied AHP matrices in scenario JSON; validate consistency and weight
+  correspondence on import, and omit stale evidence after manual weight changes.
+- PT: editor da matriz AHP, razão de consistência e aplicação dos pesos ao cenário;
+  evidência reproduzível no JSON, sem alterar o núcleo Dart.
+
 - Add a visual scenario editor for criterion labels/directions/weights,
   alternative names/values and inclusive bounds, with add/remove, atomic apply,
   cancel and dependent-row cleanup. Keep JSON import/export alongside it.

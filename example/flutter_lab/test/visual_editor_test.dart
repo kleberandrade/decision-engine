@@ -123,7 +123,7 @@ void main() {
     await enter(tester, 'bound-min-0', '');
     await enter(tester, 'bound-max-0', '99,9');
     await tap(tester, 'visual-apply');
-    expect(find.text('2 elegíveis • 2 excluída'), findsOneWidget);
+    expect(find.text('2 elegíveis • 2 excluídas'), findsOneWidget);
     await tap(tester, 'scenario-edit');
     final text = tester
         .widget<TextField>(find.byKey(const Key('scenario-json')))

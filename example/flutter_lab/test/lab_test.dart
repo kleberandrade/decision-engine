@@ -43,6 +43,10 @@ void main() {
         'topsis');
     await tester.tap(find.byKey(const Key('apply-ahp')));
     await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('ahp-demo')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('ahp-apply')));
+    await tester.pumpAndSettle();
     expect(find.text('Disponibilidade • 60%'), findsOneWidget);
     expect(find.text('Pesos AHP aplicados • CR 0.0000'), findsOneWidget);
     await tester.tap(find.byKey(const Key('weights-reset')));
@@ -99,7 +103,7 @@ void main() {
     await tester.enterText(find.byKey(const Key('scenario-json')), '{}');
     await tester.tap(find.byKey(const Key('scenario-apply')));
     await tester.pumpAndSettle();
-    expect(find.textContaining('Invalid scenario'), findsOneWidget);
+    expect(find.textContaining('Cenário inválido'), findsOneWidget);
     await tester.tap(find.byKey(const Key('scenario-cancel')));
     await tester.pumpAndSettle();
     expect(find.text('3 elegíveis • 1 excluída'), findsOneWidget);

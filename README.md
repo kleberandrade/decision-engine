@@ -39,10 +39,16 @@ Source changes under Unreleased are not automatically published to pub.dev.
 
 ## Explore the laboratory
 
+Use the responsive navbar to open Laboratory, Learn and runnable Examples.
+Switch English/PT-BR without losing the active decision; browser language
+preference persists when storage is available. Learn embeds the implemented
+formulas, interpreted calculations, limits and five practical exercises.
+
+
 Use labeled visual forms to edit alternatives, criteria, weights and inclusive constraints; compare weighted
 sum with TOPSIS and inspect calculation traces. Import/export JSON to reproduce a
 scenario. The [bilingual scenario guide](example/flutter_lab/SCENARIOS.md) explains
-calculations, sensitivity, the fixed AHP demonstration and limits.
+calculations, sensitivity, editable AHP comparisons, consistency checks and limits.
 
 ![Running Flutter lab: weights, ranking, raw data and method comparison](doc/evidence/desktop.png)
 

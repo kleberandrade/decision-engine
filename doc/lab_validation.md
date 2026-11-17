@@ -1,5 +1,57 @@
 # Decision lab validation — 2026-11-17
 
+## Navigation and bilingual education update
+
+Added a responsive navbar, original code-native three-input mark/compact variant
+and SVG favicon; English/PT-BR controls, feedback, help and educational content;
+Flutter's own localization delegates; and browser localStorage language preference
+with a safe blocked-storage fallback. Scenario data/IDs are not rewritten. The
+existing dashboard remains mounted while visiting Learn/Examples and changing
+language. Examples intentionally replace the scenario, with a visible notice.
+
+Learn uses the repository's getting-started, methods, AHP and sensitivity guides.
+It includes actual equations and interpretations, independent provider scores,
+limits, four runnable scenarios, valid language-aware references, attribution and
+exactly five objective/completion-criterion exercises. No roadmap capability is
+presented as implemented, and no GitHub iframe substitutes for the learning area.
+
+Widget checks cover AHP-state preservation during language/section changes,
+mobile menu and keyboard focus, all four preset results, translated AHP controls
+and documentation/GitHub target URLs. Native evidence includes
+[English desktop](evidence/lab-en-desktop.png),
+[English mobile](evidence/lab-en-mobile.png),
+[Learn](evidence/learn-en-desktop.png). Final local validation: **52 core + 3 consumer + 28 lab tests**, strict analysis,
+formatting, all documented Dart examples/JavaScript execution, production Web
+build and native smoke. The new UI uses SDK-pinned Flutter localization packages;
+no runtime dependency was added to the pure Dart core.
+
+Manual Chrome verification used the production build at the Pages base path:
+English controls/feedback, editing AHP ratios 3, 1/2, 1/6 (CR=0 and 30/10/60),
+applying weights, preserving them in a 390×844 viewport, opening Learn through
+the mobile menu, and Tab/Enter navigation on desktop. English remained selected
+after reload, and the rendered HTML language attribute was `en`. Viewport override
+was reset after inspection. Documentation targets for English methods and PT-BR
+getting-started returned HTTP 200. Public deployment is verified below.
+
+## AHP matrix update
+
+Added a reciprocal editor for current criterion IDs (1–10), with fractional
+judgments, inverse cells, a fixed CR indicator, CI/RI/lambda and normalized weights.
+Invalid/nonconvergent input clears output; CR >0.10 blocks application. No override
+is offered. Cancel preserves the scenario; apply changes weights while preserving
+method, directions, alternatives, constraints and sweep. JSON retains and validates
+the applied matrix, while stale weight evidence is omitted.
+
+Local verification: **52 core + 3 consumer + 24 lab tests**, strict analysis,
+CLI/JavaScript examples, Web release build and native smoke. Tests cover 1, 2, 3,
+4 and 10 criteria, the 11-criterion manual-weight fallback, independent 30/10/60
+weights, cyclic inconsistency, fractions/NaN/out-of-range input, cancel, JSON
+round-trip and stale evidence, mobile accessibility and the fixed CR indicator.
+Real native captures: [matrix](evidence/ahp-consistent.png),
+[narrow](evidence/ahp-narrow.png). Numerical algorithms still reside in the pure
+Dart core. New navigation and educational content were requested during this
+update and are documented in their subsequent validation entry.
+
 ## Visual editor update
 
 The lab now offers a dedicated visual dialog for criterion labels, preference

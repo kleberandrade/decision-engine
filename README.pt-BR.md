@@ -33,6 +33,14 @@ Alterações em Unreleased não são publicadas automaticamente no pub.dev.
 Use o editor visual para alternativas, critérios, pesos e restrições inclusivas, compare métodos e
 inspecione cálculos. Copie o JSON para reproduzir o cenário.
 
+## Navegação e aprendizado
+
+A navbar responsiva reúne Laboratório, Aprender, Exemplos e Documentação/GitHub,
+com marca original e seletor EN/PT-BR. A troca preserva o cenário e a preferência
+é salva no navegador quando possível. A área Aprender explica os algoritmos
+implementados, fórmulas, exemplos e cinco exercícios. O Editor AHP permite editar
+a matriz, conferir a razão de consistência e aplicar pesos com CR ≤0,10.
+
 ## Como funciona
 
 1. Defina critérios e a direção: minimizar custo, maximizar disponibilidade.

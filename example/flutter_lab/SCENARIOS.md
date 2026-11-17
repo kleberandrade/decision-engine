@@ -79,11 +79,41 @@ screen-reader-friendly alternative to the chart. Another criterion needs positiv
 weight for a sweep. The matrix shows normalized and weighted values in eligible
 input order, separate from ranking order.
 
-The AHP button demonstrates the existing core's principal-eigenvector weighting
-for `availability`, `cost`, `latency` only, using [1,2,6; 1/2,1,3; 1/6,1/3,1].
-It yields 0.6, 0.3, 0.1 and CR=0. It is disabled for other criterion sets. This
-lab does not offer an arbitrary pairwise-matrix editor; see the core AHP API for
-that capability. Consistency does not establish the validity of preferences.
+### Edit AHP judgments
+
+Open **Editor AHP** for the current ordered criteria (1–10). New comparisons
+start equal, not inferred from existing weights. Edit cells above the diagonal
+with a number or fraction between 1/9 and 9 (for example `3`, `0.5` or `1/3`).
+The inverse below the diagonal updates automatically; diagonal values stay 1.
+Ratios describe importance of the row relative to the column, independently of
+whether observed values are minimized or maximized. Tables scroll horizontally
+on narrow screens. The CR indicator and apply/cancel actions remain fixed.
+
+The existing core computes the principal eigenvector and normalized weights.
+The editor displays weights, lambda, CI and RI, with CI=(lambda−n)/(n−1) and
+CR=CI/RI. For 1 or 2 criteria both CI/CR are zero by convention. Acceptance uses
+**raw CR <=0.10**, not the four-decimal headline; the detailed value is shown.
+Invalid, out-of-range or nonconvergent inputs clear calculated output and block
+application. Inconsistent matrices remain inspectable but cannot be applied.
+There is no consistency override in this lab. Consistency does not establish the
+validity of preferences. This is criterion weighting, not a full AHP hierarchy.
+
+**Aplicar pesos** replaces only criterion weights and recomputes the existing
+ranking, preserving directions, alternatives, constraints, method and sweep.
+Cancel discards the draft. With more than ten criteria AHP is disabled and manual
+weights remain available. **Comparações iguais** resets the draft to ones. For
+the original three IDs, **Carregar exemplo** seeds consistent ratios with
+availability/cost/latency weights 0.6/0.3/0.1; the matrix follows current row order.
+For the initial cost/latency/availability order its editable cells are 3, 1/2,
+1/6. A cyclic 9, 1/9, 9 produces a large CR and blocks application.
+
+The optional JSON `ahp` object stores `criterionIds` and `comparisons`. Import
+recalculates and requires consistency and a match to normalized criterion weights
+within 1e-8. Old scenarios without `ahp` still work. Reopening the editor restores
+the applied matrix while its weights still match. Manual weight changes drop
+stale evidence from export; visual edits retain evidence only if criterion IDs
+and normalized weights are unchanged. **Restaurar** returns to the scenario's
+pre-AHP reset weights; a complete restart restores the original providers.
 
 ## Execution and accessibility
 
@@ -115,6 +145,7 @@ retain their respective licenses in the generated license notices.
 4. **Inspect a sampled transition.** Sweep cost with the original weights. Complete
    when you identify the 35–40% bracket and verify both adjacent textual samples,
    explicitly distinguishing the bracket from an exact crossing.
-5. **Explain AHP and recover state.** Apply the demonstration, inspect CR=0 and
-   60/30/10 percentages, then restart. Complete when weights return to 40/35/25
-   (availability/cost/latency) and Vega wins the weighted sum again.
+5. **Edit and verify AHP.** In the original criterion order enter 3, 1/2 and
+   1/6, verify CR≈0 and apply 30/10/60 weights. Export/reimport the JSON, then
+   try 9, 1/9 and 9. Complete when consistent evidence round-trips and the cyclic
+   matrix blocks application without changing the scenario.

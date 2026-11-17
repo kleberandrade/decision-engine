@@ -192,3 +192,42 @@
   Pages. Opened the public URL and visually inspected the published editor, with
   JSON still available alongside it. Package dry-run passed with zero warnings.
   Recorded exact source/run/public links in doc/lab_validation.md.
+
+## Editable AHP matrix — 2026-11-17
+
+- Wrote missing-editor/JSON evidence tests first, observed their expected failure,
+  and composed the existing AhpWeighting core in a separate Flutter dialog.
+- Added reciprocal upper-triangle editing, fractions, default equal comparisons,
+  a sample preset, CR/CI/RI/eigenvalue and weights, consistency-gated application
+  and cancel. Kept raw CR acceptance separate from rounded display.
+- Added optional validated AHP evidence to scenario JSON, checking IDs, consistency
+  and normalized-weight correspondence; omitted stale evidence after manual edits.
+- An existing reset test exposed lazy initialization of reset weights after AHP
+  replacement; eagerly captured reset weights in initState. A new mobile test
+  exposed a clipped CR indicator; moved CR to the fixed action area.
+- Validated 52 core, 3 consumer and 24 lab tests, strict analysis, all CLI/JS examples,
+  Web build and native AHP desktop/narrow captures. Core runtime APIs and SDK remain
+  unchanged. Bilingual navigation/Learn requested during this work follows next.
+
+## Bilingual navigation and integrated learning — 2026-11-17
+
+- Incorporated the explicitly requested navbar, original three-input decision mark,
+  compact variant/favicon, EN/PT-BR selection and integrated Learn/Examples pages.
+- Kept all engine calculations in the core. Rendered authored UI/help/feedback in
+  the selected language without rewriting scenario data; language preference uses
+  browser localStorage with a safe fallback, and experiment state remains in the
+  existing dashboard while navigating sections or changing languages.
+- Educational content follows methods/AHP/sensitivity/getting-started sources:
+  actual formulas, independent provider calculations, four runnable presets,
+  explicit numerical/feature limits, links/credits and exactly five exercises.
+- Added widget tests for state preservation with AHP, mobile navigation, keyboard,
+  runnable examples and documentation/GitHub targets. Validation is recorded below.
+
+- Final combined validation passed 52 core, 3 consumer and 28 lab tests, strict
+  analysis, formatting, Web build and native bilingual/AHP captures. Added Flutter's
+  own UI localization SDK package; core manifests/runtime dependencies unchanged.
+- Manually exercised the Web build in Chrome: reciprocal AHP ratios, CR=0, applied
+  30/10/60 weights, English controls/feedback, 390px navbar and Learn, keyboard
+  navigation, and language persistence after reload (`html lang=en`). Restored
+  browser viewport. Verified English/PT reference links, reviewed diff and scanned
+  added sources for credential patterns; none found. Remote main matched baseline.

@@ -47,3 +47,12 @@ All 40 tests passed. Strict analysis and Dart/JavaScript AHP examples passed.
 The first AHP tests failed because the public API did not exist, before the
 implementation was added. No pub.dev name availability or publisher ownership
 claim was verified. No publication was attempted after a blocked dry-run.
+
+## Release handoff scripts
+
+Bash syntax checks and read-only local preconditions passed. A disposable-local-
+remote integration exercise verified successful atomic synchronization with
+source/history preservation, dirty-worktree rejection and unexpected-remote-
+commit rejection. Only fixture bindings were substituted in the script copy.
+The actual GitHub push and full release-verifier execution remain blocked by
+this session's network/socket restrictions.

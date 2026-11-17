@@ -67,3 +67,9 @@
 - Added an initial-release verifier and bilingual execution instructions. Neither
   script publishes or creates tags. Validated Bash syntax and read-only local
   preconditions; live network synchronization remains unexecuted.
+- Exercised the synchronization script against disposable local bare remotes,
+  substituting only fixture paths and the expected initial SHA. Verified that
+  both exact source trees survive, the remote scaffold remains an ancestor,
+  both refs are pushed atomically, dirty worktrees stop without changing HEAD,
+  and unexpected remote commits stop before merge/rebase. All three scenarios
+  passed. This local simulation does not constitute a push to GitHub.

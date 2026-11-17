@@ -44,8 +44,16 @@ the existing lab's import-scoped compatibility bridge. The declared Flutter
 separate minimum-SDK/package migration. Type checking and all other strict
 analysis checks remain enabled.
 
-The existing test-gated Actions workflow publishes this update to the same Pages
-URL. Exact remote validation/publication results are recorded by that workflow.
+Corrected source
+[5144160](https://github.com/kleberandrade/decision-engine/commit/5144160)
+passed all five jobs in
+[run 44172690594](https://github.com/kleberandrade/decision-engine/actions/runs/44172690594),
+including stable Flutter 3.50 lab tests/build and Pages deployment. The updated
+[public laboratory](https://kleberandrade.github.io/decision-engine/) was opened
+in Chrome: the **Editor visual** and **Importar / exportar JSON** actions were
+both present, and the published visual dialog was opened and visually inspected.
+The final package dry-run completed with **zero warnings**; no pub.dev upload,
+version tag or source release was performed.
 
 ## Scope
 

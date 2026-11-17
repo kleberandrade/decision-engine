@@ -187,3 +187,8 @@
   import-scoped deprecation bridge used by the existing lab files to retain its
   declared Flutter >=3.35 minimum, without suppressing type checks or changing
   the core. The bridge and local/remote SDK versions are documented.
+
+- Source 5144160 passed every job in run 44172690594, including Flutter 3.50 and
+  Pages. Opened the public URL and visually inspected the published editor, with
+  JSON still available alongside it. Package dry-run passed with zero warnings.
+  Recorded exact source/run/public links in doc/lab_validation.md.

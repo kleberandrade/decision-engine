@@ -57,3 +57,13 @@
   passed on Dart and as JavaScript executed by Node.
 - Extended CI and contribution checks for AHP; remote CI remains pending because
   the complete source has not been pushed. No release or publication is claimed.
+
+## Guarded release handoff
+
+- Retried direct GitHub access; the session still cannot resolve github.com.
+- Added a one-time Git synchronization script that checks clean worktrees, local
+  ancestry and the exact known remote scaffold commit before any merge/rebase.
+  It preserves source, retains remote history and uses an atomic non-force push.
+- Added an initial-release verifier and bilingual execution instructions. Neither
+  script publishes or creates tags. Validated Bash syntax and read-only local
+  preconditions; live network synchronization remains unexecuted.

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add guarded first-source synchronization and initial-release validation scripts.
+
 - Add AHP principal-eigenvector criterion weighting, reciprocal-matrix validation,
   consistency diagnostics and explicit conversion for both ranking methods.
 - Start 0.2.0-dev.1 development on feat/ahp; retain the 0.1.0 baseline on local main.

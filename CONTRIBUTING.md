@@ -44,3 +44,7 @@ verification. Do not commit tokens or create tags to test publishing automation.
 
 Contributions use the MIT license. Desired repository topics are recorded in
 `.github/topics.json`; that file alone does not update GitHub metadata.
+
+For the pending initial source synchronization and release validation, see
+[complete the first release](doc/complete_release.md). The one-time Git script
+checks the exact expected remote commit before reconciling histories.

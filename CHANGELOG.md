@@ -8,6 +8,8 @@
   consistency diagnostics and explicit conversion for both ranking methods.
 - Start 0.2.0-dev.1 development on feat/ahp; retain the 0.1.0 baseline on local main.
 
+- Update installation and release verification documentation for published 0.1.0.
+
 ## 0.1.0
 
 

@@ -10,21 +10,19 @@ O núcleo não tem dependências de execução, imports de Flutter, IO ou acesso
 
 ## Estado e instalação
 
-Branch de desenvolvimento **0.2.0-dev.1**, com pesos de critérios via AHP.
-A `main` local preserva a base 0.1.0 para a preparação da primeira publicação. A existência do repositório não significa
-publicação no pub.dev. Enquanto não houver versão hospedada, use:
+A versão **0.1.0 está publicada no [pub.dev](https://pub.dev/packages/decision_engine)**,
+vinculada ao publisher verificado [kleberandrade.dev](https://pub.dev/publishers/kleberandrade.dev),
+com **160 pontos** na análise. Requer Dart >=3.3.0 <4.0.0 e pode ser usada no Flutter.
 
 ```yaml
 dependencies:
-  decision_engine:
-    git:
-      url: https://github.com/kleberandrade/decision-engine.git
-      ref: feat/ahp
+  decision_engine: ^0.1.0
 ```
 
-A dependência Git depende do envio da branch; a sincronização está pendente.
-Para builds reproduzíveis, fixe `ref` em um commit revisado. Requer Dart
->=3.3.0 <4.0.0 e pode ser utilizado no Flutter.
+Execute `dart pub add decision_engine` ou `flutter pub add decision_engine`.
+A [release v0.1.0](https://github.com/kleberandrade/decision-engine/releases/tag/v0.1.0)
+aponta para o commit `fcc0a86`, aprovado na CI. O AHP está na branch `feat/ahp`,
+previsto para a 0.2.0; não faz parte da API publicada na 0.1.0.
 
 ## Como funciona
 
@@ -88,3 +86,11 @@ para pesos, validação de reciprocidade e índice/razão de consistência.
 
 Execute `dart test`, `dart analyze --fatal-infos` e os exemplos em `example/`.
 Consulte os comandos completos em [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Testar o AHP em desenvolvimento
+
+Esta branch contém **0.2.0-dev.1**. O AHP ainda não está na versão hospedada 0.1.0.
+Para experimentar, use uma dependência Git com
+`url: https://github.com/kleberandrade/decision-engine.git` e `ref: feat/ahp`.
+Fixe um commit revisado para reproduzir os resultados. O guia de AHP e o exemplo
+`example/ahp.dart` descrevem somente esta versão em desenvolvimento.

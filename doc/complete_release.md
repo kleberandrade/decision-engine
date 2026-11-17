@@ -1,5 +1,10 @@
 # Complete the first release
 
+Status: 0.1.0 is published, its publisher transfer is verified, and v0.1.0 is
+released on GitHub. The one-time source synchronization has already completed.
+Do not rerun it or republish 0.1.0; the procedure below is historical. Repository
+documentation updates still need a normal Git push from a network-enabled terminal.
+
 Run these scripts in a terminal with normal network and local socket access:
 
 ```sh

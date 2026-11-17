@@ -1,5 +1,8 @@
 # decision_engine
 
+[![pub package](https://img.shields.io/pub/v/decision_engine.svg)](https://pub.dev/packages/decision_engine)
+[![pub points](https://img.shields.io/pub/points/decision_engine)](https://pub.dev/packages/decision_engine/score)
+
 [![Dart CI](https://github.com/kleberandrade/decision-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/kleberandrade/decision-engine/actions/workflows/ci.yml)
 [![Dart SDK](https://img.shields.io/badge/Dart-%3E%3D3.3.0-blue?logo=dart)](https://dart.dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -15,21 +18,19 @@ No runtime dependencies, Flutter imports, IO or network access in the core.
 
 ## Status and installation
 
-**0.2.0-dev.1 development branch**, with AHP criterion weighting. The local
-`main` branch preserves the 0.1.0 baseline for first-release preparation. This repository does not imply publication
-on pub.dev. Until a hosted release is available, use the Git source:
+Version **0.1.0** is published on [pub.dev](https://pub.dev/packages/decision_engine)
+by verified publisher [kleberandrade.dev](https://pub.dev/publishers/kleberandrade.dev).
+Its pub.dev analysis reached **160 points**. Dart >=3.3.0 <4.0.0 is required.
 
 ```yaml
 dependencies:
-  decision_engine:
-    git:
-      url: https://github.com/kleberandrade/decision-engine.git
-      ref: feat/ahp
+  decision_engine: ^0.1.0
 ```
 
-The Git dependency becomes usable after the feature branch is pushed; source
-synchronization is currently pending. For reproducible applications, pin `ref` to a reviewed commit. Requires Dart
->=3.3.0 <4.0.0; the same core can be used from Flutter.
+Run `dart pub add decision_engine` or `flutter pub add decision_engine`.
+The [v0.1.0 source release](https://github.com/kleberandrade/decision-engine/releases/tag/v0.1.0)
+points to CI-validated commit `fcc0a86`. AHP is developed separately on
+`feat/ahp` for 0.2.0 and is not part of the published 0.1.0 API.
 
 ## Choose a provider
 
@@ -125,6 +126,11 @@ analysis and a Flutter visualization lab remain planned. See
 [roadmap](doc/roadmap.md), [validation](doc/validation.md) and [changelog](CHANGELOG.md).
 
 ## Generate weights with AHP
+
+This section describes the **0.2.0-dev.1 feature branch**, not the hosted 0.1.0
+package. To try this branch before its release, use a Git dependency with
+`url: https://github.com/kleberandrade/decision-engine.git` and `ref: feat/ahp`;
+pin a reviewed commit for reproducibility.
 
 Use `AhpWeighting().evaluate(criterionIds: ..., comparisons: ...)` to derive
 principal-eigenvector weights from 1–10 reciprocal comparisons. Inspect CI/CR,

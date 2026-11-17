@@ -1,5 +1,10 @@
 # Concluir a primeira publicação
 
+Estado: 0.1.0 publicada, publisher transferido e verificado, release v0.1.0 criada.
+A sincronização inicial por Git já foi concluída. Não repita o script inicial nem
+republique a 0.1.0; o procedimento abaixo fica como histórico. Falta enviar as
+atualizações de documentação por Git em um terminal com acesso à rede.
+
 O código está pronto para continuar a validação fora das restrições de rede e
 socket desta sessão. Estes scripts não publicam pacotes nem criam tags.
 

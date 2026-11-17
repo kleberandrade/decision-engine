@@ -10,7 +10,7 @@
 - Deterministic ranking, exact ties, calculation traces and custom methods.
 - English/Portuguese guides, executable examples, behavioral tests and CI.
 
-## 0.2.0-dev.1 — implemented locally, not released
+## 0.2.0 — release preparation
 
 - AHP pairwise criterion weighting with reciprocal-matrix validation,
   consistency index and consistency ratio.
@@ -19,7 +19,8 @@
 
 The implementation uses principal-eigenvector power iteration, 1–10 criteria,
 the documented RI table, explicit directions and default consistency gating.
-See [AHP](ahp.md). Source synchronization and release validation remain pending.
+See [AHP](ahp.md). Main integration and final release validation are part of this preparation;
+hosted publication will be verified separately.
 
 ## Later proposals, not delivery commitments
 

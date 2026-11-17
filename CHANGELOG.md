@@ -2,16 +2,19 @@
 
 ## Unreleased
 
-- Add guarded first-source synchronization and initial-release validation scripts.
+## 0.2.0
 
-- Add AHP principal-eigenvector criterion weighting, reciprocal-matrix validation,
-  consistency diagnostics and explicit conversion for both ranking methods.
-- Start 0.2.0-dev.1 development on feat/ahp; retain the 0.1.0 baseline on local main.
-
-- Update installation and release verification documentation for published 0.1.0.
+- Add AHP criterion weighting using principal-eigenvector power iteration.
+- Validate 1–10 reciprocal comparison criteria on the continuous [1/9, 9] scale.
+- Expose immutable weights, eigenvalue estimate, CI/RI/CR, iterations and residual.
+- Add explicit criterion directions and default rejection of inconsistent weights
+  when composing AHP with weighted sum or TOPSIS.
+- Document consistency thresholds, convergence controls and the fixed RI table
+  in English and Portuguese, with runnable Dart and JavaScript examples.
+- Add AHP composition coverage in the Flutter source-consumer fixture.
+- Update hosted installation documentation and release preparation utilities.
 
 ## 0.1.0
-
 
 - Initial 0.1.0 development baseline: pure Dart multicriteria decision engine.
 - Add weighted sum with min-max normalization and TOPSIS with vector normalization.

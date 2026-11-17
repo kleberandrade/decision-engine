@@ -24,4 +24,36 @@ void main() {
       expect(result.ranking.first.score, 1);
     });
   }
+  testWidgets('AHP weights compose with both ranking methods in Flutter',
+      (tester) async {
+    final ahp = AhpWeighting().evaluate(
+      criterionIds: ['quality', 'price'],
+      comparisons: [
+        [1, 3],
+        [1 / 3, 1]
+      ],
+    );
+    final criteria = ahp.toCriteria({
+      'quality': CriterionDirection.maximize,
+      'price': CriterionDirection.minimize,
+    });
+    final alternatives = [
+      Alternative('Basic', values: {'quality': 10, 'price': 100}),
+      Alternative('Premium', values: {'quality': 20, 'price': 200}),
+    ];
+    for (final method in <DecisionMethod>[
+      const WeightedSum(),
+      const Topsis()
+    ]) {
+      final result = DecisionEngine(criteria: criteria, method: method)
+          .evaluate(alternatives);
+      await tester.pumpWidget(Directionality(
+        textDirection: TextDirection.ltr,
+        child: Text(result.best?.name ?? 'No eligible option'),
+      ));
+      expect(find.text('Premium'), findsOneWidget);
+      expect(ahp.weights['quality'], closeTo(0.75, 1e-10));
+      expect(ahp.isConsistent, isTrue);
+    }
+  });
 }

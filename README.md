@@ -20,7 +20,8 @@ No runtime dependencies, Flutter imports, IO or network access in the core.
 
 Version **0.1.0** is published on [pub.dev](https://pub.dev/packages/decision_engine)
 by verified publisher [kleberandrade.dev](https://pub.dev/publishers/kleberandrade.dev).
-Its pub.dev analysis reached **160 points**. Dart >=3.3.0 <4.0.0 is required.
+The 0.1.0 analysis reached **160 points**. This source prepares **0.2.0** with
+AHP criterion weighting. Dart >=3.3.0 <4.0.0 is required.
 
 ```yaml
 dependencies:
@@ -29,8 +30,9 @@ dependencies:
 
 Run `dart pub add decision_engine` or `flutter pub add decision_engine`.
 The [v0.1.0 source release](https://github.com/kleberandrade/decision-engine/releases/tag/v0.1.0)
-points to CI-validated commit `fcc0a86`. AHP is developed separately on
-`feat/ahp` for 0.2.0 and is not part of the published 0.1.0 API.
+points to CI-validated commit `fcc0a86`. AHP requires **0.2.0 or newer**; it is
+not part of the published 0.1.0 API. Until 0.2.0 publication is verified, use a
+Git dependency on `feat/ahp` to try AHP, pinned to a reviewed commit.
 
 ## Choose a provider
 
@@ -127,8 +129,8 @@ analysis and a Flutter visualization lab remain planned. See
 
 ## Generate weights with AHP
 
-This section describes the **0.2.0-dev.1 feature branch**, not the hosted 0.1.0
-package. To try this branch before its release, use a Git dependency with
+This section describes the **0.2.0 API**. It is not available in hosted 0.1.0.
+To try this source before 0.2.0 publication is verified, use a Git dependency with
 `url: https://github.com/kleberandrade/decision-engine.git` and `ref: feat/ahp`;
 pin a reviewed commit for reproducibility.
 

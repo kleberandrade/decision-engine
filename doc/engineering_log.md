@@ -85,3 +85,19 @@
 - Updated bilingual README installation and validation evidence without changing
   published source or republishing the same version. Documentation push remains
   subject to this session's outbound-network restriction.
+
+## 0.2.0 release preparation
+
+- Reviewed the AHP public classes, numerical policies and composition boundaries;
+  retained the existing compatible API and pure Dart, dependency-free core.
+- Promoted the source version from 0.2.0-dev.1 to 0.2.0, grouped unreleased notes
+  under the target version and retained all published 0.1.0 notes unchanged.
+- Added an AHP-to-ranking Flutter widget scenario and bilingual release guidance.
+  Runtime validation and hosted publication are recorded only after verification.
+
+- Validation: 40 core tests, strict analysis, formatting and all examples passed;
+  provider/AHP JavaScript execution passed. Flutter analysis passed, but the
+  runner is blocked by local socket restrictions. Pub dry-run could not finish
+  network resolution. The 0.1.0 changelog section was preserved byte-for-byte.
+- GitHub tree creation and PR creation both returned 403 (integration write
+  access unavailable). No source upload, release tag or hosted 0.2.0 is claimed.

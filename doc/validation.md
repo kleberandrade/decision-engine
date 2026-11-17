@@ -72,3 +72,20 @@ The tag was created through GitHub's release interface, not as a local annotated
 Git tag. The initial candidate checklist remains unchanged as historical evidence.
 Repository README updates are separate from the already-published package archive;
 they will appear in a future package release, not by republishing 0.1.0.
+
+## 0.2.0 candidate validation
+
+- Core API review retained the compatible AHP contracts and the pure Dart core.
+- Version 0.2.0: all 40 Dart tests, strict analysis and formatting passed.
+- Four Dart examples passed; both provider and AHP examples compiled to JavaScript
+  and executed successfully with Node.
+- Flutter source-consumer dependency resolution and static analysis passed.
+- Added one AHP-composition widget test (three widget tests now configured).
+  Runtime execution could not start because local socket binding is forbidden.
+- Publication dry-run was attempted and stopped after 30 seconds waiting for
+  online dependency resolution. It did not complete or publish anything.
+- The GitHub connector permits reads but rejected tree/PR creation with HTTP 403
+  Resource not accessible by integration. This is an integration permission error,
+  not a completed source push or an automatic approval rejection.
+- Main integration is prepared locally. The new source must be pushed and pass
+  its minimum/stable Dart and Flutter CI before publication and the v0.2.0 tag.

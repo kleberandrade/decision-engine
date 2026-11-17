@@ -1,4 +1,6 @@
 import 'dart:convert';
+// Keep the lab's Flutter >=3.35 import path; 3.50 deprecates this re-export.
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'configuration.dart';
 
@@ -74,7 +76,11 @@ class _VisualScenarioEditorState extends State<VisualScenarioEditor> {
   }
 
   void apply() {
-    if (!form.currentState!.validate()) return;
+    if (!form.currentState!.validate()) {
+      setState(() =>
+          error = 'Revise os campos destacados em vermelho antes de aplicar.');
+      return;
+    }
     try {
       final sweep = criteria.any((c) => c.id == widget.configuration.sweepId)
           ? widget.configuration.sweepId

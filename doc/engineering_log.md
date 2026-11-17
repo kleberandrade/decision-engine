@@ -177,3 +177,13 @@
   and constraint in Chrome and confirmed the resulting empty eligible set.
 - Updated bilingual scenario guides, README entry points and Unreleased notes.
   No dependencies, core APIs, package version, publisher settings or tags changed.
+
+- Added an always-visible, announced footer summary for invalid visual fields.
+  The new expectation first failed, then passed after the fix; retained field
+  errors and draft state and reran the lab suite, strict analysis and Web build.
+
+- CI 44172248537 passed both Dart jobs and the consumer, but strict Flutter 3.50
+  analysis flagged the new Material compatibility imports. Applied the same
+  import-scoped deprecation bridge used by the existing lab files to retain its
+  declared Flutter >=3.35 minimum, without suppressing type checks or changing
+  the core. The bridge and local/remote SDK versions are documented.

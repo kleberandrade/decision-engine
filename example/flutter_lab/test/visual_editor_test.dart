@@ -3,6 +3,8 @@ import 'package:decision_engine_lab/configuration.dart';
 import 'package:decision_engine_lab/main.dart';
 import 'dart:convert';
 import 'package:decision_engine_lab/visual_editor.dart';
+// Keep the lab's Flutter >=3.35 import path; 3.50 deprecates this re-export.
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -97,6 +99,7 @@ void main() {
     await enter(tester, 'criterion-weight-cost', '-1');
     await tap(tester, 'visual-apply');
     expect(result, isNull);
+    expect(find.textContaining('Revise os campos destacados'), findsOneWidget);
     expect(find.text('Use um número finito entre 0 e 1e12.'), findsOneWidget);
     await tap(tester, 'visual-cancel');
     expect(result, isNull);

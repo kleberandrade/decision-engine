@@ -9,7 +9,9 @@ remove dependent values/bounds when a criterion is removed, and keep at least
 one criterion and one alternative. New values default to zero. The isolated draft
 is validated through `LabConfiguration.parse` before replacing dashboard state.
 Both editor paths use that boundary, and JSON preserves method/sweep settings.
-Current slider weights, including all-zero drafts, remain editable.
+Current slider weights, including all-zero drafts, remain editable. Invalid
+fields also produce an announced footer summary, so errors stay discoverable
+when the offending field is outside the scroll viewport.
 
 Validation completed for this update:
 
@@ -32,6 +34,15 @@ Validation completed for this update:
   availability minimum to 100, and applied it. The dashboard correctly displayed
   no eligible alternatives, all four rejection reasons and changed normalized
   weights, while retaining the separate JSON action.
+
+The initial visual-editor CI run
+[44172248537](https://github.com/kleberandrade/decision-engine/actions/runs/44172248537)
+passed both Dart jobs and the consumer; lab analysis flagged Flutter 3.50's
+deprecation of `flutter/material.dart` in the two new files. These files now use
+the existing lab's import-scoped compatibility bridge. The declared Flutter
+>=3.35 minimum is retained: migrating every import to `material_ui` requires a
+separate minimum-SDK/package migration. Type checking and all other strict
+analysis checks remain enabled.
 
 The existing test-gated Actions workflow publishes this update to the same Pages
 URL. Exact remote validation/publication results are recorded by that workflow.

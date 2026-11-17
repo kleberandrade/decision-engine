@@ -24,9 +24,7 @@ void main() {
   }
 
   Future<void> language(WidgetTester tester, String label) async {
-    await tap(tester, 'language-selector');
-    await tester.tap(find.text(label).last);
-    await tester.pumpAndSettle();
+    await tap(tester, label == 'English' ? 'language-en' : 'language-pt');
   }
 
   testWidgets(
@@ -111,6 +109,27 @@ void main() {
         expect(find.text('Disponibilidade • 60%'), findsOneWidget);
       }
     }
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('circular language buttons expose labels and selected state',
+      (tester) async {
+    await start(tester, mobile: true);
+    expect(find.byTooltip('Português (Brasil)'), findsOneWidget);
+    expect(find.byTooltip('Inglês (Reino Unido)'), findsOneWidget);
+    expect(
+        tester
+            .widget<IconButton>(find.byKey(const Key('language-pt')))
+            .isSelected,
+        isTrue);
+    await tap(tester, 'language-en');
+    expect(
+        tester
+            .widget<IconButton>(find.byKey(const Key('language-en')))
+            .isSelected,
+        isTrue);
+    expect(find.byTooltip('Portuguese (Brazil)'), findsOneWidget);
+    expect(find.byTooltip('English (United Kingdom)'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

@@ -231,3 +231,14 @@
   navigation, and language persistence after reload (`html lang=en`). Restored
   browser viewport. Verified English/PT reference links, reviewed diff and scanned
   added sources for credential patterns; none found. Remote main matched baseline.
+
+- Incorporated the requested circular Brazil/UK language buttons as local vector
+  paintings, with selected ring/check, language-name tooltips, selected semantics,
+  keyboard focus and >=48px targets; retained the same state/storage controller.
+- CI 44177633354 passed core/consumer jobs but flagged Flutter 3.50's relocated
+  GlobalMaterialLocalizations symbol. Kept the declared Flutter >=3.35 bridge
+  narrowly scoped to that symbol, matching the existing Material import bridges.
+  All other analysis/type checks remain enabled; the following CI revalidates it.
+
+- Added the circular-flag selection test; final local suite now has 29 lab tests
+  (84 total including core/consumer), retaining all AHP and scenario checks.

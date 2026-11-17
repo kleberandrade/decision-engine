@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Use locally drawn circular Brazil/UK language flags with tooltips, selected
+  semantics/ring/check, keyboard focus and at least 48px touch targets.
+
 - Add responsive Laboratory/Learn/Examples navigation, original vector branding
   and favicon, EN/PT-BR UI/help/feedback/education and browser language preference.
   Preserve active decisions across language/navigation changes.

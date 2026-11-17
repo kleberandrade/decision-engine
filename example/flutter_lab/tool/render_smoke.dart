@@ -166,7 +166,10 @@ Future<void> main() async {
     await Future<void>.delayed(const Duration(milliseconds: 400));
     await frame();
     await viewport(1280, 1600);
-    dropdown('language-selector').onChanged!('en');
+    widgets()
+        .whereType<IconButton>()
+        .firstWhere((w) => w.key == const Key('language-en'))
+        .onPressed!();
     await frame();
     check(hasText('Current ranking'), 'English controls missing');
     await capture('lab-en-desktop');
@@ -184,7 +187,10 @@ Future<void> main() async {
     await frame();
     await viewport(390, 844);
     await capture('lab-en-mobile');
-    dropdown('language-selector').onChanged!('pt');
+    widgets()
+        .whereType<IconButton>()
+        .firstWhere((w) => w.key == const Key('language-pt'))
+        .onPressed!();
     await frame();
     check(errors.isEmpty, 'Framework/layout errors: ${errors.length}');
     stdout.writeln(

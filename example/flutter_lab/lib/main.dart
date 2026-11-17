@@ -25,6 +25,8 @@ class DecisionLabApp extends StatelessWidget {
                     ? const Locale('en')
                     : const Locale('pt', 'BR'),
                 supportedLocales: const [Locale('en'), Locale('pt', 'BR')],
+                // Keep the declared Flutter >=3.35 localization API path.
+                // ignore: deprecated_member_use
                 localizationsDelegates: GlobalMaterialLocalizations.delegates,
                 debugShowCheckedModeBanner: false,
                 theme: ThemeData(

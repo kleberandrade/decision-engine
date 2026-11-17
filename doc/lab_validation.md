@@ -4,7 +4,9 @@
 
 Added a responsive navbar, original code-native three-input mark/compact variant
 and SVG favicon; English/PT-BR controls, feedback, help and educational content;
-Flutter's own localization delegates; and browser localStorage language preference
+Flutter's own localization delegates; and circular Brazil/UK language buttons with selected ring/check, localized
+language-name tooltips, selected semantics, keyboard focus and >=48px targets,
+plus browser localStorage language preference
 with a safe blocked-storage fallback. Scenario data/IDs are not rewritten. The
 existing dashboard remains mounted while visiting Learn/Examples and changing
 language. Examples intentionally replace the scenario, with a visible notice.
@@ -20,7 +22,7 @@ mobile menu and keyboard focus, all four preset results, translated AHP controls
 and documentation/GitHub target URLs. Native evidence includes
 [English desktop](evidence/lab-en-desktop.png),
 [English mobile](evidence/lab-en-mobile.png),
-[Learn](evidence/learn-en-desktop.png). Final local validation: **52 core + 3 consumer + 28 lab tests**, strict analysis,
+[Learn](evidence/learn-en-desktop.png). Final local validation: **52 core + 3 consumer + 29 lab tests**, strict analysis,
 formatting, all documented Dart examples/JavaScript execution, production Web
 build and native smoke. The new UI uses SDK-pinned Flutter localization packages;
 no runtime dependency was added to the pure Dart core.

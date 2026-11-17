@@ -88,7 +88,7 @@ The responsive navbar has Laboratory, Learn, Examples and Documentation/GitHub.
 Its original mark joins three criterion inputs into an ascending decision. The
 same code-native geometry is used by the compact mark and SVG favicon, under MIT.
 
-Choose English or PT-BR without resetting the current decision, method, weights,
+Use the circular, locally drawn Brazil/UK flag buttons to choose English or PT-BR without resetting the current decision, method, weights,
 constraints or applied AHP evidence. Controls, feedback, help and learning content
 are translated; scenario data and IDs are not rewritten. Browser localStorage
 persists the language preference when allowed. Reloading does not persist an

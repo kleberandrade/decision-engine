@@ -66,24 +66,32 @@ class _LabFrameState extends State<LabFrame> {
                                     fontWeight: FontWeight.bold,
                                     letterSpacing: 1)))
                       ]));
-                  final language = SizedBox(
-                      width: 130,
-                      child: DropdownButtonFormField<String>(
-                          key: const Key('language-selector'),
-                          initialValue: LabLanguage.current(context),
-                          isExpanded: true,
-                          decoration: InputDecoration(
-                              labelText: tr(context, 'Idioma'),
-                              border: const OutlineInputBorder(),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 4)),
-                          items: const [
-                            DropdownMenuItem(value: 'pt', child: Text('PT-BR')),
-                            DropdownMenuItem(
-                                value: 'en', child: Text('English'))
-                          ],
-                          onChanged: (value) =>
-                              LabLanguage.change(context, value!)));
+                  final language = Row(
+                      key: const Key('language-selector'),
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        for (final code in ['pt', 'en'])
+                          Semantics(
+                              selected: LabLanguage.current(context) == code,
+                              child: IconButton(
+                                key: Key('language-$code'),
+                                tooltip: code == 'pt'
+                                    ? copy(context, 'Português (Brasil)',
+                                        'Portuguese (Brazil)')
+                                    : copy(context, 'Inglês (Reino Unido)',
+                                        'English (United Kingdom)'),
+                                isSelected:
+                                    LabLanguage.current(context) == code,
+                                constraints: const BoxConstraints(
+                                    minWidth: 48, minHeight: 48),
+                                onPressed: () =>
+                                    LabLanguage.change(context, code),
+                                icon: LanguageFlag(
+                                    language: code,
+                                    selected:
+                                        LabLanguage.current(context) == code),
+                              )),
+                      ]);
                   final controls = [
                     for (final entry in [
                       (0, 'Laboratório'),

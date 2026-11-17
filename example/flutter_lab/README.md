@@ -28,7 +28,10 @@ SDK requirement. It consumes the root source package through a local path.
 
 ## Explore
 
-- Edit/copy complete JSON scenarios: alternatives, criteria, directions, weights,
+- Use the visual editor to add/remove alternatives and criteria, edit values and
+  weights, choose directions and configure inclusive minimum/maximum constraints.
+  Apply validates the entire draft; cancel leaves the current result intact.
+- Import/export complete JSON scenarios: alternatives, criteria, directions, weights,
   bounds and selected method; validate atomically, cancel or restart.
 - Compare both method rankings simultaneously; inspect normalized/weighted values
   and TOPSIS distance diagnostics.
@@ -72,3 +75,5 @@ is not the standard `flutter test` suite or a browser-interaction test.
 Use `bash tool/render_smoke.sh /path/to/flutter-sdk --test-fonts` to reproduce
 layout checks with the Ahem font used by widget tests. Dropdowns expand within
 their available width so wide test/accessibility text does not overflow.
+
+![Visual scenario editor with labeled criterion, weight and alternative fields](../../doc/evidence/visual-editor-desktop.png)

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:decision_engine/decision_engine.dart';
 import 'score_chart.dart';
 import 'configuration.dart';
+import 'visual_editor.dart';
 import 'package:flutter/services.dart';
 
 void main() => runApp(const DecisionLabApp());
@@ -57,6 +58,25 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
   DecisionEngine makeEngine() => configuration.engine(
       methodName == 'weighted_sum' ? const WeightedSum() : const Topsis(),
       weights);
+
+  void applyConfiguration(LabConfiguration next) => setState(() {
+        configuration = next;
+        weights = next.sliderWeights;
+        sweepId = next.sweepId;
+        methodName = next.methodName;
+        ahpStatus = null;
+        revision++;
+      });
+
+  Future<void> editVisually() async {
+    final current =
+        LabConfiguration.parse(configuration.encode(null, methodName, sweepId));
+    final next = await showDialog<LabConfiguration>(
+        context: context,
+        builder: (_) => VisualScenarioEditor(
+            configuration: current, relativeWeights: weights));
+    if (next != null && mounted) applyConfiguration(next);
+  }
 
   Future<void> editScenario() async {
     final controller = TextEditingController(
@@ -120,16 +140,7 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
     final next = await Navigator.of(context).push(route);
     await route.completed;
     controller.dispose();
-    if (next != null && mounted) {
-      setState(() {
-        configuration = next;
-        weights = next.sliderWeights;
-        sweepId = next.sweepId;
-        methodName = next.methodName;
-        ahpStatus = null;
-        revision++;
-      });
-    }
+    if (next != null && mounted) applyConfiguration(next);
   }
 
   @override
@@ -475,10 +486,15 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Wrap(spacing: 12, runSpacing: 8, children: [
           FilledButton.icon(
+              key: const Key('visual-editor'),
+              onPressed: editVisually,
+              icon: const Icon(Icons.tune),
+              label: const Text('Editor visual')),
+          OutlinedButton.icon(
               key: const Key('scenario-edit'),
               onPressed: editScenario,
               icon: const Icon(Icons.edit_note),
-              label: const Text('Editar / copiar cenário')),
+              label: const Text('Importar / exportar JSON')),
           TextButton(
               key: const Key('scenario-reset'),
               onPressed: () => setState(() {

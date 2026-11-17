@@ -30,7 +30,7 @@ Alterações em Unreleased não são publicadas automaticamente no pub.dev.
 [Laboratório online](https://kleberandrade.github.io/decision-engine/) ·
 [Guia de cenários e limites](example/flutter_lab/SCENARIOS.pt-BR.md)
 
-Edite alternativas, critérios, pesos e restrições inclusivas, compare métodos e
+Use o editor visual para alternativas, critérios, pesos e restrições inclusivas, compare métodos e
 inspecione cálculos. Copie o JSON para reproduzir o cenário.
 
 ## Como funciona

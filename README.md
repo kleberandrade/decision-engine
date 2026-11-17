@@ -39,8 +39,8 @@ Source changes under Unreleased are not automatically published to pub.dev.
 
 ## Explore the laboratory
 
-Edit alternatives, criteria, weights and inclusive constraints; compare weighted
-sum with TOPSIS and inspect calculation traces. Save/copy JSON to reproduce a
+Use labeled visual forms to edit alternatives, criteria, weights and inclusive constraints; compare weighted
+sum with TOPSIS and inspect calculation traces. Import/export JSON to reproduce a
 scenario. The [bilingual scenario guide](example/flutter_lab/SCENARIOS.md) explains
 calculations, sensitivity, the fixed AHP demonstration and limits.
 

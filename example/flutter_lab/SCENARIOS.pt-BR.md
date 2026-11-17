@@ -2,7 +2,22 @@
 
 [English: complete guide](SCENARIOS.md)
 
-Abra **Editar / copiar cenário** para adicionar/remover alternativas e critérios,
+Abra **Editor visual** para editar com campos identificados: nomes e valores das
+alternativas, critérios, pesos relativos e preferência por valores menores ou
+maiores. Use **Adicionar critério**, **Adicionar alternativa** e os botões de
+remoção. Remover um critério também remove seus valores e restrições. Pelo menos
+um critério e uma alternativa são mantidos; novos critérios começam com valor
+zero em todas as alternativas, que você pode ajustar antes de aplicar.
+
+Em **Restrições obrigatórias**, escolha o critério e informe mínimo e/ou máximo
+inclusivos; deixe vazio o limite que não se aplica. Remova a linha para eliminar
+uma restrição. Os campos aceitam ponto ou vírgula decimal. **Aplicar cenário**
+valida tudo e recalcula o ranking; **Cancelar** ou Escape descarta o rascunho.
+A interface mantém pesos atuais, método e varredura, inclusive permitindo
+corrigir um rascunho com todos os pesos zerados.
+
+Abra **Importar / exportar JSON** para importar, copiar ou editar um cenário.
+O JSON continua permitindo adicionar/remover alternativas e critérios,
 alterar direções (`minimize`/`maximize`), pesos e restrições inclusivas (`minimum`
 e `maximum`). Cada alternativa deve conter todos os critérios. Use ponto decimal,
 nomes/IDs únicos e pelo menos um peso positivo. O JSON também guarda método e

@@ -4,18 +4,35 @@
 
 ## Reproduce a decision
 
-Open **Editar / copiar cenário**. The JSON contains the current relative weights,
+Open **Editor visual** for labeled fields. Add, rename or remove alternatives;
+edit each observed value; add criteria, choose **Menor é melhor** (minimize) or
+**Maior é melhor** (maximize), and enter relative weights. Under **Restrições
+obrigatórias**, select a criterion and supply an inclusive minimum, maximum or
+both. Blank means that bound is unused; remove the row for no restriction.
+Removing a criterion also removes its values and constraints. At least one
+criterion and one alternative remain. New criterion values start at zero for all
+alternatives; replace those defaults before applying as needed. Names change
+display labels while stable criterion IDs preserve scenario references.
+
+Click **Aplicar cenário** to validate the complete draft and recalculate. Cancel
+or Escape discards the draft. Both editors share the same validation boundary;
+invalid drafts leave the current decision intact. Fields accept decimal points
+or commas; JSON uses decimal points. The visual editor is scrollable on narrow
+screens, with apply/cancel always available. Current slider weights, selected
+method and sweep are retained, including editable all-zero weight drafts.
+
+Open **Importar / exportar JSON** to paste or copy a scenario. The JSON contains the current relative weights,
 criterion IDs, display labels, `minimize`/`maximize` directions, named alternatives,
 inclusive minimum/maximum constraints, selected method and sweep criterion. Edit
 or paste a saved scenario, then **Validar e aplicar**. **Copiar JSON** copies the
 text; save it in a local file. There is no automatic persistence or server upload.
-Cancel (or Escape) discards edits. Invalid input leaves the previous decision
+Cancel (or Escape) discards edits in either editor. Invalid input leaves the previous decision
 intact. **Restaurar** restores the imported scenario's weights;
 **Reiniciar laboratório** restores the complete original provider scenario.
 
 Use decimal points. Each alternative must have exactly one finite value for each
 criterion; IDs and alternative names must be unique. Weights must be nonnegative
-with at least one positive value. The editor accepts 1–12 criteria, 1–30
+with at least one positive value. Both editors accept 1–12 criteria, 1–30
 alternatives, at most 100,000 JSON characters and numbers of magnitude <=1e12.
 These UI limits keep synchronous browser calculations bounded; the core has its
 own independent validation. Unknown method/direction/criterion references fail.

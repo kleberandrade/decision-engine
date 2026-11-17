@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Add a visual scenario editor for criterion labels/directions/weights,
+  alternative names/values and inclusive bounds, with add/remove, atomic apply,
+  cancel and dependent-row cleanup. Keep JSON import/export alongside it.
+- PT: editor visual com campos para critérios, pesos, alternativas e restrições;
+  inclusão/remoção, validação ao aplicar e cancelamento sem alterar o cenário.
+
 - Add validated, reproducible Flutter lab scenarios with editable alternatives,
   criteria, directions and inclusive constraints; cancel/restart controls.
 - Show simultaneous weighted-sum/TOPSIS rankings, normalized/weighted matrices,

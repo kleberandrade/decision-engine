@@ -162,3 +162,18 @@
   stable Flutter 3.50 and Pages deployment. Opened the public HTTPS lab in Chrome
   and visually verified the running UI. Recorded exact links, ten actual GitHub
   topics and successful zero-warning package dry-run in doc/lab_validation.md.
+
+
+## Visual scenario editor — 2026-11-17
+
+- Kept the existing clean checkout and shared SDK untouched. Added six widget
+  tests first and observed the missing-editor failure before implementing it.
+- Added isolated visual drafts for criteria/weights/directions, alternatives/
+  values and inclusive bounds, with add/remove and dependent cleanup. Reused the
+  existing scenario parser for atomic apply; preserved separate JSON import/export.
+- Verified 52 core, 3 consumer and 16 lab tests, strict analyses, all CLI examples,
+  JavaScript execution and the production Web build. Added native render captures
+  of each editor section and narrow layout; manually applied a modified weight
+  and constraint in Chrome and confirmed the resulting empty eligible set.
+- Updated bilingual scenario guides, README entry points and Unreleased notes.
+  No dependencies, core APIs, package version, publisher settings or tags changed.

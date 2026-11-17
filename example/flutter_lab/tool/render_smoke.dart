@@ -115,9 +115,41 @@ Future<void> main() async {
     await frame();
     await viewport(390, 2200);
     await capture('narrow');
+    await viewport(1280, 1200);
+    widgets()
+        .whereType<FilledButton>()
+        .firstWhere((w) => w.key == const Key('visual-editor'))
+        .onPressed!();
+    await Future<void>.delayed(const Duration(milliseconds: 400));
+    await frame();
+    check(hasText('Editor visual de cenário'), 'Visual editor missing');
+    await capture('visual-editor-desktop');
+    for (final section in {
+      'visual-editor-alternatives': 'alternative-name-0',
+      'visual-editor-constraints': 'bound-min-0',
+    }.entries) {
+      final field = elements(binding.rootElement!)
+          .firstWhere((e) => e.widget.key == Key(section.value));
+      await Scrollable.ensureVisible(field, alignment: 0.1);
+      await frame();
+      await capture(section.key);
+    }
+    await Scrollable.ensureVisible(
+        elements(binding.rootElement!).firstWhere(
+            (e) => e.widget.key == const Key('criterion-label-cost')),
+        alignment: 0.1);
+    await frame();
+    await viewport(390, 844);
+    await capture('visual-editor-narrow');
+    widgets()
+        .whereType<TextButton>()
+        .firstWhere((w) => w.key == const Key('visual-cancel'))
+        .onPressed!();
+    await Future<void>.delayed(const Duration(milliseconds: 400));
+    await frame();
     check(errors.isEmpty, 'Framework/layout errors: ${errors.length}');
     stdout.writeln(
-        'Native smoke passed: ranking, method, AHP, sweep, reset, zero weights, narrow layout; ${output.path}');
+        'Native smoke passed: ranking, method, AHP, sweep, reset, zero weights, narrow layout, visual editor sections; ${output.path}');
     exit(0);
   } catch (error, stack) {
     stderr.writeln('$error\n$stack');

@@ -1,5 +1,41 @@
 # Decision lab validation — 2026-11-17
 
+## Visual editor update
+
+The lab now offers a dedicated visual dialog for criterion labels, preference
+directions and weights; alternative names and values; and criterion-specific
+inclusive minimum/maximum constraints. Add/remove actions retain stable IDs,
+remove dependent values/bounds when a criterion is removed, and keep at least
+one criterion and one alternative. New values default to zero. The isolated draft
+is validated through `LabConfiguration.parse` before replacing dashboard state.
+Both editor paths use that boundary, and JSON preserves method/sweep settings.
+Current slider weights, including all-zero drafts, remain editable.
+
+Validation completed for this update:
+
+- **52 core tests, 3 Flutter consumer tests and 16 lab tests** passed locally.
+  Six new widget tests were written before the editor and first failed because
+  the editor module did not exist. They cover changes to values/weights/bounds,
+  add/remove cleanup, cancel/invalid numbers, direction/maximum changes reaching
+  dashboard and JSON, large-text/mobile accessibility, and zero-weight recovery.
+- Core, consumer and lab strict analysis passed. All five CLI examples and the
+  compiled JavaScript example executed. No runtime dependency or core API changed.
+- Production Web build passed with the existing Pages base path. The SDK remains
+  an isolated Flutter 3.41.9 copy; remote CI also exercises stable Flutter 3.50.
+- Native smoke opened and canceled the visual editor and captured its criteria,
+  alternatives, constraints and narrow layout. Real captures:
+  [desktop](evidence/visual-editor-desktop.png),
+  [alternatives](evidence/visual-editor-alternatives.png),
+  [constraints](evidence/visual-editor-constraints.png),
+  [narrow](evidence/visual-editor-narrow.png). These are local native renders.
+- Chrome manual Web check opened the visual form, changed cost weight to 1 and
+  availability minimum to 100, and applied it. The dashboard correctly displayed
+  no eligible alternatives, all four rejection reasons and changed normalized
+  weights, while retaining the separate JSON action.
+
+The existing test-gated Actions workflow publishes this update to the same Pages
+URL. Exact remote validation/publication results are recorded by that workflow.
+
 ## Scope
 
 Only `decision_engine` was changed. The core's runtime code, dependency-free
@@ -81,7 +117,7 @@ that observed state. No package upload, tag or release was performed by this wor
 
 ## Limits
 
-JSON configuration is the full editor, rather than a spreadsheet editor. AHP is
+Visual forms edit the scenario; JSON remains available for import/export. AHP is
 a disclosed fixed consistent example for the original three IDs. Sensitivity is
 sampled, with no exact-boundary or continuous-robustness guarantee. The editor is
 bounded to keep computations synchronous; cancel discards edits and restart

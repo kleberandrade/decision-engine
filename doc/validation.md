@@ -12,7 +12,7 @@ outbound DNS and writes to the global SDK/cache are restricted in this session.
 | Provider selection, weighted sum, custom method examples | Passed |
 | Compile provider example to JavaScript and execute with Node | Passed |
 | Minimum SDK 3.3.0 | Configured in CI; not executed locally |
-| Flutter application integration | Not executed; no Flutter lab included yet |
+| Flutter source-consumer integration | Flutter analysis passed; widget execution blocked by local socket restriction |
 | Publication dry-run | Attempted; dependency re-resolution blocked by network |
 | Hosted publication / pub points | Not performed or claimed |
 | Git clone/push | Clone blocked: Could not resolve host github.com |
@@ -27,3 +27,12 @@ The source CI matrix covers Dart 3.3.0 and stable, examples, JavaScript compilat
 and stable publication dry-run. Configuration alone does not mean remote checks
 have run. Once network access is available, run the complete CONTRIBUTING checks
 and inspect GitHub Actions before any release.
+
+The Flutter fixture runs on Flutter 3.41.9 against the local source package.
+It is designed to validate rendered constrained rankings for both methods, not hosted
+installation, device benchmarks, or a visualization lab. Eight repository topics
+were applied and verified on GitHub. Online publication dry-run remains blocked.
+
+`flutter test` could not start the test process because the sandbox disallows
+binding a local server socket on 127.0.0.1. Neither widget test ran; this is not
+a passing runtime integration check.

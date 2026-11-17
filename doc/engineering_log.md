@@ -25,3 +25,13 @@
 - Limits: minimum-SDK and Flutter checks have not run locally; publication dry-run
   was attempted but online dependency resolution is blocked. No release tag,
   publisher transfer or pub.dev publication has been performed.
+
+## Release preparation
+
+- Applied and verified eight GitHub topics through repository metadata.
+- Added a local Flutter consumer with widget checks for both built-in methods.
+  Validation: Flutter static analysis passed on Flutter 3.41.9. Widget execution
+  was blocked before test startup: local server socket binding is not permitted.
+- Added a dedicated Flutter CI job, excluding its package from root Dart analysis.
+- Retried Git network access: DNS still cannot resolve github.com. No manual
+  source uploads were resumed. Pub dry-run remains blocked by online resolution.

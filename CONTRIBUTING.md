@@ -14,7 +14,7 @@ Flutter, HTTP, IO, other engines or a global strategy registry.
 
 ```sh
 dart pub get
-dart format --output=none --set-exit-if-changed lib test example
+dart format --output=none --set-exit-if-changed lib test example validation
 dart analyze --fatal-infos
 dart test
 dart run example/decision_engine_example.dart
@@ -24,6 +24,9 @@ dart compile js example/decision_engine_example.dart -o /tmp/decision-engine.js
 node /tmp/decision-engine.js
 dart pub publish --dry-run
 ```
+
+Also run `flutter pub get`, `flutter analyze --fatal-infos` and `flutter test`
+in `validation/flutter_consumer/` for the source integration fixture.
 
 Tests import only the public entry point. Verify independently calculated results,
 invalid inputs, numerical edge cases, ownership and extension boundaries. Add a

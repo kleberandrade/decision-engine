@@ -3,3 +3,6 @@
 pubspec.lock
 coverage/
 build/
+**/pubspec.lock
+**/.dart_tool/
+**/build/

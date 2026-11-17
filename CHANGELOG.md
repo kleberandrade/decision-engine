@@ -10,6 +10,7 @@
 - Add English/Portuguese documentation, executable examples and behavioral tests.
 - Add Dart CI for minimum/stable SDKs, JavaScript portability and publication dry-run.
 
-No hosted version has been released by this repository workflow.
-
 - Preserve original input order for custom methods returning signed-zero ties.
+- Add a Flutter source-consumer fixture and dedicated CI job for constrained rankings.
+
+No hosted version has been released by this repository workflow.

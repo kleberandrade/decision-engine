@@ -17,7 +17,7 @@ jobs:
         with:
           sdk: ${{ matrix.sdk }}
       - run: dart pub get
-      - run: dart format --output=none --set-exit-if-changed lib test example
+      - run: dart format --output=none --set-exit-if-changed lib test example validation
         if: matrix.sdk == 'stable'
       - run: dart analyze --fatal-infos
       - run: dart test
@@ -28,3 +28,18 @@ jobs:
       - run: node /tmp/decision-engine.js
       - run: dart pub publish --dry-run
         if: matrix.sdk == 'stable'
+
+  flutter:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: validation/flutter_consumer
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze --fatal-infos
+      - run: flutter test

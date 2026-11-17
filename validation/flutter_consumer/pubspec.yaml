@@ -1,0 +1,12 @@
+name: decision_engine_flutter_consumer
+publish_to: none
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  decision_engine:
+    path: ../..
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

@@ -8,20 +8,27 @@ Núcleo Dart puro, interfaces, modelos imutáveis, soma ponderada, TOPSIS, restr
 inclusivas, exclusões explicadas, empates determinísticos, memória de cálculo,
 exemplos executáveis, testes, CI e documentação em inglês e português.
 
-## 0.2.0 — em preparação para publicação
+## 0.2.0 — publicada, com 160/160 pontos
 
 AHP para gerar pesos por comparações pareadas, validar reciprocidade e calcular
 índice e razão de consistência. Documentar tabela de índices aleatórios, tamanhos
 suportados e política de aceitação. Usar os pesos com os dois métodos existentes.
 
 Implementação com iteração de potência, de 1 a 10 critérios e conversão para
-critérios com direções explícitas. Veja [AHP](ahp.pt-BR.md). A integração na main e as validações finais
-da release fazem parte desta preparação. A publicação será verificada no pub.dev.
+critérios com direções explícitas. Veja [AHP](ahp.pt-BR.md). Integração na main, publicação hospedada e
+release v0.2.0 estão verificadas.
+
+## 0.3.0-dev.1 — implementada na feat/sensitivity
+
+Cenários completos e varreduras de pesos; comparação de todos os vencedores;
+mudanças de posição; estabilidade amostrada; intervalos de transição; resultados
+imutáveis e laboratório Flutter separado. Exemplos CLI/JavaScript e documentação
+bilíngue. A versão 0.3 ainda não está publicada; a nova CI precisa ser verificada.
 
 ## Propostas posteriores
 
-Análise de sensibilidade dos pesos; produto ponderado com domínio positivo e
-cálculo logarítmico; VIKOR com regras de compromisso; laboratório Flutter;
+Produto ponderado com domínio positivo e
+cálculo logarítmico; VIKOR com regras de compromisso;
 persistência JSON versionada; exemplos integrados com outros engines.
 Estes itens ainda não estão implementados nem representam prazo contratado.
 

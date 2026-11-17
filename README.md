@@ -13,16 +13,16 @@ No runtime dependencies, Flutter imports, IO or network access in the core.
 
 [Português](README.pt-BR.md) · [Getting started](doc/getting_started.md) ·
 [Methods and equations](doc/methods.md) · [Architecture](doc/architecture.md) ·
+[Sensitivity](doc/sensitivity.md) · [Flutter lab](example/flutter_lab/README.md) ·
 [AHP weighting](doc/ahp.md) · [Custom strategies](doc/extending.md) · [Roadmap](doc/roadmap.md) ·
 [Contributing](CONTRIBUTING.md)
 
 ## Status and installation
 
-This source is **0.2.0**, introducing AHP criterion weighting. It remains pure
-Dart and requires Dart >=3.3.0 <4.0.0. Check the
-[pub.dev version list](https://pub.dev/packages/decision_engine/versions) for hosted
-availability; source versioning does not itself publish a package. The package
-belongs to verified publisher [kleberandrade.dev](https://pub.dev/publishers/kleberandrade.dev).
+The stable **0.2.0** is published under verified publisher
+[kleberandrade.dev](https://pub.dev/publishers/kleberandrade.dev) with **160/160 pub
+points**. This branch develops **0.3.0-dev.1**, adding sampled weight sensitivity
+and an optional Flutter laboratory. Core Dart support remains >=3.3.0 <4.0.0.
 
 For the 0.2.0 release:
 
@@ -35,8 +35,9 @@ Run `dart pub add decision_engine` or `flutter pub add decision_engine` to selec
 the latest available compatible hosted version. AHP requires **0.2.0 or newer**;
 the published 0.1.0 API does not include it. To use this source before hosted
 publication, use a Git dependency pinned to a reviewed commit on `main`.
-The previous [v0.1.0 source release](https://github.com/kleberandrade/decision-engine/releases/tag/v0.1.0)
-remains available; its pub.dev analysis reached 160 points.
+The [v0.2.0 source release](https://github.com/kleberandrade/decision-engine/releases/tag/v0.2.0)
+is CI-validated. Sensitivity requires the development source on `feat/sensitivity`;
+it is not included in hosted 0.2.0.
 
 ## Choose a provider
 
@@ -124,11 +125,12 @@ dart run example/decision_engine_example.dart
 dart run example/weighted_sum.dart
 dart run example/custom_method.dart
 dart run example/ahp.dart
+dart run example/sensitivity.dart
 dart pub publish --dry-run
 ```
 
-Documentation is maintained in English and Brazilian Portuguese. AHP criterion weighting is implemented; sensitivity
-analysis and a Flutter visualization lab remain planned. See
+Documentation is maintained in English and Brazilian Portuguese. AHP is available in 0.2.0. This development branch adds sampled sensitivity
+and a separate Flutter lab. See
 [roadmap](doc/roadmap.md), [validation](doc/validation.md) and [changelog](CHANGELOG.md).
 
 ## Generate weights with AHP
@@ -140,3 +142,24 @@ principal-eigenvector weights from 1–10 reciprocal comparisons. Inspect CI/CR,
 then call `toCriteria` with explicit maximize/minimize directions. Inconsistent
 judgments are rejected by this conversion unless explicitly opted into.
 See the [AHP guide](doc/ahp.md) and `example/ahp.dart` for the complete workflow.
+
+## Explore weight sensitivity (0.3 development)
+
+```dart
+final report = SensitivityAnalyzer(engine: engine).sweep(alternatives,
+  criterionId: 'cost', weights: [0, 0.25, 0.5, 0.75, 1],
+);
+print(report.baselineWinners);
+print(report.winnerStability);
+print(report.transitions);
+```
+
+Use `WeightScenario` and `analyze` for complete alternative weight sets. The
+full winner set is compared, including ties. Transition brackets describe samples,
+not exact decision boundaries; stability is not a probability. See the
+[bilingual sensitivity guide](doc/sensitivity.md) and executable example.
+
+Run the separate [Flutter lab](example/flutter_lab/README.md) with
+`flutter run -d chrome` from its directory. It visualizes weights, method choices,
+sampled score curves and calculation matrices. The core has no Flutter dependency.
+The lab requires Flutter >=3.35.0; it does not change the core SDK floor.

@@ -23,6 +23,7 @@ flowchart TD
 | `lib/src/methods/` | Normalization, weighting, scores, diagnostics | SDK, domain, contracts |
 | `lib/src/constraints/` | Inclusive bounds | SDK and contracts |
 | `lib/src/weighting/` | AHP weights, consistency diagnostics and result conversion | SDK and criterion domain |
+| `lib/src/sensitivity/` | Scenario orchestration and sampled comparisons | SDK, domain and public engine |
 | `lib/src/engine/` | Validate, filter, delegate, check output, rank | SDK, domain, contracts |
 | `test/` | Public behavior and strategy boundary checks | Public entry point |
 
@@ -45,3 +46,16 @@ work and memory; final ranking adds O(rows * log(rows)).
 AHP is a separate preprocessing step, not a decision-method implementation.
 It produces criteria without adding any dependency to the engine or ranking
 strategies. Its immutable result owns the CI/CR policy and conversion gate.
+
+## Sensitivity and UI boundary
+
+The analyzer composes an immutable engine configuration and re-evaluates it for
+validated complete weight scenarios. It preserves directions/constraints and
+compares full winner sets, not the first display item. Sweep generation preserves
+complementary proportions; zero complementary mass has no invented fallback.
+Eligibility changes from stateful extensions are rejected explicitly.
+
+The Flutter lab lives in a separate package under `example/flutter_lab`, consumes
+the root via a path dependency and is excluded from core Dart analysis. It draws
+sampled score curves with Flutter's painter; no chart, HTTP or UI dependency is
+added to the library. Native preview tooling lives inside that example only.

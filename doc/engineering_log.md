@@ -101,3 +101,20 @@
   network resolution. The 0.1.0 changelog section was preserved byte-for-byte.
 - GitHub tree creation and PR creation both returned 403 (integration write
   access unavailable). No source upload, release tag or hosted 0.2.0 is claimed.
+
+## 0.3 sensitivity and Flutter laboratory
+
+- Verified 0.2.0 analysis at 160/160 pub points and started feat/sensitivity with
+  version 0.3.0-dev.1. Kept the stable main source and published notes intact.
+- Wrote public-API tests first, observed missing-API failures and implemented
+  complete weight scenarios plus normalized one-criterion sweeps by composition.
+- Added tie-set comparisons, rank deltas, sample stability and transition brackets;
+  documented the absence of exact crossing/continuous robustness guarantees.
+  Validation: all 52 tests, strict Dart analysis and CLI/JavaScript example passed.
+- Built a separate Flutter package for interactive weights, method comparison,
+  AHP, sample curves and weighted-matrix inspection. Kept Flutter outside core.
+- Validated Flutter analysis and a web build. Added four CI widget scenarios.
+- Compiled and ran a supplemental headless native render smoke using standard
+  files/process streams without opening a server. Checked callbacks and zero-weight
+  handling, rendered desktop/narrow PNGs with zero framework errors, and inspected
+  the captures. This does not substitute a claimed standard widget-test pass.

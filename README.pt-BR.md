@@ -6,15 +6,15 @@ O núcleo não tem dependências de execução, imports de Flutter, IO ou acesso
 
 [English](README.md) · [Guia](doc/getting_started.pt-BR.md) ·
 [Métodos e equações](doc/methods.pt-BR.md) · [Arquitetura](doc/architecture.pt-BR.md) ·
+[Sensibilidade](doc/sensitivity.pt-BR.md) · [Laboratório Flutter](example/flutter_lab/README.md) ·
 [Pesos AHP](doc/ahp.pt-BR.md) · [Extensões](doc/extending.pt-BR.md) · [Roadmap](doc/roadmap.pt-BR.md)
 
 ## Estado e instalação
 
-Este código corresponde à **0.2.0**, que acrescenta pesos de critérios por AHP.
-O núcleo continua em Dart puro e requer Dart >=3.3.0 <4.0.0. Confira a
-[lista de versões no pub.dev](https://pub.dev/packages/decision_engine/versions)
-para verificar a disponibilidade hospedada; alterar a versão do código não publica
-o pacote. O publisher verificado é [kleberandrade.dev](https://pub.dev/publishers/kleberandrade.dev).
+A versão estável **0.2.0 está publicada**, vinculada ao publisher verificado
+[kleberandrade.dev](https://pub.dev/publishers/kleberandrade.dev), com **160/160 pontos**.
+Esta branch desenvolve a **0.3.0-dev.1**, com sensibilidade amostrada e laboratório
+Flutter separado. O núcleo permanece em Dart puro, compatível com Dart >=3.3.0.
 
 Para a release 0.2.0:
 
@@ -26,8 +26,9 @@ dependencies:
 Execute `dart pub add decision_engine` ou `flutter pub add decision_engine` para
 selecionar a versão hospedada compatível mais recente. O AHP requer **0.2.0 ou
 superior** e não existe na API da 0.1.0. Antes da publicação, use uma dependência
-Git fixada em um commit revisado da `main`. A [release anterior v0.1.0](https://github.com/kleberandrade/decision-engine/releases/tag/v0.1.0)
-continua disponível e sua análise no pub.dev atingiu 160 pontos.
+Git fixada em um commit revisado da `main`. A [release v0.2.0](https://github.com/kleberandrade/decision-engine/releases/tag/v0.2.0)
+está validada. A sensibilidade exige o código de desenvolvimento da branch
+`feat/sensitivity`; não está na 0.2.0 hospedada.
 
 ## Como funciona
 
@@ -85,8 +86,8 @@ probabilidades e não devem ser comparadas entre métodos ou execuções com
 conjuntos diferentes. Adicionar ou remover alternativas pode mudar o ranking.
 
 Implemente `DecisionMethod` ou `DecisionConstraint` para estender por composição.
-Pesos por AHP já estão implementados. Análise de sensibilidade e laboratório
-visual Flutter continuam no roadmap. Consulte [o guia AHP](doc/ahp.pt-BR.md)
+Pesos por AHP estão na 0.2.0. Esta branch acrescenta sensibilidade amostrada e
+um laboratório Flutter separado. Consulte [o guia AHP](doc/ahp.pt-BR.md)
 para pesos, validação de reciprocidade e índice/razão de consistência.
 
 Execute `dart test`, `dart analyze --fatal-infos` e os exemplos em `example/`.
@@ -96,3 +97,17 @@ Consulte os comandos completos em [CONTRIBUTING.md](CONTRIBUTING.md).
 
 O guia de AHP e `example/ahp.dart` descrevem a API da **0.2.0**.
 O recurso não faz parte da versão 0.1.0 hospedada.
+
+## Sensibilidade e laboratório (desenvolvimento da 0.3)
+
+`SensitivityAnalyzer(engine: engine).sweep(alternatives, criterionId: 'cost',
+weights: [0, 0.25, 0.5, 0.75, 1])` varia um peso e preserva as proporções dos demais.
+Use `WeightScenario` com `analyze` para conjuntos completos de pesos.
+O resultado compara todos os vencedores, inclusive empates, e as posições de cada
+alternativa. Intervalos amostrados não são fronteiras exatas; estabilidade não é
+probabilidade. Veja o [guia completo](doc/sensitivity.pt-BR.md).
+
+O [laboratório Flutter](example/flutter_lab/README.md) tem controles de pesos,
+AHP, comparação de métodos, curvas amostradas e matriz ponderada. Execute
+`flutter run -d chrome` no diretório do exemplo. Ele requer Flutter >=3.35.0 e
+não acrescenta nenhuma dependência Flutter ao núcleo.

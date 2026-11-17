@@ -89,3 +89,23 @@ they will appear in a future package release, not by republishing 0.1.0.
   not a completed source push or an automatic approval rejection.
 - Main integration is prepared locally. The new source must be pushed and pass
   its minimum/stable Dart and Flutter CI before publication and the v0.2.0 tag.
+
+## 0.3 development validation
+
+- Verified the hosted 0.2.0 score page: 160/160 points, including 50/50 static
+  analysis, under publisher kleberandrade.dev.
+- Added 12 public-API sensitivity tests, first observed failing for the absent
+  API. All 52 core tests passed after implementation. Strict Dart analysis,
+  formatting and the sensitivity CLI/JavaScript reference example passed.
+- Flutter lab dependency resolution, static analysis and web compilation passed
+  on Flutter 3.41.9. A lab-specific widget suite with four tests is configured in
+  CI; its normal local runner is subject to the session's socket restriction.
+- A supplemental headless native render smoke used the installed SDK tester with
+  no VM service or local server. Ranking, method switch, AHP weights/CR, sweep
+  selection, reset and all-zero weights were checked. Desktop 1280x1600 and narrow
+  390x2200 captures rendered with zero framework/layout errors and were inspected.
+- This smoke exercises widget callbacks directly; it does not claim browser
+  gesture testing or successful execution of the normal widget-test suite.
+- The 0.3 branch has not been published. Remote CI and source push are verified
+  separately from local evidence. New CI includes a Flutter-lab analysis/test/web
+  build job and downloadable web-build artifact.

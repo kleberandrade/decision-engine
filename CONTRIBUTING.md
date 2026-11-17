@@ -21,6 +21,7 @@ dart run example/decision_engine_example.dart
 dart run example/weighted_sum.dart
 dart run example/custom_method.dart
 dart run example/ahp.dart
+dart run example/sensitivity.dart
 dart compile js example/decision_engine_example.dart -o /tmp/decision-engine.js
 node /tmp/decision-engine.js
 dart pub publish --dry-run
@@ -49,3 +50,7 @@ Contributions use the MIT license. Desired repository topics are recorded in
 For the pending initial source synchronization and release validation, see
 [complete the first release](doc/complete_release.md). The one-time Git script
 checks the exact expected remote commit before reconciling histories.
+
+Validate `example/flutter_lab` separately with Flutter analysis, widget tests and
+a web build. The lab is excluded from root Dart analysis and does not add Flutter
+to core dependencies. See its README for the UI SDK requirement.

@@ -13,6 +13,7 @@ nota e diagnóstico; `DecisionConstraint` controla a elegibilidade.
 | `lib/src/methods/` | Soma ponderada e TOPSIS |
 | `lib/src/constraints/` | Limites inclusivos mínimo e máximo |
 | `lib/src/weighting/` | Pesos AHP, diagnóstico e conversão para critérios |
+| `lib/src/sensitivity/` | Cenários, varreduras e comparações amostradas |
 | `lib/src/engine/` | Orquestração sem dependência de métodos concretos |
 | `test/` | Comportamento verificado apenas pela API pública |
 
@@ -31,3 +32,9 @@ memória O(linhas × colunas); a ordenação acrescenta O(linhas × log(linhas))
 
 AHP é uma etapa anterior ao ranking, sem dependência nova no motor ou nos
 métodos de ordenação. Seu resultado controla diagnóstico e adoção dos pesos.
+
+A sensibilidade compõe o motor e preserva direções, método e restrições. Compara
+conjuntos completos de primeiros e rejeita mudanças de elegibilidade causadas por
+extensões com estado. O laboratório é outro pacote em `example/flutter_lab`,
+com dependência de caminho para o núcleo. Flutter e o renderizador de prévias
+não entram na biblioteca nem na sua análise Dart.

@@ -1,0 +1,16 @@
+name: decision_engine
+description: Explainable multicriteria decisions in pure Dart, with weighted sum, TOPSIS, hard constraints, immutable rankings and calculation traces.
+version: 0.1.0
+repository: https://github.com/kleberandrade/decision-engine
+issue_tracker: https://github.com/kleberandrade/decision-engine/issues
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+topics:
+  - decision-making
+  - multicriteria
+  - topsis
+  - optimization
+  - dart
+dev_dependencies:
+  lints: '>=3.0.0 <7.0.0'
+  test: ^1.25.0

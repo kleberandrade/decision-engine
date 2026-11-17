@@ -35,3 +35,10 @@
 - Added a dedicated Flutter CI job, excluding its package from root Dart analysis.
 - Retried Git network access: DNS still cannot resolve github.com. No manual
   source uploads were resumed. Pub dry-run remains blocked by online resolution.
+
+## Publication handoff preparation
+
+- Grouped the initial baseline notes under 0.1.0 while retaining Unreleased.
+- Added a release-candidate checklist that explicitly retains the outstanding
+  minimum-SDK, Flutter runtime, remote-CI and publication checks.
+- Retried GitHub access; DNS remains unavailable. No tag or publication was made.

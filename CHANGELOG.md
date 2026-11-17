@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.1.0
+
 - Initial 0.1.0 development baseline: pure Dart multicriteria decision engine.
 - Add weighted sum with min-max normalization and TOPSIS with vector normalization.
 - Add inclusive minimum/maximum eligibility constraints with complete reasons.

@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Add pure Dart weight sensitivity with complete scenarios, proportion-preserving
+  sweeps, tie-aware winner stability, rank changes and sampled transition brackets.
+- Add a separate Flutter lab with interactive weights, AHP, method comparison,
+  score curves and weighted-matrix inspection.
+- Start 0.3.0-dev.1 development; no hosted release is implied by this version.
+
 ## 0.2.0
 
 - Add AHP criterion weighting using principal-eigenvector power iteration.

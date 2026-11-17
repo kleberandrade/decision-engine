@@ -2,3 +2,6 @@
 AGENTS.md
 validation/
 doc/evidence/
+example/flutter_lab/build/
+example/flutter_lab/.dart_tool/
+example/flutter_lab/pubspec.lock

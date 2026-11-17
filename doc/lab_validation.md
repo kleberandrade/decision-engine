@@ -57,7 +57,23 @@ passed both Dart jobs and the consumer. Flutter **3.50.0** exposed the lab's
 obscured ListTile ink via a framework assertion. The already-failing widget suite
 was retained; panels now paint on shaped Material surfaces and the textual
 sample expansion is also exercised. Local tests/build passed again after the fix.
-Final run and deployment evidence is appended after remote verification.
+The corrected source,
+[43d993b](https://github.com/kleberandrade/decision-engine/commit/43d993bf9c2912639d552a7a72a487a44a26b32a),
+passed all five jobs in
+[run 44169249461](https://github.com/kleberandrade/decision-engine/actions/runs/44169249461):
+Dart 3.3.0, stable Dart, Flutter consumer, Flutter lab and Pages deployment.
+The hosted build uses stable Flutter **3.50.0**, resolving its compatible current
+transitive dependencies independently of the local Flutter 3.41.9 cache.
+
+The public [laboratory](https://kleberandrade.github.io/decision-engine/) was then
+opened in Chrome and visually verified: the complete application rendered at
+that HTTPS subpath, displaying Vega at 0.6500, the constraint exclusion, scenario
+editor entry and raw data table. This verifies hosted publication rather than
+inferring it from workflow configuration. The README and repository About link
+to this verified URL. GitHub metadata was checked after updating its English
+description, homepage and ten relevant topics. Pub and CI badges were checked;
+the pub badge reports v0.3.0. Package dry-run after the source fix completed with
+**zero warnings** and did not upload anything.
 
 The pub.dev API independently reported hosted **0.3.0**, publisher
 `kleberandrade.dev`, MIT and **160/160** points. README claims were aligned to

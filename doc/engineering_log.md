@@ -157,3 +157,8 @@
   panel's DecoratedBox. Existing widget tests failed before the fix. Replaced
   the panel decoration with a shaped Material surface, preserving appearance
   while giving controls a visible ink ancestor; revalidated locally before push.
+
+- Corrected source 43d993b passed all five jobs in CI run 44169249461, including
+  stable Flutter 3.50 and Pages deployment. Opened the public HTTPS lab in Chrome
+  and visually verified the running UI. Recorded exact links, ten actual GitHub
+  topics and successful zero-warning package dry-run in doc/lab_validation.md.

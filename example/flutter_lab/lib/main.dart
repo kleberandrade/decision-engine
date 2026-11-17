@@ -190,12 +190,15 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         DropdownButtonFormField<String>(
             key: const Key('method-selector'),
+            isExpanded: true,
             initialValue: methodName,
             decoration: const InputDecoration(
                 labelText: 'Método de ranking', border: OutlineInputBorder()),
             items: const [
               DropdownMenuItem(
-                  value: 'weighted_sum', child: Text('Soma ponderada')),
+                  value: 'weighted_sum',
+                  child: Text('Soma ponderada',
+                      maxLines: 1, overflow: TextOverflow.ellipsis)),
               DropdownMenuItem(value: 'topsis', child: Text('TOPSIS'))
             ],
             onChanged: (value) => setState(() => methodName = value!)),
@@ -304,11 +307,15 @@ class _DecisionDashboardState extends State<DecisionDashboard> {
   Widget sensitivityBody(SensitivityReport? report) {
     final selector = DropdownButtonFormField<String>(
         key: const Key('criterion-selector'),
+        isExpanded: true,
         initialValue: sweepId,
         decoration: const InputDecoration(
             labelText: 'Critério da varredura', border: OutlineInputBorder()),
         items: labels.entries
-            .map((e) => DropdownMenuItem(value: e.key, child: Text(e.value)))
+            .map((e) => DropdownMenuItem(
+                value: e.key,
+                child: Text(e.value,
+                    maxLines: 1, overflow: TextOverflow.ellipsis)))
             .toList(),
         onChanged: (value) => setState(() => sweepId = value!));
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

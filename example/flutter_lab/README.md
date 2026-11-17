@@ -62,3 +62,7 @@ it writes desktop/narrow PNGs to `/tmp/decision-lab-preview` by default. Set
 `DECISION_LAB_CAPTURE_DIR` to choose an output directory. The Flutter tester and
 frontend compiler must already exist in that SDK cache. This supplemental smoke
 is not the standard `flutter test` suite or a browser-interaction test.
+
+Use `bash tool/render_smoke.sh /path/to/flutter-sdk --test-fonts` to reproduce
+layout checks with the Ahem font used by widget tests. Dropdowns expand within
+their available width so wide test/accessibility text does not overflow.

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Local headless rendering with pipes/files only; no server or VM service.
 set -euo pipefail
-[[ $# -eq 1 ]] || { printf '%s\n' 'Usage: render_smoke.sh /path/to/flutter-sdk' >&2; exit 1; }
+[[ $# -eq 1 || ( $# -eq 2 && "$2" == --test-fonts ) ]] || { printf '%s\n' 'Usage: render_smoke.sh /path/to/flutter-sdk [--test-fonts]' >&2; exit 1; }
 lab_flutter_sdk=$1
 lab_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 case "$(uname -s)" in
@@ -24,5 +24,9 @@ if ! "$lab_flutter_sdk/bin/cache/dart-sdk/bin/dartaotruntime" \
   tail -30 "$lab_smoke_tmp/compile.log"
   exit 1
 fi
-"$lab_tester" --run-forever --disable-vm-service --enable-software-rendering \
-  --flutter-assets-dir="$lab_root/build/web/assets" "$lab_smoke_tmp/preview.dill"
+lab_tester_args=(--run-forever --disable-vm-service --enable-software-rendering
+  --flutter-assets-dir="$lab_root/build/web/assets" "$lab_smoke_tmp/preview.dill")
+if [[ ${2:-} == --test-fonts ]]; then
+  lab_tester_args=(--use-test-fonts "${lab_tester_args[@]}")
+fi
+"$lab_tester" "${lab_tester_args[@]}"

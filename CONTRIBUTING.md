@@ -20,6 +20,7 @@ dart test
 dart run example/decision_engine_example.dart
 dart run example/weighted_sum.dart
 dart run example/custom_method.dart
+dart run example/ahp.dart
 dart compile js example/decision_engine_example.dart -o /tmp/decision-engine.js
 node /tmp/decision-engine.js
 dart pub publish --dry-run

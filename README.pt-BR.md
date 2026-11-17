@@ -6,11 +6,12 @@ O núcleo não tem dependências de execução, imports de Flutter, IO ou acesso
 
 [English](README.md) · [Guia](doc/getting_started.pt-BR.md) ·
 [Métodos e equações](doc/methods.pt-BR.md) · [Arquitetura](doc/architecture.pt-BR.md) ·
-[Extensões](doc/extending.pt-BR.md) · [Roadmap](doc/roadmap.pt-BR.md)
+[Pesos AHP](doc/ahp.pt-BR.md) · [Extensões](doc/extending.pt-BR.md) · [Roadmap](doc/roadmap.pt-BR.md)
 
 ## Estado e instalação
 
-Base inicial de desenvolvimento **0.1.0**. A existência do repositório não significa
+Branch de desenvolvimento **0.2.0-dev.1**, com pesos de critérios via AHP.
+A `main` local preserva a base 0.1.0 para a preparação da primeira publicação. A existência do repositório não significa
 publicação no pub.dev. Enquanto não houver versão hospedada, use:
 
 ```yaml
@@ -18,9 +19,10 @@ dependencies:
   decision_engine:
     git:
       url: https://github.com/kleberandrade/decision-engine.git
-      ref: main
+      ref: feat/ahp
 ```
 
+A dependência Git depende do envio da branch; a sincronização está pendente.
 Para builds reproduzíveis, fixe `ref` em um commit revisado. Requer Dart
 >=3.3.0 <4.0.0 e pode ser utilizado no Flutter.
 
@@ -80,8 +82,9 @@ probabilidades e não devem ser comparadas entre métodos ou execuções com
 conjuntos diferentes. Adicionar ou remover alternativas pode mudar o ranking.
 
 Implemente `DecisionMethod` ou `DecisionConstraint` para estender por composição.
-AHP, análise de sensibilidade e laboratório visual Flutter estão no roadmap;
-não fazem parte desta implementação.
+Pesos por AHP já estão implementados. Análise de sensibilidade e laboratório
+visual Flutter continuam no roadmap. Consulte [o guia AHP](doc/ahp.pt-BR.md)
+para pesos, validação de reciprocidade e índice/razão de consistência.
 
 Execute `dart test`, `dart analyze --fatal-infos` e os exemplos em `example/`.
 Consulte os comandos completos em [CONTRIBUTING.md](CONTRIBUTING.md).

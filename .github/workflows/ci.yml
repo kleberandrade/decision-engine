@@ -24,6 +24,9 @@ jobs:
       - run: dart run example/decision_engine_example.dart
       - run: dart run example/weighted_sum.dart
       - run: dart run example/custom_method.dart
+      - run: dart run example/ahp.dart
+      - run: dart compile js example/ahp.dart -o /tmp/decision-ahp.js
+      - run: node /tmp/decision-ahp.js
       - run: dart compile js example/decision_engine_example.dart -o /tmp/decision-engine.js
       - run: node /tmp/decision-engine.js
       - run: dart pub publish --dry-run

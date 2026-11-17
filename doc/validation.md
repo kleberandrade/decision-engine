@@ -8,9 +8,9 @@ outbound DNS and writes to the global SDK/cache are restricted in this session.
 | --- | --- |
 | Dart formatter | Passed |
 | `dart analyze --fatal-infos` | Passed, no issues |
-| Public-API behavioral tests | 27 passed |
+| Public-API behavioral tests | 40 passed (27 baseline + 13 AHP) |
 | Provider selection, weighted sum, custom method examples | Passed |
-| Compile provider example to JavaScript and execute with Node | Passed |
+| Compile provider and AHP examples to JavaScript and execute with Node | Passed |
 | Minimum SDK 3.3.0 | Configured in CI; not executed locally |
 | Flutter source-consumer integration | Flutter analysis passed; widget execution blocked by local socket restriction |
 | Publication dry-run | Attempted; dependency re-resolution blocked by network |
@@ -36,3 +36,14 @@ were applied and verified on GitHub. Online publication dry-run remains blocked.
 `flutter test` could not start the test process because the sandbox disallows
 binding a local server socket on 127.0.0.1. Neither widget test ran; this is not
 a passing runtime integration check.
+
+## AHP development evidence
+
+The 0.2.0-dev.1 feature branch adds 13 tests for known consistent weights,
+independently known cyclic-matrix eigenvalues, a nontrivial order-four
+matrix/eigenvector relation, RI orders 1–10, malformed matrices, threshold
+boundaries, nonconvergence, immutability and composition with both methods.
+All 40 tests passed. Strict analysis and Dart/JavaScript AHP examples passed.
+The first AHP tests failed because the public API did not exist, before the
+implementation was added. No pub.dev name availability or publisher ownership
+claim was verified. No publication was attempted after a blocked dry-run.

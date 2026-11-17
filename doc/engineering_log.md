@@ -42,3 +42,18 @@
 - Added a release-candidate checklist that explicitly retains the outstanding
   minimum-SDK, Flutter runtime, remote-CI and publication checks.
 - Retried GitHub access; DNS remains unavailable. No tag or publication was made.
+
+## AHP on feat/ahp (0.2.0-dev.1)
+
+- Preserved 0.1.0 on local main; added AHP in an independent feature branch.
+- Read Ishizaka & Labib (2009) for eigenvector/consistency conventions and RI
+  Table 1. Documented the chosen continuous judgment domain, supported orders,
+  tolerances and inclusive CR policy in English and Portuguese.
+- Wrote public-API tests first and observed missing-API failures, then added
+  power iteration, finite reciprocal-matrix validation, CI/RI/CR diagnostics,
+  immutable results and explicit conversion to directed ranking criteria.
+- Added independent eigenvalue checks and a nontrivial order-four residual check.
+  Validation: all 40 tests, strict analysis and formatting passed. The AHP example
+  passed on Dart and as JavaScript executed by Node.
+- Extended CI and contribution checks for AHP; remote CI remains pending because
+  the complete source has not been pushed. No release or publication is claimed.

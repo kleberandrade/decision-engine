@@ -12,3 +12,4 @@ export 'src/domain/method_evaluation.dart';
 export 'src/engine/decision_engine.dart';
 export 'src/methods/topsis.dart';
 export 'src/methods/weighted_sum.dart';
+export 'src/weighting/ahp_weighting.dart';

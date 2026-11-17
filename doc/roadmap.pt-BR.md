@@ -8,11 +8,15 @@ Núcleo Dart puro, interfaces, modelos imutáveis, soma ponderada, TOPSIS, restr
 inclusivas, exclusões explicadas, empates determinísticos, memória de cálculo,
 exemplos executáveis, testes, CI e documentação em inglês e português.
 
-## 0.2 — próximo escopo proposto
+## 0.2.0-dev.1 — implementado localmente, sem publicação
 
 AHP para gerar pesos por comparações pareadas, validar reciprocidade e calcular
 índice e razão de consistência. Documentar tabela de índices aleatórios, tamanhos
 suportados e política de aceitação. Usar os pesos com os dois métodos existentes.
+
+Implementação com iteração de potência, de 1 a 10 critérios e conversão para
+critérios com direções explícitas. Veja [AHP](ahp.pt-BR.md). Sincronização do
+código e validações de release continuam pendentes.
 
 ## Propostas posteriores
 

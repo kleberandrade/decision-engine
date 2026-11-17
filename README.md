@@ -10,12 +10,13 @@ No runtime dependencies, Flutter imports, IO or network access in the core.
 
 [Português](README.pt-BR.md) · [Getting started](doc/getting_started.md) ·
 [Methods and equations](doc/methods.md) · [Architecture](doc/architecture.md) ·
-[Custom strategies](doc/extending.md) · [Roadmap](doc/roadmap.md) ·
+[AHP weighting](doc/ahp.md) · [Custom strategies](doc/extending.md) · [Roadmap](doc/roadmap.md) ·
 [Contributing](CONTRIBUTING.md)
 
 ## Status and installation
 
-Initial **0.1.0 development baseline**. This repository does not imply publication
+**0.2.0-dev.1 development branch**, with AHP criterion weighting. The local
+`main` branch preserves the 0.1.0 baseline for first-release preparation. This repository does not imply publication
 on pub.dev. Until a hosted release is available, use the Git source:
 
 ```yaml
@@ -23,10 +24,11 @@ dependencies:
   decision_engine:
     git:
       url: https://github.com/kleberandrade/decision-engine.git
-      ref: main
+      ref: feat/ahp
 ```
 
-For reproducible applications, pin `ref` to a reviewed commit. Requires Dart
+The Git dependency becomes usable after the feature branch is pushed; source
+synchronization is currently pending. For reproducible applications, pin `ref` to a reviewed commit. Requires Dart
 >=3.3.0 <4.0.0; the same core can be used from Flutter.
 
 ## Choose a provider
@@ -114,9 +116,18 @@ dart test
 dart run example/decision_engine_example.dart
 dart run example/weighted_sum.dart
 dart run example/custom_method.dart
+dart run example/ahp.dart
 dart pub publish --dry-run
 ```
 
-Documentation is maintained in English and Brazilian Portuguese. AHP, sensitivity
-analysis and a Flutter visualization lab are planned, not implemented. See
+Documentation is maintained in English and Brazilian Portuguese. AHP criterion weighting is implemented; sensitivity
+analysis and a Flutter visualization lab remain planned. See
 [roadmap](doc/roadmap.md), [validation](doc/validation.md) and [changelog](CHANGELOG.md).
+
+## Generate weights with AHP
+
+Use `AhpWeighting().evaluate(criterionIds: ..., comparisons: ...)` to derive
+principal-eigenvector weights from 1–10 reciprocal comparisons. Inspect CI/CR,
+then call `toCriteria` with explicit maximize/minimize directions. Inconsistent
+judgments are rejected by this conversion unless explicitly opted into.
+See the [AHP guide](doc/ahp.md) and `example/ahp.dart` for the complete workflow.

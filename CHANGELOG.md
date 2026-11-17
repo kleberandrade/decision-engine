@@ -2,7 +2,12 @@
 
 ## Unreleased
 
+- Add AHP principal-eigenvector criterion weighting, reciprocal-matrix validation,
+  consistency diagnostics and explicit conversion for both ranking methods.
+- Start 0.2.0-dev.1 development on feat/ahp; retain the 0.1.0 baseline on local main.
+
 ## 0.1.0
+
 
 - Initial 0.1.0 development baseline: pure Dart multicriteria decision engine.
 - Add weighted sum with min-max normalization and TOPSIS with vector normalization.

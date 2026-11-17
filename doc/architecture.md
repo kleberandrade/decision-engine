@@ -22,6 +22,7 @@ flowchart TD
 | `lib/src/contracts/` | Method and constraint extension boundaries | SDK and domain |
 | `lib/src/methods/` | Normalization, weighting, scores, diagnostics | SDK, domain, contracts |
 | `lib/src/constraints/` | Inclusive bounds | SDK and contracts |
+| `lib/src/weighting/` | AHP weights, consistency diagnostics and result conversion | SDK and criterion domain |
 | `lib/src/engine/` | Validate, filter, delegate, check output, rank | SDK, domain, contracts |
 | `test/` | Public behavior and strategy boundary checks | Public entry point |
 
@@ -40,3 +41,7 @@ The core does not own HTTP, UI, persistence, isolates, or integrations with othe
 engines. Flutter can call it directly for small matrices; large evaluations may
 need application-managed isolates. Both built-ins take O(rows * columns) numeric
 work and memory; final ranking adds O(rows * log(rows)).
+
+AHP is a separate preprocessing step, not a decision-method implementation.
+It produces criteria without adding any dependency to the engine or ranking
+strategies. Its immutable result owns the CI/CR policy and conversion gate.

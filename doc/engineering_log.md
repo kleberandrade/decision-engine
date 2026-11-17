@@ -118,3 +118,17 @@
   files/process streams without opening a server. Checked callbacks and zero-weight
   handling, rendered desktop/narrow PNGs with zero framework errors, and inspected
   the captures. This does not substitute a claimed standard widget-test pass.
+
+## 0.3.0 final preparation
+
+- Read failed lab job 133796507215 from CI run 44010623342: all four widget
+  scenarios reported a 38-pixel horizontal RenderFlex overflow. Core minimum/
+  stable Dart and the separate Flutter consumer jobs passed.
+- Reproduced the same 38-pixel overflow locally using the SDK headless tester
+  with --use-test-fonts, before changing the layout. This pinned the failure
+  independently of the socket-blocked standard local runner.
+- Expanded both dropdowns within available width and bounded long criterion
+  labels. Added --test-fonts to the supplementary native smoke script.
+- The Ahem smoke passed after the fix. Promoted source version to 0.3.0,
+  grouped unreleased notes, preserved published changelog notes and prepared
+  bilingual installation/release documentation. Final remote CI is still a gate.

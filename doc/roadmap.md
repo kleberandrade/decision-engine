@@ -21,7 +21,7 @@ The implementation uses principal-eigenvector power iteration, 1–10 criteria,
 the documented RI table, explicit directions and default consistency gating.
 See [AHP](ahp.md). Main integration, hosted publication and source release v0.2.0 are verified.
 
-## 0.3.0-dev.1 — implemented on feat/sensitivity
+## 0.3.0 — release preparation
 
 - Complete relative-weight scenarios and sampled one-criterion sweeps.
 - Full winner-set stability, competition-rank changes and transition brackets.

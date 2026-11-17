@@ -21,14 +21,14 @@ No runtime dependencies, Flutter imports, IO or network access in the core.
 
 The stable **0.2.0** is published under verified publisher
 [kleberandrade.dev](https://pub.dev/publishers/kleberandrade.dev) with **160/160 pub
-points**. This branch develops **0.3.0-dev.1**, adding sampled weight sensitivity
+points**. This source prepares **0.3.0**, adding sampled weight sensitivity
 and an optional Flutter laboratory. Core Dart support remains >=3.3.0 <4.0.0.
 
-For the 0.2.0 release:
+For the 0.3.0 release (check hosted availability before installation):
 
 ```yaml
 dependencies:
-  decision_engine: ^0.2.0
+  decision_engine: ^0.3.0
 ```
 
 Run `dart pub add decision_engine` or `flutter pub add decision_engine` to select
@@ -36,8 +36,9 @@ the latest available compatible hosted version. AHP requires **0.2.0 or newer**;
 the published 0.1.0 API does not include it. To use this source before hosted
 publication, use a Git dependency pinned to a reviewed commit on `main`.
 The [v0.2.0 source release](https://github.com/kleberandrade/decision-engine/releases/tag/v0.2.0)
-is CI-validated. Sensitivity requires the development source on `feat/sensitivity`;
-it is not included in hosted 0.2.0.
+is CI-validated. Sensitivity requires **0.3.0 or newer** and is not included in hosted 0.2.0.
+Check the [hosted version list](https://pub.dev/packages/decision_engine/versions)
+for publication status; the source version alone does not publish the package.
 
 ## Choose a provider
 
@@ -143,7 +144,7 @@ then call `toCriteria` with explicit maximize/minimize directions. Inconsistent
 judgments are rejected by this conversion unless explicitly opted into.
 See the [AHP guide](doc/ahp.md) and `example/ahp.dart` for the complete workflow.
 
-## Explore weight sensitivity (0.3 development)
+## Explore weight sensitivity (0.3.0)
 
 ```dart
 final report = SensitivityAnalyzer(engine: engine).sweep(alternatives,

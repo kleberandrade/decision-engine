@@ -109,3 +109,14 @@ they will appear in a future package release, not by republishing 0.1.0.
 - The 0.3 branch has not been published. Remote CI and source push are verified
   separately from local evidence. New CI includes a Flutter-lab analysis/test/web
   build job and downloadable web-build artifact.
+
+## 0.3.0 release candidate correction
+
+The first sensitivity CI (44010623342) passed both Dart SDK jobs and the Flutter
+source consumer. Its lab job failed all four widget scenarios with the same
+38-pixel horizontal overflow. This was reproduced locally with `--use-test-fonts`
+before fixing the dropdown width constraints; the native Ahem smoke then passed.
+The normal-font smoke also passed method/AHP/sweep/reset/zero-weight and narrow
+layout checks. Strict Dart and Flutter analysis and all 52 core tests passed for
+the corrected candidate. The candidate's new remote CI must still pass before
+hosted publication. No hosted 0.3.0 or v0.3.0 source tag is claimed here.

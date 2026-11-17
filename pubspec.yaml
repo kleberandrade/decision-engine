@@ -1,6 +1,6 @@
 name: decision_engine
 description: Explainable multicriteria decisions in pure Dart, with AHP weights, weighted sum, TOPSIS, sampled weight sensitivity and immutable calculation traces.
-version: 0.3.0-dev.1
+version: 0.3.0
 repository: https://github.com/kleberandrade/decision-engine
 issue_tracker: https://github.com/kleberandrade/decision-engine/issues
 environment:

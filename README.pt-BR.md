@@ -13,22 +13,23 @@ O núcleo não tem dependências de execução, imports de Flutter, IO ou acesso
 
 A versão estável **0.2.0 está publicada**, vinculada ao publisher verificado
 [kleberandrade.dev](https://pub.dev/publishers/kleberandrade.dev), com **160/160 pontos**.
-Esta branch desenvolve a **0.3.0-dev.1**, com sensibilidade amostrada e laboratório
+Este código prepara a **0.3.0**, com sensibilidade amostrada e laboratório
 Flutter separado. O núcleo permanece em Dart puro, compatível com Dart >=3.3.0.
 
-Para a release 0.2.0:
+Para a release 0.3.0 (confira a disponibilidade hospedada antes de instalar):
 
 ```yaml
 dependencies:
-  decision_engine: ^0.2.0
+  decision_engine: ^0.3.0
 ```
 
 Execute `dart pub add decision_engine` ou `flutter pub add decision_engine` para
 selecionar a versão hospedada compatível mais recente. O AHP requer **0.2.0 ou
 superior** e não existe na API da 0.1.0. Antes da publicação, use uma dependência
 Git fixada em um commit revisado da `main`. A [release v0.2.0](https://github.com/kleberandrade/decision-engine/releases/tag/v0.2.0)
-está validada. A sensibilidade exige o código de desenvolvimento da branch
-`feat/sensitivity`; não está na 0.2.0 hospedada.
+está validada. A sensibilidade exige **0.3.0 ou superior** e não está na 0.2.0 hospedada.
+Confira a [lista de versões](https://pub.dev/packages/decision_engine/versions)
+para verificar a publicação; alterar a versão do código não publica o pacote.
 
 ## Como funciona
 
@@ -98,7 +99,7 @@ Consulte os comandos completos em [CONTRIBUTING.md](CONTRIBUTING.md).
 O guia de AHP e `example/ahp.dart` descrevem a API da **0.2.0**.
 O recurso não faz parte da versão 0.1.0 hospedada.
 
-## Sensibilidade e laboratório (desenvolvimento da 0.3)
+## Sensibilidade e laboratório (0.3.0)
 
 `SensitivityAnalyzer(engine: engine).sweep(alternatives, criterionId: 'cost',
 weights: [0, 0.25, 0.5, 0.75, 1])` varia um peso e preserva as proporções dos demais.

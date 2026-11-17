@@ -18,7 +18,7 @@ Implementação com iteração de potência, de 1 a 10 critérios e conversão p
 critérios com direções explícitas. Veja [AHP](ahp.pt-BR.md). Integração na main, publicação hospedada e
 release v0.2.0 estão verificadas.
 
-## 0.3.0-dev.1 — implementada na feat/sensitivity
+## 0.3.0 — preparação da release
 
 Cenários completos e varreduras de pesos; comparação de todos os vencedores;
 mudanças de posição; estabilidade amostrada; intervalos de transição; resultados

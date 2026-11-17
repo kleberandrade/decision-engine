@@ -2,11 +2,16 @@
 
 ## Unreleased
 
+## 0.3.0
+
 - Add pure Dart weight sensitivity with complete scenarios, proportion-preserving
   sweeps, tie-aware winner stability, rank changes and sampled transition brackets.
 - Add a separate Flutter lab with interactive weights, AHP, method comparison,
   score curves and weighted-matrix inspection.
-- Start 0.3.0-dev.1 development; no hosted release is implied by this version.
+- Constrain Flutter dropdowns to the available width, including Ahem widget-test
+  fonts, and add an optional test-font native render smoke.
+- Add bilingual sensitivity guides, a runnable Dart/JavaScript example and a
+  dedicated Flutter lab CI job with widget tests and a web-build artifact.
 
 ## 0.2.0
 
